@@ -124,6 +124,7 @@ body.hovering #custom-cursor, body.hovering #entry-cursor {
   background-image: url('../assets/img/corner.png'); 
   background-size: contain; background-repeat: no-repeat;
   pointer-events: none; z-index: 3;
+  /* Превращаем в золото */
   filter: invert(83%) sepia(23%) saturate(1142%) hue-rotate(359deg) brightness(89%) contrast(92%);
   opacity: 0.8; 
 }
@@ -144,12 +145,14 @@ body.hovering #custom-cursor, body.hovering #entry-cursor {
   z-index: 10;
   cursor: pointer;
   transition: all 0.8s ease;
+  /* Бежевое */
   filter: invert(83%) sepia(23%) saturate(1142%) hue-rotate(359deg) brightness(89%) contrast(92%);
   opacity: 0.9;
 }
 
 .entry-tree-btn:hover {
   transform: translate(-50%, -50%) scale(1.05);
+  /* Золотое свечение */
   filter: invert(83%) sepia(23%) saturate(1142%) hue-rotate(359deg) brightness(110%) contrast(92%) drop-shadow(0 0 25px #ffd700);
 }
 
@@ -399,7 +402,7 @@ section { padding: 90px 20px; max-width: 1100px; margin: 0 auto; position: relat
   font-family: 'Montserrat', sans-serif; text-transform: uppercase; letter-spacing: 1px;
 }
 
-/* ЦИФРЫ (Montserrat - без засечек) */
+/* ЦИФРЫ */
 .weather-val {
   font-weight: 700; color: var(--forest-deep);
   font-family: 'Montserrat', sans-serif; /* Без засечек */
