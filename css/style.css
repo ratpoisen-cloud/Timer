@@ -121,7 +121,7 @@ body.hovering #custom-cursor, body.hovering #entry-cursor {
 /* 3. УГЛОВЫЕ ВЕНЗЕЛЯ (файл corner.png) */
 .corner-decor {
   position: absolute; width: 200px; height: 200px; /* Размер вензеля */
-  background-image: url('../assets/img/corner.png'); /* НОВЫЙ ФАЙЛ */
+  background-image: url('../assets/img/corner.png'); 
   background-size: contain; background-repeat: no-repeat;
   pointer-events: none; z-index: 3;
   /* Фильтр: делает черный цвет золотым #C9A25B */
@@ -291,6 +291,15 @@ section { padding: 90px 20px; max-width: 1100px; margin: 0 auto; position: relat
   padding-left: 20px; padding-right: 20px; 
 }
 
+/* Ограничитель ширины контента внутри параллакса */
+.parallax-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+
 .overlay-dark {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(0, 0, 0, 0.5); z-index: 1;
@@ -361,8 +370,11 @@ section { padding: 90px 20px; max-width: 1100px; margin: 0 auto; position: relat
 
 /* СЕТКА ПАРАМЕТРОВ */
 .weather-grid {
-  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;
-  border-top: 1px dashed var(--wood-warm); padding-top: 25px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
+  border-top: 1px dashed var(--wood-warm);
+  padding-top: 25px;
 }
 
 .weather-col { text-align: center; }
