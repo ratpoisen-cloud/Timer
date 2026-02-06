@@ -27,3 +27,251 @@
     
     <div class="entry-bg-pastel"></div>
     <div class="entry-bg-texture"></div>
+    
+    <div class="corner-decor top-left"></div>
+    <div class="corner-decor top-right"></div>
+    <div class="corner-decor bottom-left"></div>
+    <div class="corner-decor bottom-right"></div>
+    
+    <div class="entry-tree-btn" id="entry-tree-btn"></div>
+    
+    <div class="entry-fireflies" id="entry-fireflies"></div>
+
+    <div class="entry-text-container">
+      <h1 class="entry-title entry-fade-in entry-delay-1">Лесное приглашение</h1>
+      <p class="entry-subtitle entry-fade-in entry-delay-2">
+        Коснитесь Древа, чтобы войти
+      </p>
+    </div>
+
+    <div id="entry-cursor"><i class="fas fa-leaf"></i></div>
+    <div class="entry-transition-overlay" id="entry-overlay-transition"></div>
+  </div>
+
+
+  <div id="main-page" style="display: none;">
+    
+    <div id="custom-cursor"><i class="fas fa-leaf"></i></div>
+    <div id="fireflies-container"></div>
+
+    <div id="sound-control" onclick="toggleMusic()">
+      <i class="fas fa-volume-up" id="sound-icon"></i>
+    </div>
+
+    <header>
+      <div class="hero">
+        <p class="subtitle">Приглашение на торжество</p>
+        <h1>Ашипка моладасти<br>&<br>Молекула фентанила</h1>
+        <div class="date">
+          <i class="far fa-calendar-alt" style="color: var(--wood-warm);"></i>
+          <span>2 августа 2026</span>
+        </div>
+        <div id="countdown" class="countdown">
+          <div><span id="days">0</span><small>Дней</small></div>
+          <div><span id="hours">0</span><small>Часов</small></div>
+          <div><span id="minutes">0</span><small>Минут</small></div>
+          <div><span id="seconds">0</span><small>Секунд</small></div>
+        </div>
+        <p style="margin-top: 30px; font-weight: 600; font-size: 1.1rem;">
+          <i class="fas fa-map-marker-alt" style="color: var(--wood-warm); margin-right: 8px; filter: drop-shadow(0 0 5px var(--gold-glow));"></i>
+          Крым, Ялта. Там, где лес встречает море.
+        </p>
+        <div class="couple-photo-container">
+          <img src="assets/img/wedding-photo.jpg" alt="Фото пары" class="couple-photo" loading="lazy">
+        </div>
+      </div>
+    </header>
+
+    <section>
+      <div class="leaf-divider"><i class="fas fa-leaf"></i></div>
+      <div class="quote-text fade-in">
+        "Я предпочту разделить с тобой одну смертную жизнь, чем провести в одиночестве все эпохи мира."
+      </div>
+      <h2>Шо вы, головы?!</h2>
+      <div class="invitation-paper fade-in">
+        <p>Это мы смотрим мчишь ты на наше торжество или нет.</p>
+        <p>Свадьба — это весело, порадуй себя и нас.</p>
+        <p style="margin-top: 25px; font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700; color: var(--forest-deep);">
+          Ждем тебя как обед в самолете!
+        </p>
+      </div>
+    </section>
+
+    <section class="parallax-section bg-forest">
+      <div class="overlay-dark"></div>
+      
+      <div class="parallax-inner">
+        <h2 style="color: #f7f4e8; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">Детали события</h2>
+        <div class="details-container fade-in" style="background: rgba(255, 255, 255, 0.1); border-color: rgba(255,255,255,0.3); backdrop-filter: blur(5px);">
+            <div class="details">
+              <div class="card">
+                  <i class="fas fa-clock" style="color: #f7f4e8;"></i>
+                  <h3 style="color: #f7f4e8;">Тайминг</h3>
+                  <p style="color: #f7f4e8;">2 августа 2026<br>Сбор: 15:00<br>Церемония: 16:00</p>
+              </div>
+              <div class="card">
+                  <i class="fas fa-tree" style="color: #f7f4e8;"></i>
+                  <h3 style="color: #f7f4e8;">Локация</h3>
+                  <p style="color: #f7f4e8;"><strong>Отель "Зазеркалье"</strong><br>г. Ялта, Приморский парк, 9</p>
+              </div>
+              <div class="card">
+                  <i class="fas fa-glass-cheers" style="color: #f7f4e8;"></i>
+                  <h3 style="color: #f7f4e8;">Дресс-код</h3>
+                  <p style="color: #f7f4e8;">Природные тона: зеленый, золото, беж.</p>
+              </div>
+            </div>
+        </div>
+      </div>
+    </section>
+    
+    <section>
+      <div class="faq-container fade-in">
+        <h2 style="font-size: 2.5rem; margin-bottom: 25px;">Важная информация</h2>
+        
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span><i class="fas fa-train" style="width: 30px;"></i> Ж/Д Билеты</span>
+            <i class="fas fa-chevron-down arrow"></i>
+          </div>
+          <div class="faq-answer">
+            <p>
+              В Крым ходят комфортабельные поезда «Таврия». Продажи открываются за 45-90 суток.
+              <br><br>
+              <a href="https://grandtrain.ru/" target="_blank" class="faq-btn">
+                <i class="fas fa-ticket-alt"></i> Купить билет (grandtrain.ru)
+              </a>
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span><i class="fas fa-car" style="width: 30px;"></i> На машине (Мост)</span>
+            <i class="fas fa-chevron-down arrow"></i>
+          </div>
+          <div class="faq-answer">
+            <p>
+              Проезд через Крымский мост. Закладывайте время на досмотр (~30-60 мин).
+              <br><br>
+              Оперативная ситуация и очереди:
+              <br>
+              <a href="https://t.me/most_official" target="_blank" class="faq-link">
+                <i class="fab fa-telegram-plane"></i> Чат мониторинга моста
+              </a>
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span><i class="fas fa-home" style="width: 30px;"></i> Где жить?</span>
+            <i class="fas fa-chevron-down arrow"></i>
+          </div>
+          <div class="faq-answer">
+            <p>
+              Booking в Крыму не работает. Рекомендуем проверенные сервисы:
+              <br><br>
+              <i class="fas fa-check" style="color: var(--wood-warm);"></i> <a href="https://sutochno.ru" target="_blank" class="text-link">Sutochno.ru</a> (квартиры)<br>
+              <i class="fas fa-check" style="color: var(--wood-warm);"></i> <a href="https://ostrovok.ru" target="_blank" class="text-link">Ostrovok.ru</a> (отели)<br>
+              <i class="fas fa-check" style="color: var(--wood-warm);"></i> <a href="https://tvil.ru" target="_blank" class="text-link">Tvil.ru</a>
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span><i class="fas fa-taxi" style="width: 30px;"></i> Такси в Крыму</span>
+            <i class="fas fa-chevron-down arrow"></i>
+          </div>
+          <div class="faq-answer">
+            <p>
+              <strong style="color: #d9534f;">Важно:</strong> Яндекс.Go, Uber и Citymobil в Крыму <strong>не работают</strong>!
+              <br><br>
+              Рекомендуем скачать местные приложения заранее:
+              <br><br>
+              
+              <a href="https://taxi-volna.com/" target="_blank" class="faq-btn" style="margin-bottom: 10px;">
+                <i class="fas fa-water"></i> Такси "Волна"
+              </a>
+              <br>
+              <a href="https://taximaxim.ru/" target="_blank" class="faq-btn" style="margin-bottom: 10px;">
+                <i class="fas fa-car-side"></i> Такси "Максим"
+              </a>
+              <br>
+              <a href="https://crimea.uptaxi.ru/" target="_blank" class="faq-btn">
+                <i class="fas fa-route"></i> UpTaxi
+              </a>
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span><i class="fas fa-suitcase-rolling" style="width: 30px;"></i> Чек-лист гостя</span>
+            <i class="fas fa-chevron-down arrow"></i>
+          </div>
+          <div class="faq-answer">
+            <ul class="checklist">
+              <li><i class="fas fa-check"></i> Паспорт РФ (оригинал)</li>
+              <li><i class="fas fa-check"></i> Полис ОМС</li>
+              <li><i class="fas fa-check"></i> Наличные (карты работают, но лучше иметь запас)</li>
+              <li><i class="fas fa-check"></i> Удобная обувь для прогулок</li>
+              <li><i class="fas fa-check"></i> PowerBank в дорогу</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="map-container fade-in" style="margin-top: 80px; position: relative; cursor: pointer;" onclick="window.open('https://yandex.ru/maps/-/CPAObFmg', '_blank')">
+        <img src="assets/img/fantasy-map.jpg" alt="Карта" style="width: 100%; height: auto; display: block;" loading="lazy">
+        <div style="position: absolute; bottom: 20px; left: 0; width: 100%; text-align: center; pointer-events: none;">
+          <span style="background: rgba(42, 75, 60, 0.8); color: var(--wood-warm); padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; border: 1px solid var(--wood-warm);">
+            <i class="fas fa-external-link-alt"></i> Нажмите, чтобы открыть навигатор
+          </span>
+        </div>
+      </div>
+
+      <div class="weather-card fade-in">
+        <div class="weather-header">
+          <span>Ялта • 2 Августа</span>
+          <span style="font-size: 0.9rem; border: 1px solid #ccc; padding: 2px 8px; border-radius: 10px; margin-left: 10px;">Статистика</span>
+        </div>
+        <div class="weather-main-row" style="display: flex; align-items: center; justify-content: center; gap: 20px; margin: 20px 0;">
+          <i class="fas fa-sun weather-icon-sun"></i>
+          <div style="text-align: left;">
+            <div style="font-size: 3.5rem; line-height: 1; font-weight: 700; font-family: 'Montserrat', sans-serif;">+29°</div>
+            <div>Ясно</div>
+          </div>
+        </div>
+        <div class="weather-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; border-top: 1px dashed var(--wood-warm); padding-top: 20px;">
+          <div><i class="fas fa-water weather-icon-water"></i><br>+24°C</div>
+          <div style="border-left: 1px solid #eee; border-right: 1px solid #eee;"><i class="fas fa-wind weather-icon-wind"></i><br>3 м/с</div>
+          <div><i class="fas fa-umbrella weather-icon-rain"></i><br>2%</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rsvp-section fade-in">
+      <h2>Дай добро</h2>
+      <p style="font-size: 1.3rem; margin-bottom: 30px;">Маякни по-братски о своем решении до 1 июля 2026.</p>
+      <div class="rsvp-buttons">
+        <a href="mailto:anna.maxim@mail.ru?subject=Буду как штык&body=Дорогие! Буду как штык 2 августа 2026." class="btn">
+          <i class="fas fa-check-circle"></i> Уже еду!
+        </a>
+        <a href="mailto:anna.maxim@mail.ru?subject=Не обессудь&body=Дорогие! Я чорт, не смогу быть. Обнимаю!" class="btn btn-secondary">
+          <i class="far fa-sad-tear"></i> Не смогу (плак)
+        </a>
+      </div>
+    </section>
+
+    <footer>
+      <img src="assets/img/yggdrasil-lg.png" class="footer-logo" alt="Древо Жизни">
+      <div class="couple-names">Ашипка & Молекула</div>
+      <p style="font-size: 0.9rem; opacity: 0.7;">© 2026 Wedding Day | Adventure Edition</p>
+    </footer>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
