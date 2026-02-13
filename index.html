@@ -23,29 +23,19 @@
     <source src="assets/audio/music.mp3" type="audio/mpeg">
   </audio>
 
-  <div id="knight">
-    <i class="fas fa-chess-knight"></i> 
-  </div>
-
   <div id="entry-page">
     <div class="entry-bg-pastel"></div>
     <div class="entry-bg-texture"></div>
-    
     <div class="corner-decor top-left"></div>
     <div class="corner-decor top-right"></div>
     <div class="corner-decor bottom-left"></div>
     <div class="corner-decor bottom-right"></div>
-    
     <div class="entry-tree-btn" id="entry-tree-btn"></div>
     <div class="entry-fireflies" id="entry-fireflies"></div>
-
     <div class="entry-text-container">
       <h1 class="entry-title entry-fade-in entry-delay-1">Лесное приглашение</h1>
-      <p class="entry-subtitle entry-fade-in entry-delay-2">
-        Коснитесь Древа, чтобы войти
-      </p>
+      <p class="entry-subtitle entry-fade-in entry-delay-2">Коснитесь Древа, чтобы войти</p>
     </div>
-
     <div id="entry-cursor"><i class="fas fa-leaf"></i></div>
     <div class="entry-transition-overlay" id="entry-overlay-transition"></div>
   </div>
@@ -54,7 +44,6 @@
     
     <div id="custom-cursor"><i class="fas fa-leaf"></i></div>
     <div id="fireflies-container"></div>
-
     <div id="sound-control" onclick="toggleMusic()">
       <i class="fas fa-volume-up" id="sound-icon"></i>
     </div>
@@ -67,118 +56,127 @@
           <i class="far fa-calendar-alt" style="color: var(--wood-warm);"></i>
           <span>2 августа 2026</span>
         </div>
+        
         <div id="countdown" class="countdown">
           <div><span id="days">0</span><small>Дней</small></div>
           <div><span id="hours">0</span><small>Часов</small></div>
           <div><span id="minutes">0</span><small>Минут</small></div>
           <div><span id="seconds">0</span><small>Секунд</small></div>
         </div>
+        
         <p style="margin-top: 30px; font-weight: 600; font-size: 1.1rem;">
           <i class="fas fa-map-marker-alt" style="color: var(--wood-warm); margin-right: 8px; filter: drop-shadow(0 0 5px var(--gold-glow));"></i>
           Крым, Ялта. Там, где лес встречает море.
         </p>
-        <div class="couple-photo-container" id="start-marker">
+        <div class="couple-photo-container">
           <img src="assets/img/wedding-photo.jpg" alt="Фото пары" class="couple-photo" loading="lazy">
         </div>
       </div>
     </header>
 
-    <div class="zigzag-container">
+    <div class="adventure-path-container">
       
-      <section class="step-block step-left">
-        <div class="leaf-divider"><i class="fas fa-leaf"></i></div>
-        <div class="quote-text fade-in">
-          "Я предпочту разделить с тобой одну смертную жизнь, чем провести в одиночестве все эпохи мира."
-        </div>
-        <h2>Шо вы, головы?!</h2>
-        <div class="invitation-paper fade-in">
-          <p style="margin-top: 25px; font-family: 'MyHeaderFont', serif; font-size: 1.6rem; font-weight: 700; color: var(--forest-deep);">
-            Ждем тебя как обед в самолете!
-          </p>
-          <p>Свадьба — это весело, порадуй себя и нас.</p>
-        </div>
-      </section>
-
-      <section class="step-block step-right">
-        <div class="forest-card fade-in">
-          <h2 style="color: #f7f4e8; text-shadow: 0 2px 10px rgba(0,0,0,0.5); margin-top: 0;">Детали события</h2>
-          <div class="details-container" style="background: rgba(255, 255, 255, 0.1); border-color: rgba(255,255,255,0.3); backdrop-filter: blur(5px);">
-              <div class="details">
-                <div class="card">
-                    <i class="fas fa-clock" style="color: #f7f4e8;"></i>
-                    <h3 style="color: #f7f4e8;">Тайминг</h3>
-                    <p style="color: #f7f4e8;">15:00 Сбор</p>
-                </div>
-                <div class="card">
-                    <i class="fas fa-tree" style="color: #f7f4e8;"></i>
-                    <h3 style="color: #f7f4e8;">Локация</h3>
-                    <p style="color: #f7f4e8;">Отель "Зазеркалье"</p>
-                </div>
-                <div class="card">
-                    <i class="fas fa-glass-cheers" style="color: #f7f4e8;"></i>
-                    <h3 style="color: #f7f4e8;">Дресс-код</h3>
-                    <p style="color: #f7f4e8;">Зеленый, золото</p>
-                </div>
-              </div>
-          </div>
-        </div>
-      </section>
+      <div class="path-line"></div>
       
-      <section class="step-block step-left">
-        <div class="faq-container fade-in">
-          <h2 style="font-size: 2.5rem; margin-bottom: 25px;">Важная информация</h2>
-          <div class="faq-item" onclick="toggleFaq(this)">
-            <div class="faq-question"><span><i class="fas fa-train"></i> Ж/Д Билеты</span><i class="fas fa-chevron-down arrow"></i></div>
-            <div class="faq-answer"><p>Поезда «Таврия» (grandtrain.ru)</p></div>
-          </div>
-          <div class="faq-item" onclick="toggleFaq(this)">
-            <div class="faq-question"><span><i class="fas fa-car"></i> На машине</span><i class="fas fa-chevron-down arrow"></i></div>
-            <div class="faq-answer"><p>Через Крымский мост.</p></div>
-          </div>
-          <div class="faq-item" onclick="toggleFaq(this)">
-            <div class="faq-question"><span><i class="fas fa-home"></i> Где жить?</span><i class="fas fa-chevron-down arrow"></i></div>
-            <div class="faq-answer"><p>Sutochno.ru, Ostrovok.ru</p></div>
-          </div>
-        </div>
-      </section>
+      <div id="knight-sticky-container">
+        <div id="knight">
+          <i class="fas fa-chess-knight"></i> </div>
+      </div>
 
-      <section class="step-block step-right">
-        <div class="weather-card fade-in">
-          <div class="weather-header">
-            <span>Ялта • 2 Августа</span>
+      <div class="adventure-content">
+        
+        <section>
+          <div class="leaf-divider"><i class="fas fa-leaf"></i></div>
+          <div class="quote-text fade-in">
+            "Я предпочту разделить с тобой одну смертную жизнь, чем провести в одиночестве все эпохи мира."
           </div>
-          <div class="weather-main-row">
-            <i class="fas fa-sun weather-icon-sun"></i>
-            <div>
-              <div style="font-size: 3.5rem; line-height: 1; font-weight: 700; font-family: 'MyBodyFont', sans-serif;">+29°</div>
-              <div>Ясно</div>
+          <h2>Шо вы, головы?!</h2>
+          <div class="invitation-paper fade-in">
+            <p style="margin-top: 25px; font-family: 'MyHeaderFont', serif; font-size: 1.6rem; font-weight: 700; color: var(--forest-deep);">
+              Ждем тебя как обед в самолете!
+            </p>
+            <p>Свадьба — это весело, порадуй себя и нас.</p>
+          </div>
+        </section>
+
+        <section>
+          <div class="forest-card fade-in">
+            <h2 style="color: #f7f4e8; text-shadow: 0 2px 10px rgba(0,0,0,0.5); margin-top: 0;">Детали события</h2>
+            <div class="details-container" style="background: rgba(255, 255, 255, 0.1); border-color: rgba(255,255,255,0.3); backdrop-filter: blur(5px);">
+                <div class="details">
+                  <div class="card">
+                      <i class="fas fa-clock" style="color: #f7f4e8;"></i>
+                      <h3 style="color: #f7f4e8;">Тайминг</h3>
+                      <p style="color: #f7f4e8;">15:00 Сбор</p>
+                  </div>
+                  <div class="card">
+                      <i class="fas fa-tree" style="color: #f7f4e8;"></i>
+                      <h3 style="color: #f7f4e8;">Локация</h3>
+                      <p style="color: #f7f4e8;">Отель "Зазеркалье"</p>
+                  </div>
+                  <div class="card">
+                      <i class="fas fa-glass-cheers" style="color: #f7f4e8;"></i>
+                      <h3 style="color: #f7f4e8;">Дресс-код</h3>
+                      <p style="color: #f7f4e8;">Зеленый, золото</p>
+                  </div>
+                </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+        
+        <section>
+          <div class="faq-container fade-in">
+            <h2 style="font-size: 2.5rem; margin-bottom: 25px;">Важная информация</h2>
+            <div class="faq-item" onclick="toggleFaq(this)">
+              <div class="faq-question"><span><i class="fas fa-train"></i> Ж/Д Билеты</span><i class="fas fa-chevron-down arrow"></i></div>
+              <div class="faq-answer"><p>Поезда «Таврия» (grandtrain.ru)</p></div>
+            </div>
+            <div class="faq-item" onclick="toggleFaq(this)">
+              <div class="faq-question"><span><i class="fas fa-car"></i> На машине</span><i class="fas fa-chevron-down arrow"></i></div>
+              <div class="faq-answer"><p>Через Крымский мост.</p></div>
+            </div>
+            <div class="faq-item" onclick="toggleFaq(this)">
+              <div class="faq-question"><span><i class="fas fa-home"></i> Где жить?</span><i class="fas fa-chevron-down arrow"></i></div>
+              <div class="faq-answer"><p>Sutochno.ru, Ostrovok.ru</p></div>
+            </div>
+          </div>
+        </section>
 
-    </div>
+        <section>
+          <div class="weather-card fade-in">
+            <div class="weather-header">
+              <span>Ялта • 2 Августа</span>
+            </div>
+            <div class="weather-main-row">
+              <i class="fas fa-sun weather-icon-sun"></i>
+              <div>
+                <div style="font-size: 3.5rem; line-height: 1; font-weight: 700; font-family: 'MyBodyFont', sans-serif;">+29°</div>
+                <div>Ясно</div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-    <section class="map-destination" id="map-target">
-      <h2 style="margin-bottom: 30px;">Цель достигнута</h2>
-      <div class="map-container fade-in" style="position: relative; cursor: pointer;" onclick="window.open('https://yandex.ru/maps/-/CPAObFmg', '_blank')">
-        <img src="assets/img/fantasy-map.jpg" alt="Карта" style="width: 100%; height: auto; display: block;" loading="lazy">
-        <div style="position: absolute; bottom: 20px; left: 0; width: 100%; text-align: center; pointer-events: none;">
-          <span style="background: rgba(42, 75, 60, 0.8); color: var(--wood-warm); padding: 8px 16px; border-radius: 20px; font-size: 0.9rem;">
-            <i class="fas fa-external-link-alt"></i> Открыть карту
-          </span>
-        </div>
-      </div>
-    </section>
+        <section class="map-destination" id="map-target">
+          <h2 style="margin-bottom: 30px;">Цель достигнута</h2>
+          <div class="map-container fade-in" style="position: relative; cursor: pointer;" onclick="window.open('https://yandex.ru/maps/-/CPAObFmg', '_blank')">
+            <img src="assets/img/fantasy-map.jpg" alt="Карта" style="width: 100%; height: auto; display: block;" loading="lazy">
+            <div style="position: absolute; bottom: 20px; left: 0; width: 100%; text-align: center; pointer-events: none;">
+              <span style="background: rgba(70, 30, 32, 0.8); color: var(--wood-warm); padding: 8px 16px; border-radius: 20px; font-size: 0.9rem;">
+                <i class="fas fa-external-link-alt"></i> Открыть карту
+              </span>
+            </div>
+          </div>
+        </section>
 
-    <section class="rsvp-section fade-in">
-      <h2>Дай добро</h2>
-      <div class="rsvp-buttons">
-        <a href="mailto:anna.maxim@mail.ru" class="btn"><i class="fas fa-check-circle"></i> Уже еду!</a>
-      </div>
-    </section>
+        <section class="rsvp-section fade-in">
+          <h2>Дай добро</h2>
+          <div class="rsvp-buttons">
+            <a href="mailto:anna.maxim@mail.ru" class="btn"><i class="fas fa-check-circle"></i> Уже еду!</a>
+          </div>
+        </section>
 
-    <footer>
+      </div> </div> <footer>
       <img src="assets/img/yggdrasil-lg.png" class="footer-logo" alt="Древо Жизни">
       <div class="couple-names">Ашипка & Молекула</div>
       <p style="font-size: 0.9rem; opacity: 0.7;">© 2026 Wedding Day | Adventure Edition</p>
