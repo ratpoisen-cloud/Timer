@@ -3,69 +3,50 @@ const music = document.getElementById('bg-music');
 const soundControl = document.getElementById('sound-control');
 const soundIcon = document.getElementById('sound-icon');
 const knight = document.getElementById('knight');
-const mapTarget = document.getElementById('map-target');
-const startMarker = document.getElementById('start-marker'); // ФОТО ПАРЫ
 const entryPage = document.getElementById('entry-page');
 const mainPage = document.getElementById('main-page');
+const pathContainer = document.querySelector('.adventure-path-container');
 
-// ===== ЛОГИКА РЫЦАРЯ =====
+// ===== ЛОГИКА РЫЦАРЯ (ВЕРТИКАЛЬНЫЙ СПУСК) =====
 function updateKnightPosition() {
-    if (mainPage.style.display === 'none') return; 
+    if (mainPage.style.display === 'none' || !pathContainer) return; 
 
-    const scrollY = window.scrollY;
+    // Размеры и позиция контейнера
+    const containerRect = pathContainer.getBoundingClientRect();
+    const containerTop = containerRect.top; // Расстояние от верха окна до начала контейнера
+    const containerHeight = containerRect.height;
     const windowHeight = window.innerHeight;
-    
-    // Получаем позицию, где заканчивается фото пары
-    // startY = отступ фото от верха страницы + высота фото
-    // Рыцарь начнет движение, когда это место будет где-то в середине экрана
-    let startY = 0;
-    if (startMarker) {
-        const rect = startMarker.getBoundingClientRect();
-        const absoluteTop = rect.top + window.scrollY;
-        startY = absoluteTop + rect.height; // Координата низа фото
-    } else {
-        startY = windowHeight; // Фолбэк, если фото не найдено
-    }
 
-    const endY = mapTarget.offsetTop; // Финиш у карты
+    // Вычисляем, насколько мы прокрутили контейнер
+    // Мы хотим, чтобы рыцарь начал движение, когда контейнер появился на экране
+    // И дошел до низа, когда мы доскроллили до конца контейнера
     
-    // Прогресс скролла (рыцарь начинает путь от startY до endY)
-    // Добавляем windowHeight/2, чтобы он начинал движение, когда мы доскроллили до места
-    let progress = (scrollY + windowHeight*0.6 - startY) / (endY - startY);
+    // offset - насколько пикселей верх контейнера ушел вверх за границу экрана
+    // Добавляем отступ (например, рыцарь всегда на 200px ниже верха экрана, если мы внутри блока)
     
-    if (progress < 0) progress = 0;
-    if (progress > 1) progress = 1;
+    // Простая логика:
+    // Рыцарь должен быть привязан к скроллу.
+    // Если начало контейнера выше середины экрана, рыцарь начинает спускаться.
+    
+    // Вычисляем прогресс прокрутки контейнера (0 = начало, 1 = конец)
+    // startPoint: когда верх контейнера касается середины экрана
+    const startPoint = windowHeight / 2;
+    // distance: сколько мы проехали внутри контейнера
+    let scrollDist = startPoint - containerTop; 
+    
+    // Ограничиваем рыцаря границами контейнера
+    if (scrollDist < 0) scrollDist = 0;
+    if (scrollDist > containerHeight - 60) scrollDist = containerHeight - 60; // 60 - высота рыцаря
 
-    let xOffset = 0;
+    // Применяем позицию (relative к path-container, так как position: absolute у рыцаря)
+    // Но подождите, рыцарь внутри sticky-контейнера? Нет, он просто absolute внутри path-container.
     
-    // Показываем рыцаря только если мы прошли фото
-    if (scrollY > startY - windowHeight * 0.8 && scrollY < endY + windowHeight) {
-        // Амплитуда зигзага
-        const amplitude = window.innerWidth < 768 ? 35 : 40; 
-        
-        // Зигзаг
-        xOffset = Math.sin(progress * Math.PI * 5) * amplitude;
-        
-        // Поворот
-        const direction = Math.cos(progress * Math.PI * 5);
-        if (direction > 0) {
-            knight.style.transform = `translate(-50%, -50%) scaleX(1)`;
-        } else {
-            knight.style.transform = `translate(-50%, -50%) scaleX(-1)`;
-        }
-        
-        knight.style.opacity = '1';
-    } else {
-        knight.style.opacity = '0';
-    }
-
-    // Применяем
-    knight.style.left = `calc(50% + ${xOffset}vw)`;
+    knight.style.top = `${scrollDist}px`;
 }
 
 window.addEventListener('scroll', updateKnightPosition);
 
-// ===== ОСТАЛЬНОЙ ФУНКЦИОНАЛ =====
+// ===== ОБЩИЕ ФУНКЦИИ =====
 window.toggleMusic = function() {
   if (music.paused) {
     music.play();
@@ -82,7 +63,7 @@ window.toggleFaq = function(element) {
   if (!isActive) element.classList.add('active');
 }
 
-// КУРСОР И ЛИСТЬЯ
+// КУРСОР
 const cursor = document.getElementById('custom-cursor');
 const entryCursor = document.getElementById('entry-cursor');
 let lastLeafTime = 0;
@@ -90,23 +71,10 @@ let lastLeafTime = 0;
 document.addEventListener('mousemove', (e) => {
     const x = e.clientX + 'px';
     const y = e.clientY + 'px';
-    
     if (cursor) { cursor.style.left = x; cursor.style.top = y; }
     if (entryCursor) { entryCursor.style.left = x; entryCursor.style.top = y; }
     
-    const treeBtn = document.getElementById('entry-tree-btn');
-    if (treeBtn && entryCursor) {
-        const rect = treeBtn.getBoundingClientRect();
-        const isHovering = (e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom);
-        if(isHovering) {
-             entryCursor.style.transform = 'scale(1.5)';
-             entryCursor.style.color = '#ffd700';
-        } else {
-             entryCursor.style.transform = 'scale(1)';
-             entryCursor.style.color = '#C9A25B';
-        }
-    }
-
+    // Листья
     if (Date.now() - lastLeafTime > 100) {
         createLeaf(e.pageX, e.pageY);
         lastLeafTime = Date.now();
@@ -127,7 +95,7 @@ function createLeaf(x, y) {
     setTimeout(() => leaf.remove(), 1500);
 }
 
-// ЗАГРУЗКА И ВХОД
+// ВХОД
 document.addEventListener('DOMContentLoaded', () => {
     const entryOverlay = document.getElementById('entry-overlay-transition');
     const treeBtn = document.getElementById('entry-tree-btn');
