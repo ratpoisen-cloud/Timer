@@ -140,13 +140,14 @@ body.hovering #custom-cursor, body.hovering #entry-cursor {
   pointer-events: none;
 }
 
-/* 3. УГЛОВЫЕ ВЕНЗЕЛЯ (ЗОЛОТЫЕ) */
+/* УГЛОВЫЕ ВЕНЗЕЛЯ */
 .corner-decor {
   position: absolute; width: 200px; height: 200px; 
   background-image: url('../assets/img/corner.png'); 
   background-size: contain; background-repeat: no-repeat;
   pointer-events: none; z-index: 3;
-  /* Превращаем в спокойное золото */
+  
+  /* Фильтр для цвета #C9A25B */
   filter: invert(83%) sepia(23%) saturate(1142%) hue-rotate(359deg) brightness(89%) contrast(92%);
   opacity: 0.8; 
 }
@@ -156,21 +157,22 @@ body.hovering #custom-cursor, body.hovering #entry-cursor {
 .corner-decor.bottom-right { bottom: 0; right: 0; transform: scale(-1); }
 
 
-/* 4. ДЕРЕВО-КНОПКА */
+/* ДЕРЕВО-КНОПКА */
 .entry-tree-btn {
-  position: absolute;
-  top: 40%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 55vmin; height: 55vmin;
-  background-image: url('../assets/img/yggdrasil-lg.png');
-  background-size: contain; background-repeat: no-repeat; background-position: center;
-  z-index: 10;
-  cursor: pointer;
-  transition: all 0.8s ease;
+  position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); 
+  width: 55vmin; height: 55vmin; 
+  background: url('../assets/img/yggdrasil-lg.png') center/contain no-repeat; 
+  z-index: 10; cursor: pointer; transition: 0.8s;
   
-  /* Изначально: Спокойный бежевый */
+  /* Фильтр для цвета #C9A25B */
   filter: invert(83%) sepia(23%) saturate(1142%) hue-rotate(359deg) brightness(89%) contrast(92%);
   opacity: 0.9;
+}
+
+/* При наведении делаем чуть ярче + золотое свечение */
+.entry-tree-btn:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+  filter: invert(83%) sepia(23%) saturate(1142%) hue-rotate(359deg) brightness(110%) contrast(92%) drop-shadow(0 0 25px #C9A25B);
 }
 
 /* ПРИ НАВЕДЕНИИ: ЗОЛОТОЕ СВЕЧЕНИЕ (БЕЗ РАДУГИ) */
@@ -440,19 +442,19 @@ section { padding: 90px 20px; max-width: 1100px; margin: 0 auto; position: relat
 
 footer { text-align: center; padding: 100px 20px; background: var(--text-dark); color: var(--forest-sage); border-top: 2px solid var(--wood-warm); margin-top: 50px; }
 
-/* ЛОГОТИП В ПОДВАЛЕ */
+/* ЛОГОТИП В ФУТЕРЕ */
 .footer-logo {
-  width: 100px; height: auto; margin-bottom: 20px;
+  width: 100px; margin-bottom: 20px;
+  opacity: 0.8; transition: 0.5s;
+  
+  /* Фильтр для цвета #C9A25B */
   filter: invert(83%) sepia(23%) saturate(1142%) hue-rotate(359deg) brightness(89%) contrast(92%);
-  opacity: 0.8; transition: transform 0.5s ease;
 }
-.footer-logo:hover { transform: scale(1.1) rotate(5deg); opacity: 1; }
 
-#sound-control { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: var(--wood-warm); border-radius: 50%; color: var(--forest-deep); display: flex; align-items: center; justify-content: center; z-index: 100; opacity: 0; transition: opacity 0.5s ease; border: 2px solid var(--cream-paper); }
-
-.fade-in { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
-.fade-in.visible { opacity: 1; transform: translateY(0); }
-
+.footer-logo:hover { 
+  transform: scale(1.1) rotate(5deg); 
+  opacity: 1; 
+}
 /* --- АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ --- */
 @media (max-width: 768px) {
   h2 { font-size: 2.2rem; margin-top: 20px; margin-bottom: 20px; }
