@@ -4,6 +4,7 @@ const soundControl = document.getElementById('sound-control');
 const soundIcon = document.getElementById('sound-icon');
 const knight = document.getElementById('knight');
 const mapTarget = document.getElementById('map-target');
+const startMarker = document.getElementById('start-marker'); // ФОТО ПАРЫ
 const entryPage = document.getElementById('entry-page');
 const mainPage = document.getElementById('main-page');
 
@@ -14,26 +15,38 @@ function updateKnightPosition() {
     const scrollY = window.scrollY;
     const windowHeight = window.innerHeight;
     
-    // Зоны движения
-    const startY = windowHeight; // Рыцарь стартует после шапки
-    const endY = mapTarget.offsetTop; // Финиширует у карты
+    // Получаем позицию, где заканчивается фото пары
+    // startY = отступ фото от верха страницы + высота фото
+    // Рыцарь начнет движение, когда это место будет где-то в середине экрана
+    let startY = 0;
+    if (startMarker) {
+        const rect = startMarker.getBoundingClientRect();
+        const absoluteTop = rect.top + window.scrollY;
+        startY = absoluteTop + rect.height; // Координата низа фото
+    } else {
+        startY = windowHeight; // Фолбэк, если фото не найдено
+    }
+
+    const endY = mapTarget.offsetTop; // Финиш у карты
     
-    // Прогресс (от 0 до 1)
-    let progress = (scrollY + windowHeight/2 - startY) / (endY - startY);
+    // Прогресс скролла (рыцарь начинает путь от startY до endY)
+    // Добавляем windowHeight/2, чтобы он начинал движение, когда мы доскроллили до места
+    let progress = (scrollY + windowHeight*0.6 - startY) / (endY - startY);
+    
     if (progress < 0) progress = 0;
     if (progress > 1) progress = 1;
 
     let xOffset = 0;
     
-    // Если мы на пути к карте
-    if (scrollY > startY - windowHeight && scrollY < endY) {
+    // Показываем рыцаря только если мы прошли фото
+    if (scrollY > startY - windowHeight * 0.8 && scrollY < endY + windowHeight) {
         // Амплитуда зигзага
         const amplitude = window.innerWidth < 768 ? 35 : 40; 
         
-        // Формула зигзага (синусоида)
+        // Зигзаг
         xOffset = Math.sin(progress * Math.PI * 5) * amplitude;
         
-        // Поворот рыцаря в сторону движения
+        // Поворот
         const direction = Math.cos(progress * Math.PI * 5);
         if (direction > 0) {
             knight.style.transform = `translate(-50%, -50%) scaleX(1)`;
@@ -43,16 +56,16 @@ function updateKnightPosition() {
         
         knight.style.opacity = '1';
     } else {
-        knight.style.opacity = '0'; // Прячем рыцаря вне пути
+        knight.style.opacity = '0';
     }
 
-    // Применяем координаты
+    // Применяем
     knight.style.left = `calc(50% + ${xOffset}vw)`;
 }
 
 window.addEventListener('scroll', updateKnightPosition);
 
-// ===== ОБЩИЕ ФУНКЦИИ =====
+// ===== ОСТАЛЬНОЙ ФУНКЦИОНАЛ =====
 window.toggleMusic = function() {
   if (music.paused) {
     music.play();
@@ -69,6 +82,52 @@ window.toggleFaq = function(element) {
   if (!isActive) element.classList.add('active');
 }
 
+// КУРСОР И ЛИСТЬЯ
+const cursor = document.getElementById('custom-cursor');
+const entryCursor = document.getElementById('entry-cursor');
+let lastLeafTime = 0;
+
+document.addEventListener('mousemove', (e) => {
+    const x = e.clientX + 'px';
+    const y = e.clientY + 'px';
+    
+    if (cursor) { cursor.style.left = x; cursor.style.top = y; }
+    if (entryCursor) { entryCursor.style.left = x; entryCursor.style.top = y; }
+    
+    const treeBtn = document.getElementById('entry-tree-btn');
+    if (treeBtn && entryCursor) {
+        const rect = treeBtn.getBoundingClientRect();
+        const isHovering = (e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom);
+        if(isHovering) {
+             entryCursor.style.transform = 'scale(1.5)';
+             entryCursor.style.color = '#ffd700';
+        } else {
+             entryCursor.style.transform = 'scale(1)';
+             entryCursor.style.color = '#C9A25B';
+        }
+    }
+
+    if (Date.now() - lastLeafTime > 100) {
+        createLeaf(e.pageX, e.pageY);
+        lastLeafTime = Date.now();
+    }
+});
+
+function createLeaf(x, y) {
+    const leaf = document.createElement('i');
+    leaf.classList.add('fas', 'fa-leaf', 'cursor-leaf');
+    const colors = ['#2A4B3C', '#8FAB93', '#C9A25B', '#e6c889'];
+    leaf.style.color = colors[Math.floor(Math.random() * colors.length)];
+    leaf.style.left = x + 'px';
+    leaf.style.top = y + 'px';
+    leaf.style.setProperty('--tx', (Math.random() * 100 - 50) + 'px');
+    leaf.style.setProperty('--ty', (Math.random() * 100 + 50) + 'px');
+    leaf.style.setProperty('--r', (Math.random() * 360) + 'deg');
+    document.body.appendChild(leaf);
+    setTimeout(() => leaf.remove(), 1500);
+}
+
+// ЗАГРУЗКА И ВХОД
 document.addEventListener('DOMContentLoaded', () => {
     const entryOverlay = document.getElementById('entry-overlay-transition');
     const treeBtn = document.getElementById('entry-tree-btn');
@@ -93,7 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 800);
     }
     
-    // Светлячки
     function initFireflies() {
         const container = document.getElementById('fireflies-container');
         if(!container) return;
@@ -107,15 +165,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // Таймер
     const weddingDate = new Date('2026-08-02T15:00:00');
     function updateCountdown() {
         const diff = weddingDate - new Date();
         if (diff <= 0) return;
-        document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
-        document.getElementById('hours').innerText = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        document.getElementById('minutes').innerText = Math.floor((diff / (1000 * 60)) % 60);
-        document.getElementById('seconds').innerText = Math.floor((diff / 1000) % 60);
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const m = Math.floor((diff / (1000 * 60)) % 60);
+        const s = Math.floor((diff / 1000) % 60);
+        
+        const setVal = (id, val) => {
+            const el = document.getElementById(id);
+            if(el) el.innerText = val < 10 ? '0'+val : val;
+        };
+        setVal('days', d); setVal('hours', h); setVal('minutes', m); setVal('seconds', s);
     }
     setInterval(updateCountdown, 1000);
     updateCountdown();
