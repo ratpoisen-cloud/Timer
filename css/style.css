@@ -485,40 +485,54 @@ footer { text-align: center; padding: 100px 20px; background: var(--text-dark); 
 }
 /* === КВЕСТ: РЫЦАРЬ И ЛИНИЯ === */
 .quest-layer {
-  position: fixed; /* Зафиксирован на экране, не прокручивается */
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  pointer-events: none; /* Пропускает клики сквозь себя */
-  z-index: 50; /* Поверх фона, но под меню/кнопками */
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 50;
 }
 
-/* Пунктирная линия маршрута */
+/* Линия маршрута */
 .quest-line {
-  position: absolute;
-  top: 0; bottom: 0;
-  left: 30px; /* Отступ от левого края (можно менять) */
+  position: absolute; top: 0; bottom: 0;
+  left: 30px; /* Отступ на ПК */
   width: 2px;
-  border-left: 2px dashed rgba(201, 162, 91, 0.4); /* Полупрозрачное золото */
+  border-left: 2px dashed rgba(201, 162, 91, 0.4);
 }
 
 /* Сам Рыцарь */
 #knight {
   position: absolute;
-  left: 10px; /* Центрируем относительно линии (30px линия - 20px половина рыцаря) */
-  top: 10%;   /* Начальная позиция */
+  left: 10px; /* 30px (линия) - 20px (половина ширины рыцаря) = 10px */
+  top: 10%;
   width: 45px; height: 45px;
-  font-size: 30px; 
+  font-size: 24px; 
   color: var(--wood-warm);
   background: var(--forest-deep);
   border: 2px solid var(--wood-warm);
   border-radius: 50%;
   display: flex; justify-content: center; align-items: center;
   box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-  transition: top 0.1s linear; /* Плавность движения */
+  transition: top 0.1s linear; /* Плавное перемещение */
+  z-index: 2;
 }
 
-/* На мобильных линию можно сделать тоньше или сдвинуть */
+/* АНИМАЦИЯ СКАЧКИ */
+@keyframes gallop {
+  0% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-3px) rotate(-5deg); }
+  50% { transform: translateY(0) rotate(0deg); }
+  75% { transform: translateY(-2px) rotate(5deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+/* Этот класс добавляет JS, когда мы скроллим */
+.galloping i, .galloping img {
+  animation: gallop 0.3s infinite ease-in-out;
+}
+
+/* АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ (Исправлено) */
 @media (max-width: 768px) {
-  .quest-line { left: 15px; border-width: 1px; }
-  #knight { left: -5px; width: 40px; height: 40px; font-size: 20px; }
+  /* Сдвигаем линию правее (было 15px, стало 25px) */
+  .quest-line { left: 25px; border-width: 1px; }
+  
+  /* Сдвигаем рыцаря (25px - 20px = 5px), теперь он не уходит за экран */
+  #knight { left: 5px; width: 40px; height: 40px; font-size: 18px; }
 }
