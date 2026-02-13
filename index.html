@@ -51,8 +51,10 @@
   </div>
 
   <div id="main-page" style="display: none;">
+    
     <div id="custom-cursor"><i class="fas fa-leaf"></i></div>
     <div id="fireflies-container"></div>
+
     <div id="sound-control" onclick="toggleMusic()">
       <i class="fas fa-volume-up" id="sound-icon"></i>
     </div>
@@ -75,7 +77,7 @@
           <i class="fas fa-map-marker-alt" style="color: var(--wood-warm); margin-right: 8px; filter: drop-shadow(0 0 5px var(--gold-glow));"></i>
           Крым, Ялта. Там, где лес встречает море.
         </p>
-        <div class="couple-photo-container">
+        <div class="couple-photo-container" id="start-marker">
           <img src="assets/img/wedding-photo.jpg" alt="Фото пары" class="couple-photo" loading="lazy">
         </div>
       </div>
@@ -97,11 +99,10 @@
         </div>
       </section>
 
-      <section class="step-block step-right parallax-section bg-forest">
-        <div class="overlay-dark"></div>
-        <div class="parallax-inner">
-          <h2 style="color: #f7f4e8; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">Детали события</h2>
-          <div class="details-container fade-in" style="background: rgba(255, 255, 255, 0.1); border-color: rgba(255,255,255,0.3); backdrop-filter: blur(5px);">
+      <section class="step-block step-right">
+        <div class="forest-card fade-in">
+          <h2 style="color: #f7f4e8; text-shadow: 0 2px 10px rgba(0,0,0,0.5); margin-top: 0;">Детали события</h2>
+          <div class="details-container" style="background: rgba(255, 255, 255, 0.1); border-color: rgba(255,255,255,0.3); backdrop-filter: blur(5px);">
               <div class="details">
                 <div class="card">
                     <i class="fas fa-clock" style="color: #f7f4e8;"></i>
