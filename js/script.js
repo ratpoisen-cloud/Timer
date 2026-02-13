@@ -1,5 +1,7 @@
 // ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ =====
 const music = document.getElementById('bg-music');
+const soundControl = document.getElementById('sound-control');
+const soundIcon = document.getElementById('sound-icon');
 const knight = document.getElementById('knight');
 const mapTarget = document.getElementById('map-target');
 const entryPage = document.getElementById('entry-page');
@@ -7,77 +9,57 @@ const mainPage = document.getElementById('main-page');
 
 // ===== ЛОГИКА РЫЦАРЯ =====
 function updateKnightPosition() {
-    if (mainPage.style.display === 'none') return; // Не двигаем, пока не вошли
+    if (mainPage.style.display === 'none') return; 
 
     const scrollY = window.scrollY;
     const windowHeight = window.innerHeight;
     
-    // Начало пути (после хедера)
-    const startY = windowHeight; 
-    // Конец пути (карта)
-    const endY = mapTarget.offsetTop;
+    // Зоны движения
+    const startY = windowHeight; // Рыцарь стартует после шапки
+    const endY = mapTarget.offsetTop; // Финиширует у карты
     
-    // Прогресс скролла от 0 до 1 между хедером и картой
+    // Прогресс (от 0 до 1)
     let progress = (scrollY + windowHeight/2 - startY) / (endY - startY);
-    
-    // Ограничиваем прогресс
     if (progress < 0) progress = 0;
     if (progress > 1) progress = 1;
 
-    // 1. Движение по вертикали (Y)
-    // Рыцарь всегда по центру экрана (50vh), но если мы дошли до карты, он "паркуется" там
-    // Для простоты: пусть он будет фиксирован по центру экрана, пока мы не доскроллим до конца
-    
-    // 2. Движение по горизонтали (X) - ЗИГЗАГ (Синусоида)
-    // Math.sin создает волну. Умножаем progress на Math.PI * 4 (2 полных волны)
-    // 40vw - амплитуда отклонения (насколько сильно влево/вправо)
-    
     let xOffset = 0;
     
-    // Включаем зигзаг только если мы в зоне "пути"
+    // Если мы на пути к карте
     if (scrollY > startY - windowHeight && scrollY < endY) {
-        // На мобильных амплитуда меньше (35vw), на пк больше (40vw)
+        // Амплитуда зигзага
         const amplitude = window.innerWidth < 768 ? 35 : 40; 
         
-        // Синусоида: progress * PI * кол-во витков
+        // Формула зигзага (синусоида)
         xOffset = Math.sin(progress * Math.PI * 5) * amplitude;
         
         // Поворот рыцаря в сторону движения
-        // Если производная синуса положительная -> едет вправо, иначе влево
         const direction = Math.cos(progress * Math.PI * 5);
         if (direction > 0) {
-            knight.style.transform = `translate(-50%, -50%) scaleX(1)`; // Вправо
+            knight.style.transform = `translate(-50%, -50%) scaleX(1)`;
         } else {
-            knight.style.transform = `translate(-50%, -50%) scaleX(-1)`; // Влево (зеркально)
+            knight.style.transform = `translate(-50%, -50%) scaleX(-1)`;
         }
+        
+        knight.style.opacity = '1';
     } else {
-        // Если мы не на пути (в хедере или внизу), рыцарь по центру
-        xOffset = 0;
+        knight.style.opacity = '0'; // Прячем рыцаря вне пути
     }
 
-    // Применяем позицию
+    // Применяем координаты
     knight.style.left = `calc(50% + ${xOffset}vw)`;
-    
-    // Скрываем рыцаря в самом верху (на хедере) и в самом низу
-    if (scrollY < windowHeight * 0.5) {
-        knight.style.opacity = '0';
-    } else {
-        knight.style.opacity = '1';
-    }
 }
 
 window.addEventListener('scroll', updateKnightPosition);
 
-
-// ===== ОСТАЛЬНОЙ КОД (ВХОД, МУЗЫКА) =====
+// ===== ОБЩИЕ ФУНКЦИИ =====
 window.toggleMusic = function() {
-  const icon = document.getElementById('sound-icon');
   if (music.paused) {
     music.play();
-    icon.className = 'fas fa-volume-up';
+    soundIcon.className = 'fas fa-volume-up';
   } else {
     music.pause();
-    icon.className = 'fas fa-volume-mute';
+    soundIcon.className = 'fas fa-volume-mute';
   }
 }
 
@@ -106,14 +88,12 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             entryPage.style.display = 'none';
             mainPage.style.display = 'block';
-            document.getElementById('sound-control').style.opacity = '1';
-            
-            // Инициализация светлячков на главной
+            if(soundControl) soundControl.style.opacity = '1';
             initFireflies();
         }, 800);
     }
     
-    // Светлячки (общая функция)
+    // Светлячки
     function initFireflies() {
         const container = document.getElementById('fireflies-container');
         if(!container) return;
