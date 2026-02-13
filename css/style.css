@@ -1,32 +1,46 @@
-/* --- ПАЛИТРА И ШРИФТЫ (ОСТАВЛЯЕМ БОРДО) --- */
+/* --- ПОДКЛЮЧЕНИЕ СВОИХ ШРИФТОВ --- */
 @font-face { font-family: 'MyHeaderFont'; src: url('../assets/fonts/header-font.woff2') format('woff2'); font-display: swap; }
 @font-face { font-family: 'MyBodyFont'; src: url('../assets/fonts/body-font.woff2') format('woff2'); font-display: swap; }
 
 :root {
-  --forest-deep: #461E20; --forest-sage: #BFA588; --wood-warm: #C9A25B; --gold-glow: #e6c889;
-  --cream-paper: #F7F4E8; --text-dark: #2E1214;
-  --shadow-soft: 0 10px 30px rgba(70, 30, 32, 0.15);
+  /* --- ПАЛИТРА: ЛЕСНОЙ ЗЕЛЕНЫЙ + ЗОЛОТО --- */
+  --forest-deep: #2A4B3C;
+  --forest-sage: #8FAB93;
+  --wood-warm: #C9A25B;    
+  --gold-glow: #e6c889;
+  --cream-paper: #F7F4E8;
+  --text-dark: #1A2F25;
+  
+  --shadow-soft: 0 10px 30px rgba(42, 75, 60, 0.15);
   --magic-glow: 0 0 15px rgba(201, 162, 91, 0.3), 0 5px 20px rgba(0,0,0,0.1);
   --transition: all 0.5s ease;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'MyBodyFont', sans-serif; background-color: var(--cream-paper); color: var(--text-dark); overflow-x: hidden; }
-h1, h2, h3, .btn { font-family: 'MyHeaderFont', serif; font-weight: 700; }
+body, a, button, .btn { cursor: none !important; }
+
+body {
+  font-family: 'MyBodyFont', sans-serif;
+  background-color: var(--cream-paper);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.07'/%3E%3C/svg%3E");
+  color: var(--text-dark);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, .btn, .countdown span { font-family: 'MyHeaderFont', serif; font-weight: 700; }
+h2 { font-size: 3.5rem; text-align: center; color: var(--forest-deep); margin: 40px 0; }
 
 /* === РЫЦАРЬ === */
 #knight {
-  position: fixed; /* Всегда в окне */
-  top: 50vh; /* По вертикали будет двигать JS, но база - центр */
-  left: 50%; /* По горизонтали будет двигать JS */
+  position: fixed;
+  top: 50vh; left: 50%;
   width: 80px; height: 80px;
   transform: translate(-50%, -50%);
-  z-index: 9999; /* Поверх всего */
-  pointer-events: none; /* Чтобы сквозь него можно было кликать */
-  font-size: 60px; color: var(--forest-deep); /* Если это иконка */
-  transition: transform 0.1s linear; /* Плавность движения */
-  
-  /* Если будет картинка, стили для img внутри */
+  z-index: 9999;
+  pointer-events: none;
+  font-size: 60px; color: var(--forest-deep); /* Цвет рыцаря - темно-зеленый */
+  transition: transform 0.1s linear;
   display: flex; justify-content: center; align-items: center;
 }
 #knight img { width: 100%; height: auto; display: block; }
@@ -38,54 +52,67 @@ h1, h2, h3, .btn { font-family: 'MyHeaderFont', serif; font-weight: 700; }
   display: flex; flex-direction: column; gap: 80px;
   position: relative;
 }
+.step-block { width: 100%; transition: 0.5s; }
 
-.step-block {
-  width: 100%; 
-  transition: transform 0.5s ease, opacity 0.5s ease;
-}
-
-/* На больших экранах делаем шахматный порядок */
+/* На ПК: Шахматный порядок */
 @media (min-width: 769px) {
-  .step-block { width: 45%; } /* Блоки занимают меньше половины */
+  .step-block { width: 45%; }
   .step-left  { margin-right: auto; text-align: left; }
   .step-right { margin-left: auto; text-align: right; }
-  
-  /* Для правой колонки выравниваем контент внутри */
   .step-right .details-container, .step-right .weather-card { margin-left: auto; }
 }
 
-/* Карта в финале по центру */
-.map-destination {
-  text-align: center; max-width: 900px; margin: 100px auto; padding: 0 20px;
-}
+.map-destination { text-align: center; max-width: 900px; margin: 100px auto; padding: 0 20px; }
 
-/* === СТРАНИЦА ВХОДА И ШАПКА (Без изменений, только цвета) === */
-#entry-page { position: fixed; width: 100%; height: 100%; background: #2E1214; z-index: 10000; display: flex; justify-content: center; align-items: center; }
-.entry-bg-pastel { position: absolute; width: 100%; height: 100%; background-color: #461E20; z-index: 1; }
-.entry-tree-btn { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); width: 55vmin; height: 55vmin; background: url('../assets/img/yggdrasil-lg.png') center/contain no-repeat; z-index: 10; cursor: pointer; filter: invert(83%) sepia(23%) saturate(1142%) hue-rotate(359deg) brightness(89%) contrast(92%); transition: 0.8s; }
+/* === СТРАНИЦА ВХОДА (ЗЕЛЕНАЯ #3E5F50) === */
+#entry-page { position: fixed; width: 100%; height: 100%; background: #0c1a12; z-index: 10000; display: flex; justify-content: center; align-items: center; }
+.entry-bg-pastel { position: absolute; width: 100%; height: 100%; background-color: #3E5F50; z-index: 1; }
+.entry-bg-texture { position: absolute; width: 100%; height: 100%; opacity: 0.3; pointer-events: none; z-index: 2; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E"); }
+
+.entry-tree-btn { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); width: 55vmin; height: 55vmin; background: url('../assets/img/yggdrasil-lg.png') center/contain no-repeat; z-index: 10; cursor: pointer; filter: invert(83%) sepia(23%) saturate(1142%) hue-rotate(359deg) brightness(89%) contrast(92%); opacity: 0.9; transition: 0.8s; }
 .entry-tree-btn:hover { filter: invert(83%) sepia(23%) saturate(1142%) hue-rotate(359deg) brightness(110%) contrast(92%) drop-shadow(0 0 25px #ffd700); transform: translate(-50%, -50%) scale(1.05); }
+
 .entry-text-container { position: absolute; bottom: 15%; width: 100%; text-align: center; z-index: 10; pointer-events: none; }
-.entry-title { font-size: 3.2rem; color: #e6c889; }
-.entry-subtitle { font-family: 'MyBodyFont', sans-serif; font-size: 1.2rem; color: #F7F4E8; }
+.entry-title { font-size: 3.2rem; color: #e6c889; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+.entry-subtitle { font-family: 'MyBodyFont', sans-serif; font-size: 1.2rem; color: #F7F4E8; opacity: 0.8; }
+
 .corner-decor { position: absolute; width: 200px; height: 200px; background: url('../assets/img/corner.png') center/contain no-repeat; z-index: 3; filter: invert(83%) sepia(23%) saturate(1142%) hue-rotate(359deg) brightness(89%) contrast(92%); opacity: 0.8; }
 .corner-decor.top-left { top:0; left:0; } .corner-decor.top-right { top:0; right:0; transform: scaleX(-1); } .corner-decor.bottom-left { bottom:0; left:0; transform: scaleY(-1); } .corner-decor.bottom-right { bottom:0; right:0; transform: scale(-1); }
 
-header { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(rgba(70, 30, 32, 0.5), rgba(70, 30, 32, 0.4)), url('../assets/img/view.jpg') center/cover no-repeat fixed; }
+/* === ОСНОВНОЙ КОНТЕНТ === */
+header { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(rgba(42, 75, 60, 0.5), rgba(42, 75, 60, 0.4)), url('../assets/img/view.jpg') center/cover no-repeat fixed; }
 .hero { background: rgba(247, 244, 232, 0.92); padding: 70px 40px; border-radius: 16px; border: 2px solid var(--wood-warm); max-width: 700px; backdrop-filter: blur(8px); }
 
-/* Остальные стили для кнопок, погоды и т.д. остаются стандартными из прошлой версии */
+.countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 40px auto; max-width: 600px; }
+.countdown div { border: 2px solid rgba(201, 162, 91, 0.3); border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.9), rgba(247, 244, 232, 0.4)); box-shadow: 0 0 15px rgba(201, 162, 91, 0.15); aspect-ratio: 1; display: flex; flex-direction: column; justify-content: center; }
+.countdown span { font-size: 2rem; color: var(--wood-warm); }
+
+/* Параллакс (Зеленый лес) */
+.parallax-section { max-width: none !important; width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; background-attachment: fixed; background-position: center; background-size: cover; padding: 100px 0; }
+.bg-forest { background-image: url('../assets/img/forest-bg.jpg'); }
+.parallax-inner { max-width: 1100px; margin: 0 auto; padding: 0 20px; z-index: 2; position: relative; }
+.overlay-dark { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); z-index: 1; }
+
+.details-container { background: rgba(143, 171, 147, 0.1); border-radius: 20px; padding: 60px 30px; border: 3px double var(--forest-sage); }
+.details { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; }
+.card { text-align: center; } .card i { font-size: 3rem; color: var(--wood-warm); margin-bottom: 20px; }
+
+/* Погода */
 .weather-card { background: linear-gradient(to bottom right, #fffef8, #fdf8e4); border: 3px solid var(--wood-warm); padding: 40px; border-radius: 24px; text-align: center; }
-.weather-icon-sun { font-size: 4.5rem; color: #e6c889; }
+.weather-icon-sun { font-size: 4.5rem; color: var(--gold-glow); filter: drop-shadow(0 0 15px var(--gold-glow)); animation: spin 25s linear infinite; }
+
+/* FAQ */
+.faq-item { background: #fff; margin-bottom: 15px; border-radius: 8px; border: 1px solid var(--forest-sage); overflow: hidden; }
+.faq-question { padding: 20px; cursor: pointer; display: flex; justify-content: space-between; font-size: 1.4rem; color: var(--forest-deep); background: rgba(143, 171, 147, 0.1); }
+.faq-answer { max-height: 0; overflow: hidden; transition: 0.5s; background: #fffcf5; } .active .faq-answer { max-height: 800px; }
+.faq-answer p { padding: 20px; }
+
 .btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 30px; background: var(--wood-warm); color: var(--cream-paper); text-decoration: none; border-radius: 5px; font-weight: 700; transition: 0.3s; }
 .btn:hover { background: #b88f45; }
-.parallax-section { padding: 40px; border-radius: 20px; color: #fff; }
-.parallax-section h2, .parallax-section p, .parallax-section i { color: #F7F4E8 !important; }
-.bg-forest { background: url('../assets/img/forest-bg.jpg') center/cover fixed; }
 
 /* АДАПТАЦИЯ */
 @media (max-width: 768px) {
   .step-block { width: 100%; margin: 0 0 50px 0; text-align: center !important; }
-  .step-right .details-container { margin: 0 auto; }
+  .parallax-section { background-attachment: scroll; }
   #knight { width: 50px; height: 50px; font-size: 35px; }
-  h2 { font-size: 2.2rem; }
 }
