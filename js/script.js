@@ -258,3 +258,26 @@ function createLeaf(x, y) {
     document.body.appendChild(leaf);
     setTimeout(() => leaf.remove(), 1500);
 }
+// ===== ЛОГИКА РЫЦАРЯ =====
+const knight = document.getElementById('knight');
+
+function moveKnight() {
+    if (!knight) return;
+
+    // Вычисляем, сколько процентов страницы мы проскроллили
+    const scrollTop = window.scrollY;
+    const docHeight = document.body.scrollHeight - window.innerHeight;
+    const scrollPercent = scrollTop / docHeight;
+
+    // Ограничиваем движение рыцаря в пределах экрана (от 10% до 90% высоты окна)
+    // Чтобы он не улетал за пределы видимости
+    const minTop = 10; // % от верха экрана
+    const maxTop = 90; // % от верха экрана
+    
+    // Текущая позиция рыцаря
+    const currentTop = minTop + (scrollPercent * (maxTop - minTop));
+
+    knight.style.top = currentTop + '%';
+}
+
+window.addEventListener('scroll', moveKnight);
