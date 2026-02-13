@@ -258,26 +258,37 @@ function createLeaf(x, y) {
     document.body.appendChild(leaf);
     setTimeout(() => leaf.remove(), 1500);
 }
-// ===== ЛОГИКА РЫЦАРЯ =====
+// ... (ваш предыдущий код) ...
+
+// ===== ЛОГИКА РЫЦАРЯ И АНИМАЦИЯ =====
 const knight = document.getElementById('knight');
+let scrollTimeout; // Переменная для отслеживания остановки скролла
 
 function moveKnight() {
     if (!knight) return;
 
-    // Вычисляем, сколько процентов страницы мы проскроллили
+    // 1. Движение вниз (как было)
     const scrollTop = window.scrollY;
     const docHeight = document.body.scrollHeight - window.innerHeight;
     const scrollPercent = scrollTop / docHeight;
 
-    // Ограничиваем движение рыцаря в пределах экрана (от 10% до 90% высоты окна)
-    // Чтобы он не улетал за пределы видимости
-    const minTop = 10; // % от верха экрана
-    const maxTop = 90; // % от верха экрана
-    
-    // Текущая позиция рыцаря
+    const minTop = 10; 
+    const maxTop = 90; 
     const currentTop = minTop + (scrollPercent * (maxTop - minTop));
 
     knight.style.top = currentTop + '%';
+
+    // 2. Анимация скачки (Новое)
+    // Добавляем класс, чтобы иконка начала прыгать
+    knight.classList.add('galloping');
+
+    // Сбрасываем старый таймер, если скролл продолжается
+    clearTimeout(scrollTimeout);
+
+    // Устанавливаем новый таймер: если скролла нет 150мс, остановить скачку
+    scrollTimeout = setTimeout(() => {
+        knight.classList.remove('galloping');
+    }, 150);
 }
 
 window.addEventListener('scroll', moveKnight);
