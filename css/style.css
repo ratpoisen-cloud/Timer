@@ -1,14 +1,14 @@
-/* --- ПОДКЛЮЧЕНИЕ СВОИХ ШРИФТОВ --- */
+/* --- ПАЛИТРА И ШРИФТЫ --- */
 @font-face { font-family: 'MyHeaderFont'; src: url('../assets/fonts/header-font.woff2') format('woff2'); font-display: swap; }
 @font-face { font-family: 'MyBodyFont'; src: url('../assets/fonts/body-font.woff2') format('woff2'); font-display: swap; }
 
 :root {
-  /* ПАЛИТРА */
-  --forest-deep: #2A4B3C;
-  --forest-sage: #8FAB93;
+  /* Зеленый лес + Золото (Как вы просили вернуть) */
+  --forest-deep: #2A4B3C; 
+  --forest-sage: #8FAB93; 
   --wood-warm: #C9A25B;    
   --gold-glow: #e6c889;
-  --cream-paper: #F7F4E8;
+  --cream-paper: #F7F4E8; 
   --text-dark: #1A2F25;
   
   --shadow-soft: 0 10px 30px rgba(42, 75, 60, 0.15);
@@ -18,7 +18,7 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ВАЖНО: Скрываем системный курсор, чтобы показать наш кастомный */
+/* КУРСОР: Скрываем системный */
 body, a, button, .btn, .map-container, .faq-question, #sound-control, input, label {
   cursor: none !important;
 }
@@ -35,113 +35,121 @@ body {
 h1, h2, h3, .btn, .countdown span { font-family: 'MyHeaderFont', serif; font-weight: 700; }
 h2 { font-size: 3.5rem; text-align: center; color: var(--forest-deep); margin: 40px 0; }
 
-/* === РЫЦАРЬ === */
-#knight {
-  position: fixed;
-  top: 50vh; left: 50%;
-  width: 80px; height: 80px;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-  pointer-events: none;
-  font-size: 60px; color: var(--forest-deep);
-  transition: transform 0.1s linear;
-  display: flex; justify-content: center; align-items: center;
-  opacity: 0; /* Скрыт по умолчанию, пока не дойдем до фото */
-}
-#knight img { width: 100%; height: auto; display: block; }
-
-/* === ЗИГЗАГ ЛЕЙАУТ (Исправленный) === */
-.zigzag-container {
-  max-width: 1200px; margin: 0 auto;
-  padding: 40px 20px;
-  display: flex; flex-direction: column; gap: 80px;
+/* === НОВАЯ КОНЦЕПЦИЯ: ПУТЬ РЫЦАРЯ === */
+.adventure-path-container {
+  max-width: 1200px;
+  margin: 0 auto;
   position: relative;
-}
-.step-block { width: 100%; transition: 0.5s; }
-
-/* На ПК: Шахматный порядок */
-@media (min-width: 769px) {
-  .step-block { width: 48%; }
-  .step-left  { margin-right: auto; text-align: left; }
-  .step-right { margin-left: auto; text-align: right; }
-  .step-right .details-container, .step-right .weather-card { margin-left: auto; }
+  display: flex;
 }
 
-/* === КАРТОЧКА С ФОНОМ ЛЕСА (Вместо поломанного параллакса) === */
+/* Пунктирная линия (карта) */
+.path-line {
+  position: absolute;
+  top: 0;
+  bottom: 50px; /* Не до самого низа */
+  left: 30px; /* Отступ слева для линии */
+  width: 2px;
+  border-left: 3px dashed var(--wood-warm);
+  opacity: 0.5;
+  z-index: 1;
+}
+
+/* Рыцарь */
+#knight {
+  position: absolute; /* Абсолютно внутри контейнера */
+  top: 0; 
+  left: -25px; /* Центрируем относительно линии (линия 30px) */
+  width: 60px; height: 60px;
+  font-size: 40px; color: var(--forest-deep);
+  background: var(--cream-paper); /* Чтобы перекрывал линию */
+  border: 2px solid var(--wood-warm);
+  border-radius: 50%;
+  display: flex; justify-content: center; align-items: center;
+  z-index: 5;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  transition: top 0.2s linear; /* Плавное движение */
+}
+/* Если используем иконку */
+#knight i { margin-left: 2px; } 
+
+/* Контент справа от линии */
+.adventure-content {
+  flex: 1;
+  padding-left: 80px; /* Отступ от линии */
+  padding-right: 20px;
+}
+
+/* Обычные секции */
+section { margin-bottom: 80px; }
+
+/* Карточка леса (вместо параллакса) */
 .forest-card {
   background-image: url('../assets/img/forest-bg.jpg');
-  background-size: cover;
-  background-position: center;
-  padding: 40px;
-  border-radius: 20px;
-  box-shadow: var(--shadow-soft);
-  position: relative;
-  overflow: hidden;
+  background-size: cover; background-position: center;
+  padding: 60px 40px; border-radius: 20px;
+  box-shadow: var(--shadow-soft); position: relative;
+  color: #F7F4E8;
 }
-/* Затемнение внутри карточки */
-.forest-card::before {
-  content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
-  background: rgba(0,0,0,0.5); z-index: 1;
-}
-.forest-card > * { position: relative; z-index: 2; } /* Контент поверх затемнения */
+.forest-card h2, .forest-card p, .forest-card i { color: #F7F4E8 !important; }
+.forest-card::before { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); z-index:1; }
+.forest-card > * { position: relative; z-index: 2; }
 
-
-/* === СТРАНИЦА ВХОДА И ЭЛЕМЕНТЫ === */
-#entry-page { position: fixed; width: 100%; height: 100%; background: #0c1a12; z-index: 10000; display: flex; justify-content: center; align-items: center; }
-.entry-bg-pastel { position: absolute; width: 100%; height: 100%; background-color: #3E5F50; z-index: 1; }
-.entry-bg-texture { position: absolute; width: 100%; height: 100%; opacity: 0.3; pointer-events: none; z-index: 2; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E"); }
-
-.entry-tree-btn { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); width: 55vmin; height: 55vmin; background: url('../assets/img/yggdrasil-lg.png') center/contain no-repeat; z-index: 10; cursor: pointer; filter: invert(83%) sepia(23%) saturate(1142%) hue-rotate(359deg) brightness(89%) contrast(92%); opacity: 0.9; transition: 0.8s; }
-.entry-tree-btn:hover { filter: invert(83%) sepia(23%) saturate(1142%) hue-rotate(359deg) brightness(110%) contrast(92%) drop-shadow(0 0 25px #ffd700); transform: translate(-50%, -50%) scale(1.05); }
-
-.entry-text-container { position: absolute; bottom: 15%; width: 100%; text-align: center; z-index: 10; pointer-events: none; }
-.entry-title { font-size: 3.2rem; color: #e6c889; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-.entry-subtitle { font-family: 'MyBodyFont', sans-serif; font-size: 1.2rem; color: #F7F4E8; opacity: 0.8; }
-
-.corner-decor { position: absolute; width: 200px; height: 200px; background: url('../assets/img/corner.png') center/contain no-repeat; z-index: 3; filter: invert(83%) sepia(23%) saturate(1142%) hue-rotate(359deg) brightness(89%) contrast(92%); opacity: 0.8; }
-.corner-decor.top-left { top:0; left:0; } .corner-decor.top-right { top:0; right:0; transform: scaleX(-1); } .corner-decor.bottom-left { bottom:0; left:0; transform: scaleY(-1); } .corner-decor.bottom-right { bottom:0; right:0; transform: scale(-1); }
-
-header { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(rgba(42, 75, 60, 0.5), rgba(42, 75, 60, 0.4)), url('../assets/img/view.jpg') center/cover no-repeat fixed; }
+/* === ЭЛЕМЕНТЫ === */
 .hero { background: rgba(247, 244, 232, 0.92); padding: 70px 40px; border-radius: 16px; border: 2px solid var(--wood-warm); max-width: 700px; backdrop-filter: blur(8px); }
+.header { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(rgba(42, 75, 60, 0.5), rgba(42, 75, 60, 0.4)), url('../assets/img/view.jpg') center/cover no-repeat fixed; }
 
-.countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 40px auto; max-width: 600px; }
-.countdown div { border: 2px solid rgba(201, 162, 91, 0.3); border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.9), rgba(247, 244, 232, 0.4)); box-shadow: 0 0 15px rgba(201, 162, 91, 0.15); aspect-ratio: 1; display: flex; flex-direction: column; justify-content: center; }
-.countdown span { font-size: 2rem; color: var(--wood-warm); }
+/* Таймер (исправленный) */
+.countdown { display: flex; justify-content: center; gap: 15px; margin: 40px auto; flex-wrap: wrap; }
+.countdown div { 
+  width: 90px; height: 90px; 
+  border: 2px solid rgba(201, 162, 91, 0.3); border-radius: 50%; 
+  background: radial-gradient(circle, rgba(255,255,255,0.9), rgba(247, 244, 232, 0.4)); 
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+}
+.countdown span { font-size: 1.8rem; color: var(--wood-warm); line-height: 1; }
+.countdown small { font-size: 0.6rem; text-transform: uppercase; margin-top: 5px; }
 
-.details-container { background: rgba(143, 171, 147, 0.1); border-radius: 20px; padding: 60px 30px; border: 3px double var(--forest-sage); }
-.details { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; }
-.card { text-align: center; } .card i { font-size: 3rem; color: var(--wood-warm); margin-bottom: 20px; }
-
+/* Погода и FAQ */
 .weather-card { background: linear-gradient(to bottom right, #fffef8, #fdf8e4); border: 3px solid var(--wood-warm); padding: 40px; border-radius: 24px; text-align: center; }
 .weather-icon-sun { font-size: 4.5rem; color: var(--gold-glow); filter: drop-shadow(0 0 15px var(--gold-glow)); animation: spin 25s linear infinite; }
-
 .faq-item { background: #fff; margin-bottom: 15px; border-radius: 8px; border: 1px solid var(--forest-sage); overflow: hidden; }
 .faq-question { padding: 20px; cursor: pointer; display: flex; justify-content: space-between; font-size: 1.4rem; color: var(--forest-deep); background: rgba(143, 171, 147, 0.1); }
 .faq-answer { max-height: 0; overflow: hidden; transition: 0.5s; background: #fffcf5; } .active .faq-answer { max-height: 800px; }
 .faq-answer p { padding: 20px; }
 
-.map-destination { text-align: center; max-width: 900px; margin: 100px auto; padding: 0 20px; }
-.map-container { border: 4px solid var(--wood-warm); border-radius: 12px; overflow: hidden; }
+/* Подвал */
+footer { text-align: center; padding: 100px 20px; background: var(--text-dark); color: var(--forest-sage); border-top: 2px solid var(--wood-warm); margin-top: 50px; }
+.footer-logo { width: 100px; margin-bottom: 20px; filter: invert(83%) sepia(23%) saturate(1142%) hue-rotate(359deg) brightness(89%) contrast(92%); opacity: 0.8; }
 
 .btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 30px; background: var(--wood-warm); color: var(--cream-paper); text-decoration: none; border-radius: 5px; font-weight: 700; transition: 0.3s; }
 .btn:hover { background: #b88f45; }
 
 /* КУРСОР */
-#custom-cursor, #entry-cursor {
-  position: fixed; top: 0; left: 0; width: 30px; height: 30px;
-  pointer-events: none; z-index: 100000;
-  color: var(--wood-warm); font-size: 24px;
-  transform: translate(-50%, -50%) rotate(-20deg);
-  transition: transform 0.15s ease, color 0.3s ease;
-  filter: drop-shadow(0 0 5px rgba(201, 162, 91, 0.6));
-  display: flex; align-items: center; justify-content: center;
-}
+#custom-cursor, #entry-cursor { position: fixed; width: 30px; height: 30px; pointer-events: none; z-index: 100000; color: var(--wood-warm); font-size: 24px; transform: translate(-50%, -50%) rotate(-20deg); transition: 0.1s; filter: drop-shadow(0 0 5px rgba(201, 162, 91, 0.6)); display: flex; align-items: center; justify-content: center; }
 
-/* АДАПТАЦИЯ */
+/* СТРАНИЦА ВХОДА */
+#entry-page { position: fixed; width: 100%; height: 100%; background: #0c1a12; z-index: 10000; display: flex; justify-content: center; align-items: center; }
+.entry-bg-pastel { position: absolute; width: 100%; height: 100%; background-color: #3E5F50; z-index: 1; }
+.entry-tree-btn { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); width: 55vmin; height: 55vmin; background: url('../assets/img/yggdrasil-lg.png') center/contain no-repeat; z-index: 10; cursor: pointer; filter: invert(83%) sepia(23%) saturate(1142%) hue-rotate(359deg) brightness(89%) contrast(92%); opacity: 0.9; transition: 0.8s; }
+.entry-tree-btn:hover { filter: invert(83%) sepia(23%) saturate(1142%) hue-rotate(359deg) brightness(110%) contrast(92%) drop-shadow(0 0 25px #ffd700); transform: translate(-50%, -50%) scale(1.05); }
+.corner-decor { position: absolute; width: 200px; height: 200px; background: url('../assets/img/corner.png') center/contain no-repeat; z-index: 3; filter: invert(83%) sepia(23%) saturate(1142%) hue-rotate(359deg) brightness(89%) contrast(92%); opacity: 0.8; }
+.corner-decor.top-left { top:0; left:0; } .corner-decor.top-right { top:0; right:0; transform: scaleX(-1); } .corner-decor.bottom-left { bottom:0; left:0; transform: scaleY(-1); } .corner-decor.bottom-right { bottom:0; right:0; transform: scale(-1); }
+.entry-text-container { position: absolute; bottom: 15%; width: 100%; text-align: center; z-index: 10; pointer-events: none; }
+.entry-title { font-size: 3.2rem; color: #e6c889; }
+.entry-subtitle { font-family: 'MyBodyFont', sans-serif; font-size: 1.2rem; color: #F7F4E8; }
+
+/* АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ */
 @media (max-width: 768px) {
-  .step-block { width: 100%; margin: 0 0 50px 0; text-align: center !important; }
-  .step-right .details-container { margin: 0 auto; }
-  #knight { width: 50px; height: 50px; font-size: 35px; }
+  /* Убираем курсор на телефоне */
   #custom-cursor, #entry-cursor { display: none !important; }
-  body, a, button { cursor: auto !important; } /* Вернуть системный курсор на мобильных */
+  body, a, button { cursor: auto !important; }
+  
+  /* Линия пути и отступы */
+  .path-line { left: 20px; }
+  #knight { left: -10px; width: 40px; height: 40px; font-size: 24px; }
+  .adventure-content { padding-left: 50px; padding-right: 15px; }
+  
+  h2 { font-size: 2.2rem; }
+  .countdown div { width: 70px; height: 70px; }
 }
