@@ -105,6 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // Светлячки на входе
 function initEntryFireflies() {
     const container = document.getElementById('entry-fireflies');
+  const glowColors = ['#F0E4C2', '#E8D9A8', '#FAF6EB'];
+firefly.style.background = glowColors[Math.floor(Math.random() * glowColors.length)];
     if (!container) return;
     for (let i = 0; i < 25; i++) {
         const f = document.createElement('div');
@@ -121,6 +123,8 @@ function initEntryFireflies() {
 function initMainScripts() {
     // 1. Светлячки (основные)
     const container = document.getElementById('fireflies-container');
+  const glowColors = ['#F0E4C2', '#E8D9A8', '#FAF6EB'];
+firefly.style.background = glowColors[Math.floor(Math.random() * glowColors.length)];
     for (let i = 0; i < 40; i++) {
         const firefly = document.createElement('div');
         firefly.classList.add('firefly');
@@ -258,3 +262,4 @@ function createLeaf(x, y) {
     document.body.appendChild(leaf);
     setTimeout(() => leaf.remove(), 1500);
 }
+
