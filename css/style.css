@@ -21,7 +21,7 @@
 /* --- ОСНОВНЫЕ СТИЛИ --- */
 
 :root {
-  /* Лесные тона — светлее и теплее */
+  /* Лесные тона — светлые, тёплые, летние */
   --forest-deep:    #2B3F35;
   --moss-green:     #5A7A68;
   --sage-light:     #A8C0B5;
@@ -46,6 +46,7 @@
   
   --transition:     all 0.4s ease;
 }
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body, a, button, .btn, .map-container, .faq-question, #sound-control, input, label {
@@ -55,7 +56,7 @@ body, a, button, .btn, .map-container, .faq-question, #sound-control, input, lab
 body {
   font-family: 'MyBodyFont', sans-serif;
   background-color: var(--cream-paper);
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.07'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
   color: var(--text-dark);
   line-height: 1.7;
   overflow-x: hidden;
@@ -69,11 +70,11 @@ h1, h2, h3, .couple-names, .entry-title, .weather-header span, .faq-question, .b
 }
 
 h2 {
-  font-size: 3.5rem; 
+  font-size: 3.5rem;
   margin-top: 40px; margin-bottom: 40px;
-  text-align: center; color: var(--forest-deep);
+  text-align: center; color: var(--moss-green);
   line-height: 1.1;
-  text-shadow: 0 0 10px rgba(42, 75, 60, 0.1);
+  text-shadow: 0 0 10px rgba(90,122,104,0.1);
 }
 
 /* --- ПАДАЮЩИЕ ЛИСТЬЯ --- */
@@ -123,25 +124,28 @@ body.hovering #custom-cursor, body.hovering #entry-cursor {
   color: var(--forest-deep); 
 }
 
-/* =========================================
-   СТРАНИЦА ВХОДА (ENTRY PAGE)
-   ========================================= */
+/* --- ВХОДНАЯ СТРАНИЦА --- */
 #entry-page {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
+  position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
   background: linear-gradient(135deg, 
-    #A8C0B5 0%,     /* светлый шалфей сверху */
-    #5A7A68 40%,    /* моховой средний */
-    #2B3F35 100%    /* глубокий лес снизу */
+    var(--sage-light) 0%, 
+    var(--moss-green) 45%, 
+    var(--forest-deep) 100%
   );
-  color: #FAF6EB;
+  color: var(--cream-paper);
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+#entry-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(240,228,194,0.18) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 1;
 }
 /* 2. ТЕКСТУРА */
 .entry-bg-texture {
@@ -191,19 +195,17 @@ body.hovering #custom-cursor, body.hovering #entry-cursor {
   /* Просто делаем чуть ярче и добавляем тень */
   filter: invert(83%) sepia(23%) saturate(1142%) hue-rotate(359deg) brightness(110%) contrast(92%) drop-shadow(0 0 25px #ffd700);
 }
-/* Светлячки — тёплый свечной свет */
-.firefly,
+/* Светлячки на входе */
 .entry-firefly {
+  position: absolute;
+  border-radius: 50%;
   background: var(--candle-glow);
   box-shadow: 
     0 0 12px 6px var(--candle-glow),
     0 0 24px 12px var(--gold-glow),
     inset 0 0 8px var(--wood-warm);
   opacity: 0.65;
-}
-@keyframes floatFirefly {
-  0%, 100% { transform: translate(0, 0); opacity: 0.3; }
-  50% { transform: translate(-15px, 20px); opacity: 0.6; }
+  pointer-events: none;
 }
 
 /* КОНТЕЙНЕР ДЛЯ ТЕКСТА (ВНИЗУ) */
@@ -243,7 +245,6 @@ body.hovering #custom-cursor, body.hovering #entry-cursor {
    ========================================= */
 
 #fireflies-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; overflow: hidden; }
-.firefly,
 .entry-firefly {
   position: absolute;
   border-radius: 50%;
