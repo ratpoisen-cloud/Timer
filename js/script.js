@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Запуск логики главной страницы
             initMainScripts();
-            document.body.classList.add('custom-cursor-active');
+            
             // Если музыка заиграла, показываем иконку
             setTimeout(() => {
                 if (isPlaying) {
