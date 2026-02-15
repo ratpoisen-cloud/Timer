@@ -106,13 +106,20 @@ document.addEventListener('DOMContentLoaded', () => {
 function initEntryFireflies() {
     const container = document.getElementById('entry-fireflies');
     if (!container) return;
-    for (let i = 0; i < 25; i++) {
+    
+    for (let i = 0; i < 30; i++) {  // чуть больше для эффекта
         const f = document.createElement('div');
         f.className = 'entry-firefly';
         f.style.left = Math.random() * 100 + '%';
-        f.style.top = Math.random() * 100 + '%';
-        f.style.animationDelay = Math.random() * 5 + 's';
-        f.style.opacity = 0.3 + Math.random() * 0.5;
+        f.style.top  = Math.random() * 100 + '%';
+        
+        // Случайное смещение для анимации
+        f.style.setProperty('--dx', (Math.random() * 120 - 60) + 'px');
+        f.style.setProperty('--dy', (Math.random() * 120 - 60) + 'px');
+        
+        f.style.animationDelay = Math.random() * 8 + 's';
+        f.style.opacity = 0.6 + Math.random() * 0.3;  // 0.6–0.9
+        
         container.appendChild(f);
     }
 }
