@@ -1,6 +1,7 @@
 /* --- ПОДКЛЮЧЕНИЕ СВОИХ ШРИФТОВ --- */
 @font-face {
     font-family: 'MyHeaderFont';
+    /* Проверьте, что названия файлов совпадают с теми, что в папке assets/fonts/ */
     src: url('../assets/fonts/header-font.woff2') format('woff2'),
          url('../assets/fonts/header-font.ttf') format('truetype');
     font-weight: normal;
@@ -40,10 +41,8 @@
   
   /* Тени и магия */
   --shadow-soft:    0 8px 24px rgba(43, 63, 53, 0.12);
-  --magic-glow:     0 0 16px rgba(240, 228, 194, 0.28),
-                    0 4px 12px rgba(0,0,0,0.08);
-  
-  --transition:     all 0.4s ease;
+  --magic-glow:     0 0 16px rgba(240, 228, 194, 0.28), 0 4px 12px rgba(0,0,0,0.08);
+  --transition:     all 0.5s ease;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -69,18 +68,75 @@ h1, h2, h3, .couple-names, .entry-title, .weather-header span, .faq-question, .b
 }
 
 h2 {
-  font-size: 3.5rem;
-  margin: 40px 0;
-  text-align: center;
-  color: var(--moss-green);
+  font-size: 3.5rem; 
+  margin-top: 40px; margin-bottom: 40px;
+  text-align: center; color: var(--moss-green);
   line-height: 1.1;
-  text-shadow: 0 0 10px rgba(90,122,104,0.1);
+  text-shadow: 0 0 10px rgba(90, 122, 104, 0.1);
 }
 
-/* --- ВХОДНАЯ СТРАНИЦА (Entry Page) --- */
+/* --- ПАДАЮЩИЕ ЛИСТЬЯ --- */
+.cursor-leaf {
+  position: absolute;
+  pointer-events: none;
+  z-index: 20000; 
+  font-size: 1rem;
+  color: var(--sage-light);
+  text-shadow: 0 0 6px rgba(168,192,181,0.7);
+  animation: leaf-fall 1.5s forwards linear;
+}
+
+@keyframes leaf-fall {
+  0% { opacity: 1; transform: translate(0, 0) rotate(0deg) scale(1); }
+  100% { opacity: 0; transform: translate(var(--tx), var(--ty)) rotate(var(--r)) scale(0.5); }
+}
+
+/* Листик таймера */
+.timer-leaf-anim {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--gold-glow); font-size: 1.2rem;
+  pointer-events: none; z-index: 10;
+  filter: drop-shadow(0 0 5px rgba(232,217,168,0.8));
+  animation: fallFromDigit 1.2s ease-out forwards;
+}
+
+@keyframes fallFromDigit {
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(0.5) rotate(0deg); }
+  20% { opacity: 1; transform: translate(-50%, -50%) scale(1.2) rotate(45deg); }
+  100% { opacity: 0; transform: translate(var(--fall-x), 100px) scale(0.8) rotate(180deg); }
+}
+
+/* --- ИКОНКА КУРСОРА (Только ПК) --- */
+#custom-cursor, #entry-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 30px;
+  height: 30px;
+  pointer-events: none;
+  z-index: 100000;
+  color: var(--wood-warm);
+  font-size: 24px;
+  transform: translate(-50%, -50%) rotate(-20deg);
+  transition: transform 0.15s ease, color 0.3s ease;
+  filter: drop-shadow(0 0 5px rgba(184,151,94,0.6));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body.hovering #custom-cursor, body.hovering #entry-cursor {
+  transform: translate(-50%, -50%) scale(1.4) rotate(0deg);
+  color: var(--moss-green);
+}
+
+/* --- ВХОДНАЯ СТРАНИЦА --- */
 #entry-page {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100vh;
   background: linear-gradient(135deg, 
@@ -104,7 +160,6 @@ h2 {
   z-index: 1;
 }
 
-/* Светлячки на входе */
 .entry-firefly {
   position: absolute;
   border-radius: 50%;
@@ -118,58 +173,12 @@ h2 {
   animation: float 12s infinite ease-in-out;
 }
 
-/* --- ГЛАВНАЯ СТРАНИЦА --- */
-#custom-cursor, #entry-cursor {
-  position: fixed;
-  top: 0; left: 0;
-  width: 30px; height: 30px;
-  pointer-events: none;
-  z-index: 100000;
-  color: var(--wood-warm);
-  font-size: 24px;
-  transform: translate(-50%, -50%) rotate(-20deg);
-  transition: transform 0.15s ease, color 0.3s ease;
-  filter: drop-shadow(0 0 5px rgba(184,151,94,0.6));
-  display: flex;
-  align-items: center;
-  justify-content: center;
+@keyframes float {
+  0%, 100% { opacity: 0.5; transform: translate(0, 0) scale(1); }
+  50%      { opacity: 0.9; transform: translate(var(--x2), var(--y2)) scale(1.3); }
 }
 
-body.hovering #custom-cursor,
-body.hovering #entry-cursor {
-  transform: translate(-50%, -50%) scale(1.4) rotate(0deg);
-  color: var(--moss-green);
-}
-
-/* Падающие листья */
-.cursor-leaf {
-  position: absolute;
-  pointer-events: none;
-  z-index: 20000;
-  font-size: 1.1rem;
-  color: var(--sage-light);
-  text-shadow: 0 0 6px rgba(168,192,181,0.7);
-  animation: leaf-fall 1.5s forwards linear;
-}
-
-@keyframes leaf-fall {
-  0% { opacity: 1; transform: translate(0, 0) rotate(0deg) scale(1); }
-  100% { opacity: 0; transform: translate(var(--tx), var(--ty)) rotate(var(--r)) scale(0.5); }
-}
-
-.timer-leaf-anim {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  color: var(--gold-glow);
-  font-size: 1.2rem;
-  pointer-events: none;
-  z-index: 10;
-  filter: drop-shadow(0 0 8px rgba(232,217,168,0.8));
-  animation: fallFromDigit 1.2s ease-out forwards;
-}
-
-/* Hero блок */
+/* --- HERO --- */
 .hero {
   padding: 120px 20px 80px;
   text-align: center;
@@ -191,7 +200,7 @@ body.hovering #entry-cursor {
   pointer-events: none;
 }
 
-/* Светлячки главной страницы */
+/* Светлячки главной */
 .firefly {
   position: absolute;
   border-radius: 50%;
@@ -204,37 +213,31 @@ body.hovering #entry-cursor {
   pointer-events: none;
 }
 
-/* Иконки */
+/* --- ИКОНКИ --- */
 i.fas, i.far, i.fab {
   color: var(--wood-warm);
   transition: var(--transition);
 }
 
-.hero i,
-.date i,
-.faq-question i,
-.btn i,
-.weather-icon-sun,
-.weather-icon-water,
-.weather-icon-wind,
-.weather-icon-rain {
+.hero i, .date i, .faq-question i, .btn i,
+.weather-icon-sun, .weather-icon-water, .weather-icon-wind, .weather-icon-rain {
   color: var(--wood-warm);
   filter: drop-shadow(0 0 4px rgba(184,151,94,0.4));
 }
 
-.rsvp-section i,
-footer i {
+.rsvp-section i, footer i {
   color: var(--candle-glow);
 }
 
-/* Карта */
+/* --- КАРТА --- */
 .map-container {
   border: 4px solid var(--wood-warm);
   border-radius: 24px;
   overflow: hidden;
   box-shadow: var(--shadow-soft);
   cursor: pointer;
-  margin: 80px 0;
+  margin-top: 80px;
+  position: relative;
 }
 
 .map-container img {
@@ -252,52 +255,76 @@ footer i {
 .map-container span {
   position: absolute;
   bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  width: 100%;
+  text-align: center;
   background: rgba(43, 63, 53, 0.7);
   color: var(--candle-glow);
-  border: 1px solid var(--gold-glow);
   padding: 8px 16px;
   border-radius: 20px;
   font-size: 0.9rem;
+  border: 1px solid var(--gold-glow);
   pointer-events: none;
 }
 
-/* RSVP секция */
-.rsvp-section {
+/* --- RSVP --- */
+.rsvp-section { 
   background: linear-gradient(135deg, var(--moss-green) 0%, var(--forest-deep) 100%);
-  border-radius: 30px;
-  padding: 80px 30px;
-  text-align: center;
-  margin: 80px auto;
-  max-width: 900px;
-  color: var(--light-sand);
-  border: 3px solid var(--wood-warm);
+  border-radius: 30px; 
+  padding: 80px 30px; 
+  text-align: center; 
+  margin-top: 80px; 
+  color: var(--light-sand); 
+  border: 3px solid var(--wood-warm); 
 }
+.rsvp-section h2 { color: var(--gold-glow); }
+.rsvp-buttons { display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; margin-top: 40px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 20px 40px; background-color: var(--wood-warm); color: var(--forest-deep); border-radius: 4px; transition: all 0.3s ease; text-transform: uppercase; border: 2px solid var(--wood-warm); }
+.btn:hover { background-color: #a3844f; color: var(--cream-paper); transform: translateY(-3px); }
+.btn-secondary { background: transparent; color: var(--wood-warm); } .btn-secondary:hover { background: var(--wood-warm); color: var(--forest-deep); }
 
-.rsvp-section h2 {
-  color: var(--gold-glow);
+footer { text-align: center; padding: 100px 20px; background: var(--text-dark); color: var(--sage-light); border-top: 2px solid var(--wood-warm); margin-top: 50px; }
+
+/* ЛОГОТИП В ПОДВАЛЕ */
+.footer-logo {
+  width: 100px; height: auto; margin-bottom: 20px;
+  filter: invert(83%) sepia(23%) saturate(1142%) hue-rotate(359deg) brightness(89%) contrast(92%);
+  opacity: 0.8; transition: transform 0.5s ease;
 }
+.footer-logo:hover { transform: scale(1.1) rotate(5deg); opacity: 1; }
 
-.rsvp-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 25px;
-  flex-wrap: wrap;
-  margin-top: 40px;
-}
+#sound-control { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: var(--wood-warm); border-radius: 50%; color: var(--forest-deep); display: flex; align-items: center; justify-content: center; z-index: 100; opacity: 0; transition: opacity 0.5s ease; border: 2px solid var(--cream-paper); }
 
-/* ... здесь оставляем все остальные стили без изменений: 
-   .btn, footer, .gallery-section (если добавляли), media queries, 
-   .faq-item, .weather-card и т.д. — они не затрагивались в правках */
+.fade-in { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
 
+/* --- АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ --- */
 @media (max-width: 768px) {
-  h2 { font-size: 2.2rem; margin: 20px 0; }
-  .hero { padding: 80px 15px 60px; }
+  h2 { font-size: 2.2rem; margin-top: 20px; margin-bottom: 20px; }
   .hero h1 { font-size: 2.2rem; }
   #custom-cursor, #entry-cursor { display: none !important; }
-  body, a, button, .btn, .map-container, .faq-question, #sound-control {
-    cursor: auto !important;
+  body, a, button, .btn, .map-container, .faq-question, #sound-control, .entry-wax-seal, .faq-btn { cursor: auto !important; }
+  .entry-title { font-size: 2.5rem; } 
+  .entry-wax-seal { width: 140px; height: 140px; }
+  
+  .weather-card { padding: 25px 15px; }
+  .weather-icon-sun { font-size: 3.5rem; }
+  .weather-main-row div[style*="font-size: 3.5rem"] { font-size: 3rem !important; }
+  .weather-icon-water, .weather-icon-wind, .weather-icon-rain { font-size: 2.2rem; }
+  .weather-val { font-size: 1.3rem; }
+  .seal-wrapper { width: 260px; height: 260px; }
+  /* Параллакс на мобильных лучше отключать */
+  .parallax-section { background-attachment: scroll; }
+}
+
+@media (max-width: 480px) {
+  .countdown { gap: 8px; }
+  .countdown div { 
+      border: 1px solid rgba(184,151,94,0.4);
+      background-image: radial-gradient(circle, rgba(255,255,255,0.95), rgba(250,246,235,0.6));
+      box-shadow: 0 0 8px rgba(184,151,94,0.2);
+      padding: 0;
   }
-  /* ... остальное по необходимости */
+  .countdown span { font-size: 1.3rem !important; }
+  .countdown small { font-size: 0.5rem; margin-top: 2px; letter-spacing: 0; }
 }
