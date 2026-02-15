@@ -47,14 +47,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body, a, button, .btn, .map-container, .faq-question, #sound-control, input, label {
-  /* По умолчанию курсор ОБЫЧНЫЙ */
-body { cursor: auto; }
-
-/* Скрываем системный, только если активен кастомный */
-body.custom-cursor-active,
-body.custom-cursor-active a,
-body.custom-cursor-active button {
-    cursor: none !important;
+  cursor: none !important;
 }
 
 body {
