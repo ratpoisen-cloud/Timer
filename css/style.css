@@ -266,24 +266,10 @@ header {
 }
 
 .hero {
-  padding: 120px 20px 80px;
-  text-align: center;
-  background: linear-gradient(to bottom, 
-    #FAF6EB 0%, 
-    #F5EDE0 50%, 
-    #E8D9A8 100%   /* крем → песок → тёплое золото */
-  );
-  border-radius: 0 0 60px 60px;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 70% 80%, rgba(168,192,181,0.12) 0%, transparent 70%);
-  pointer-events: none;
+  background: rgba(247, 244, 232, 0.92); padding: 70px 40px; border-radius: 16px; 
+  border: 2px solid var(--wood-warm); outline: 3px solid rgba(201, 162, 91, 0.3); outline-offset: -8px;
+  max-width: 700px; width: 100%; backdrop-filter: blur(8px); animation: fadeIn 1.5s ease-out;
+  box-shadow: var(--magic-glow); position: relative; z-index: 10;
 }
 .hero h1 { font-size: 3.8rem; margin-bottom: 15px; color: var(--forest-deep); line-height: 1.1; }
 .hero .subtitle { font-size: 1.3rem; margin-bottom: 25px; color: var(--wood-warm); text-transform: uppercase; letter-spacing: 3px; }
@@ -515,3 +501,4 @@ footer { text-align: center; padding: 100px 20px; background: var(--text-dark); 
   }
   .countdown span { font-size: 1.3rem !important; }
   .countdown small { font-size: 0.5rem; margin-top: 2px; letter-spacing: 0; }
+}
