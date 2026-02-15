@@ -21,28 +21,30 @@
 /* --- ОСНОВНЫЕ СТИЛИ --- */
 
 :root {
-  /* Основные фоновые и лесные тона — стали заметно светлее и теплее */
-  --forest-deep:    #2B3F35;       /* чуть мягче и светлее старого #2A4B3C */
-  --moss-green:     #5A7A68;       /* основной моховой средний тон — самый важный новый цвет */
-  --sage-light:     #A8C0B5;       /* светлый шалфей — для hover, градиентов, второстепенного текста */
+  /* Лесные тона — светлее и теплее */
+  --forest-deep:    #2B3F35;
+  --moss-green:     #5A7A68;
+  --sage-light:     #A8C0B5;
   
-  /* Дерево, золото, свечи — теплее и ближе к референсам */
-  --wood-warm:      #B8975E;       /* основной акцентный (был #C9A25B) — чуть приглушённее */
-  --candle-glow:    #F0E4C2;       /* мягкий свет свечей и бликов */
-  --gold-glow:      #E8D9A8;       /* более кремовое золото */
+  /* Дерево, золото, свечи */
+  --wood-warm:      #B8975E;
+  --candle-glow:    #F0E4C2;
+  --gold-glow:      #E8D9A8;
   
-  /* Фоны и бумага — светлее и уютнее */
-  --cream-paper:    #FAF6EB;       /* почти белый крем с тёплым подтоном */
-  --light-sand:     #F5EDE0;       /* для градиентов и карточек */
+  /* Фоны и бумага */
+  --cream-paper:    #FAF6EB;
+  --light-sand:     #F5EDE0;
   
   /* Текст */
-  --text-dark:      #1F2E27;       /* чуть мягче */
-  --text-muted:     #5A6B63;       /* для второстепенного текста */
+  --text-dark:      #1F2E27;
+  --text-muted:     #5A6B63;
   
-  /* Тени и свечение — сохраняем магию, но делаем нежнее */
+  /* Тени и магия */
   --shadow-soft:    0 8px 24px rgba(43, 63, 53, 0.12);
   --magic-glow:     0 0 16px rgba(240, 228, 194, 0.28),
                     0 4px 12px rgba(0,0,0,0.08);
+  
+  --transition:     all 0.4s ease;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -81,8 +83,8 @@ h2 {
   z-index: 20000; 
   font-size: 1rem;
   animation: leaf-fall 1.5s forwards linear;
-}
-
+color: var(--sage-light);
+  text-shadow: 0 0 6px rgba(168,192,181,0.7);
 @keyframes leaf-fall {
   0% { opacity: 1; transform: translate(0, 0) rotate(0deg) scale(1); }
   100% { opacity: 0; transform: translate(var(--tx), var(--ty)) rotate(var(--r)) scale(0.5); }
@@ -189,14 +191,15 @@ body.hovering #custom-cursor, body.hovering #entry-cursor {
   /* Просто делаем чуть ярче и добавляем тень */
   filter: invert(83%) sepia(23%) saturate(1142%) hue-rotate(359deg) brightness(110%) contrast(92%) drop-shadow(0 0 25px #ffd700);
 }
-
-.entry-fireflies { position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 4; }
+/* Светлячки — тёплый свечной свет */
+.firefly,
 .entry-firefly {
-  position: absolute; width: 4px; height: 4px;
-  background: #e6c889; 
-  border-radius: 50%;
-  filter: blur(1px); box-shadow: 0 0 10px #e6c889;
-  animation: floatFirefly 8s infinite ease-in-out; opacity: 0;
+  background: var(--candle-glow);
+  box-shadow: 
+    0 0 12px 6px var(--candle-glow),
+    0 0 24px 12px var(--gold-glow),
+    inset 0 0 8px var(--wood-warm);
+  opacity: 0.65;
 }
 @keyframes floatFirefly {
   0%, 100% { transform: translate(0, 0); opacity: 0.3; }
