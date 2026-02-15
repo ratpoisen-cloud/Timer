@@ -21,32 +21,29 @@
 /* --- ОСНОВНЫЕ СТИЛИ --- */
 
 :root {
-  /* Лесные тона — светлые, тёплые, летние */
-  --forest-deep:    #2B3F35;
-  --moss-green:     #5A7A68;
-  --sage-light:     #A8C0B5;
+  /* Основные фоновые и лесные тона — стали заметно светлее и теплее */
+  --forest-deep:    #2B3F35;       /* чуть мягче и светлее старого #2A4B3C */
+  --moss-green:     #5A7A68;       /* основной моховой средний тон — самый важный новый цвет */
+  --sage-light:     #A8C0B5;       /* светлый шалфей — для hover, градиентов, второстепенного текста */
   
-  /* Дерево, золото, свечи */
-  --wood-warm:      #B8975E;
-  --candle-glow:    #F0E4C2;
-  --gold-glow:      #E8D9A8;
+  /* Дерево, золото, свечи — теплее и ближе к референсам */
+  --wood-warm:      #B8975E;       /* основной акцентный (был #C9A25B) — чуть приглушённее */
+  --candle-glow:    #F0E4C2;       /* мягкий свет свечей и бликов */
+  --gold-glow:      #E8D9A8;       /* более кремовое золото */
   
-  /* Фоны и бумага */
-  --cream-paper:    #FAF6EB;
-  --light-sand:     #F5EDE0;
+  /* Фоны и бумага — светлее и уютнее */
+  --cream-paper:    #FAF6EB;       /* почти белый крем с тёплым подтоном */
+  --light-sand:     #F5EDE0;       /* для градиентов и карточек */
   
   /* Текст */
-  --text-dark:      #1F2E27;
-  --text-muted:     #5A6B63;
+  --text-dark:      #1F2E27;       /* чуть мягче */
+  --text-muted:     #5A6B63;       /* для второстепенного текста */
   
-  /* Тени и магия */
+  /* Тени и свечение — сохраняем магию, но делаем нежнее */
   --shadow-soft:    0 8px 24px rgba(43, 63, 53, 0.12);
   --magic-glow:     0 0 16px rgba(240, 228, 194, 0.28),
                     0 4px 12px rgba(0,0,0,0.08);
-  
-  --transition:     all 0.4s ease;
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body, a, button, .btn, .map-container, .faq-question, #sound-control, input, label {
@@ -56,7 +53,7 @@ body, a, button, .btn, .map-container, .faq-question, #sound-control, input, lab
 body {
   font-family: 'MyBodyFont', sans-serif;
   background-color: var(--cream-paper);
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.07'/%3E%3C/svg%3E");
   color: var(--text-dark);
   line-height: 1.7;
   overflow-x: hidden;
@@ -70,11 +67,11 @@ h1, h2, h3, .couple-names, .entry-title, .weather-header span, .faq-question, .b
 }
 
 h2 {
-  font-size: 3.5rem;
+  font-size: 3.5rem; 
   margin-top: 40px; margin-bottom: 40px;
-  text-align: center; color: var(--moss-green);
+  text-align: center; color: var(--forest-deep);
   line-height: 1.1;
-  text-shadow: 0 0 10px rgba(90,122,104,0.1);
+  text-shadow: 0 0 10px rgba(42, 75, 60, 0.1);
 }
 
 /* --- ПАДАЮЩИЕ ЛИСТЬЯ --- */
@@ -84,8 +81,8 @@ h2 {
   z-index: 20000; 
   font-size: 1rem;
   animation: leaf-fall 1.5s forwards linear;
-color: var(--sage-light);
-  text-shadow: 0 0 6px rgba(168,192,181,0.7);
+}
+
 @keyframes leaf-fall {
   0% { opacity: 1; transform: translate(0, 0) rotate(0deg) scale(1); }
   100% { opacity: 0; transform: translate(var(--tx), var(--ty)) rotate(var(--r)) scale(0.5); }
@@ -124,21 +121,26 @@ body.hovering #custom-cursor, body.hovering #entry-cursor {
   color: var(--forest-deep); 
 }
 
-/* --- ВХОДНАЯ СТРАНИЦА --- */
+/* =========================================
+   СТРАНИЦА ВХОДА (ENTRY PAGE)
+   ========================================= */
 #entry-page {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
   background: linear-gradient(135deg, 
-    var(--sage-light) 0%, 
-    var(--moss-green) 45%, 
-    var(--forest-deep) 100%
+    #A8C0B5 0%,     /* светлый шалфей сверху */
+    #5A7A68 40%,    /* моховой средний */
+    #2B3F35 100%    /* глубокий лес снизу */
   );
-  color: var(--cream-paper);
+  color: #FAF6EB;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
 #entry-page::before {
   content: '';
   position: absolute;
@@ -147,6 +149,7 @@ body.hovering #custom-cursor, body.hovering #entry-cursor {
   pointer-events: none;
   z-index: 1;
 }
+
 /* 2. ТЕКСТУРА */
 .entry-bg-texture {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -195,17 +198,18 @@ body.hovering #custom-cursor, body.hovering #entry-cursor {
   /* Просто делаем чуть ярче и добавляем тень */
   filter: invert(83%) sepia(23%) saturate(1142%) hue-rotate(359deg) brightness(110%) contrast(92%) drop-shadow(0 0 25px #ffd700);
 }
-/* Светлячки на входе */
+
+.entry-fireflies { position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 4; }
 .entry-firefly {
-  position: absolute;
+  position: absolute; width: 4px; height: 4px;
+  background: #e6c889; 
   border-radius: 50%;
-  background: var(--candle-glow);
-  box-shadow: 
-    0 0 12px 6px var(--candle-glow),
-    0 0 24px 12px var(--gold-glow),
-    inset 0 0 8px var(--wood-warm);
-  opacity: 0.65;
-  pointer-events: none;
+  filter: blur(1px); box-shadow: 0 0 10px #e6c889;
+  animation: floatFirefly 8s infinite ease-in-out; opacity: 0;
+}
+@keyframes floatFirefly {
+  0%, 100% { transform: translate(0, 0); opacity: 0.3; }
+  50% { transform: translate(-15px, 20px); opacity: 0.6; }
 }
 
 /* КОНТЕЙНЕР ДЛЯ ТЕКСТА (ВНИЗУ) */
@@ -245,23 +249,9 @@ body.hovering #custom-cursor, body.hovering #entry-cursor {
    ========================================= */
 
 #fireflies-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; overflow: hidden; }
-.entry-firefly {
-  position: absolute;
-  border-radius: 50%;
-  background: #F0E4C2;          /* мягкий кремовый свет свечи */
-  box-shadow: 
-    0 0 12px 6px #F0E4C2,       /* основное свечение */
-    0 0 24px 12px #E8D9A8,      /* внешний ореол */
-    inset 0 0 8px #B8975E;      /* тёплый центр */
-  opacity: 0.6;
-  pointer-events: none;
-  animation: float 12s infinite ease-in-out;
-}
-
-/* Мерцание (уже есть в JS, но можно усилить) */
-@keyframes float {
-  0%, 100% { opacity: 0.5; transform: translate(0, 0) scale(1); }
-  50%      { opacity: 0.9; transform: translate(var(--x2), var(--y2)) scale(1.3); }
+.firefly {
+  position: absolute; width: 3px; height: 3px; background: #fff8e7; border-radius: 50%;
+  box-shadow: 0 0 10px 2px rgba(255, 215, 0, 0.6); animation: fly infinite ease-in-out; opacity: 0;
 }
 @keyframes fly {
   0% { opacity: 0; transform: translate(0, 0) scale(0.5); }
@@ -525,4 +515,3 @@ footer { text-align: center; padding: 100px 20px; background: var(--text-dark); 
   }
   .countdown span { font-size: 1.3rem !important; }
   .countdown small { font-size: 0.5rem; margin-top: 2px; letter-spacing: 0; }
-}
