@@ -130,7 +130,7 @@ firefly.style.background = glowColors[Math.floor(Math.random() * glowColors.leng
         firefly.classList.add('firefly');
         firefly.style.left = Math.random() * 100 + '%';
         firefly.style.top = Math.random() * 100 + '%';
-        const size = Math.random() * 3 + 3;
+        const size = Math.random() * 1 + 1;
         firefly.style.width = size + 'px';
         firefly.style.height = size + 'px';
         firefly.style.setProperty('--x2', (Math.random() * 200 - 100) + 'px');
