@@ -5,72 +5,104 @@ const soundIcon = document.getElementById('sound-icon');
 let isPlaying = false;
 
 // ===== ФУНКЦИИ УПРАВЛЕНИЯ =====
+
+// Переключение музыки (глобальное)
 window.toggleMusic = function() {
   if (isPlaying) {
     music.pause();
     soundIcon.classList.remove('fa-volume-up');
     soundIcon.classList.add('fa-volume-mute');
   } else {
-    music.play().catch(() => console.log("Автозапуск заблокирован"));
+    music.play();
     soundIcon.classList.remove('fa-volume-mute');
     soundIcon.classList.add('fa-volume-up');
   }
   isPlaying = !isPlaying;
 }
 
+// Аккордеон FAQ (глобальное)
 window.toggleFaq = function(element) {
   const isActive = element.classList.contains('active');
-  document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('active'));
-  if (!isActive) element.classList.add('active');
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.classList.remove('active');
+  });
+  if (!isActive) {
+    element.classList.add('active');
+  }
 }
 
-// ===== ЛОГИКА ВХОДА =====
+// ===== ЛОГИКА ВХОДА И ИНИЦИАЛИЗАЦИИ =====
 document.addEventListener('DOMContentLoaded', () => {
     const entryPage = document.getElementById('entry-page');
     const mainPage = document.getElementById('main-page');
     const entryOverlay = document.getElementById('entry-overlay-transition');
+    const waxSeal = document.getElementById('entry-wax-seal');
+
+    // Клик теперь вешаем на ДЕРЕВО (кнопку)
     const treeBtn = document.getElementById('entry-tree-btn');
 
     if (treeBtn) {
         treeBtn.addEventListener('click', enterMainSite);
     }
 
-    document.addEventListener('keydown', (e) => {
-        if ((e.code === 'Space' || e.code === 'Enter') && entryPage.style.display !== 'none') {
+    // Доступность (Enter/Space)
+    document.addEventListener('keydown', (event) => {
+        if ((event.code === 'Space' || event.code === 'Enter') && entryPage.style.display !== 'none') {
             enterMainSite();
         }
     });
 
     function enterMainSite() {
+        // 1. Попытка запуска музыки
         try {
             music.volume = 0.5;
-            music.play().then(() => {
-                isPlaying = true;
-                soundControl.style.opacity = '1';
-            }).catch(() => {
-                soundControl.style.opacity = '1';
-            });
+            const playPromise = music.play();
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    isPlaying = true;
+                    soundControl.style.opacity = '1';
+                }).catch(error => {
+                    console.log("Автозапуск блокирован, ждем клика");
+                    soundControl.style.opacity = '1';
+                });
+            }
         } catch (e) { console.error(e); }
 
+        // 2. Анимация исчезновения входа
         entryOverlay.style.opacity = '1';
         entryOverlay.style.pointerEvents = 'all';
-
+        
+        // Анимация дерева при клике (увеличение и исчезновение)
         if (treeBtn) {
             treeBtn.style.transform = 'translate(-50%, -50%) scale(3)';
             treeBtn.style.opacity = '0';
         }
 
+        // 3. Смена экранов
         setTimeout(() => {
             entryPage.style.display = 'none';
             mainPage.style.display = 'block';
+            
+            // Запуск логики главной страницы
             initMainScripts();
-            soundControl.style.opacity = '1';
+            
+            // Если музыка заиграла, показываем иконку
+            setTimeout(() => {
+                if (isPlaying) {
+                    soundIcon.className = 'fas fa-volume-up';
+                } else {
+                    soundIcon.className = 'fas fa-volume-mute';
+                }
+                soundControl.style.opacity = '1';
+            }, 1000);
         }, 800);
     }
 
+    // Запуск светлячков на входе
     initEntryFireflies();
 });
 
+// Светлячки на входе
 function initEntryFireflies() {
     const container = document.getElementById('entry-fireflies');
     if (!container) return;
@@ -80,16 +112,16 @@ function initEntryFireflies() {
         f.style.left = Math.random() * 100 + '%';
         f.style.top = Math.random() * 100 + '%';
         f.style.animationDelay = Math.random() * 5 + 's';
+        f.style.opacity = 0.3 + Math.random() * 0.5;
         container.appendChild(f);
     }
 }
 
-// ===== ГЛАВНАЯ СТРАНИЦА =====
+// ===== СКРИПТЫ ГЛАВНОЙ СТРАНИЦЫ =====
 function initMainScripts() {
-    // Светлячки
+    // 1. Светлячки (основные)
     const container = document.getElementById('fireflies-container');
     const glowColors = ['#F0E4C2', '#E8D9A8', '#FAF6EB', '#B8975E33'];
-
     for (let i = 0; i < 40; i++) {
         const firefly = document.createElement('div');
         firefly.classList.add('firefly');
@@ -113,7 +145,7 @@ function initMainScripts() {
         }, 1200 + Math.random() * 2000);
     }
 
-    // Таймер + падающие листья
+    // 2. Таймер
     const weddingDate = new Date('2026-08-02T15:00:00');
     let prevValues = { d: null, h: null, m: null, s: null };
 
@@ -132,10 +164,12 @@ function initMainScripts() {
         const updatePart = (id, key) => {
             const el = document.getElementById(id);
             if (!el) return;
-            const val = values[key] < 10 ? '0' + values[key] : values[key];
+            const formattedVal = values[key] < 10 ? '0' + values[key] : values[key];
             if (prevValues[key] !== values[key]) {
-                el.innerText = val;
-                if (prevValues[key] !== null) spawnTimerLeaf(el.parentElement);
+                el.innerText = formattedVal;
+                if (prevValues[key] !== null) {
+                    spawnTimerLeaf(el.parentElement);
+                }
                 prevValues[key] = values[key];
             }
         };
@@ -145,7 +179,8 @@ function initMainScripts() {
         updatePart('minutes', 'm');
         updatePart('seconds', 's');
     }
-
+    
+    // Функция создания листика для таймера
     function spawnTimerLeaf(container) {
         const leaf = document.createElement('i');
         leaf.classList.add('fas', 'fa-leaf', 'timer-leaf-anim');
@@ -154,32 +189,41 @@ function initMainScripts() {
         container.appendChild(leaf);
         setTimeout(() => leaf.remove(), 1200);
     }
-
+    
     updateCountdown();
     setInterval(updateCountdown, 1000);
 
-    // Fade-in
+    // 3. Анимация появления (Fade In)
     function checkFadeIn() {
         document.querySelectorAll('.fade-in').forEach(el => {
-            if (el.getBoundingClientRect().top < window.innerHeight - 100) {
-                el.classList.add('visible');
-            }
+            if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('visible');
         });
     }
     window.addEventListener('scroll', checkFadeIn);
     checkFadeIn();
 }
 
-// ===== КУРСОР И ЛИСТЬЯ =====
+// ===== ОБЩИЕ ЭФФЕКТЫ (КУРСОР И ЛИСТЬЯ) =====
 const cursor = document.getElementById('custom-cursor');
 const entryCursor = document.getElementById('entry-cursor');
 let lastLeafTime = 0;
 
+// Движение мыши (ПК)
 document.addEventListener('mousemove', (e) => {
     const x = e.clientX + 'px';
     const y = e.clientY + 'px';
+    
     if (cursor) { cursor.style.left = x; cursor.style.top = y; }
     if (entryCursor) { entryCursor.style.left = x; entryCursor.style.top = y; }
+    
+    // Эффект увеличения курсора на дереве
+    const treeBtn = document.getElementById('entry-tree-btn');
+    if (treeBtn && entryCursor) {
+        const rect = treeBtn.getBoundingClientRect();
+        const isHovering = (e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom);
+        entryCursor.style.transform = isHovering ? 'scale(1.5)' : 'scale(1)';
+        entryCursor.style.color = isHovering ? '#ffd700' : var(--wood-warm);
+    }
 
     if (Date.now() - lastLeafTime > 80) {
         createLeaf(e.pageX, e.pageY);
@@ -187,6 +231,7 @@ document.addEventListener('mousemove', (e) => {
     }
 });
 
+// Касание (Мобильные)
 document.addEventListener('touchmove', (e) => {
     if (Date.now() - lastLeafTime > 80) {
         createLeaf(e.touches[0].pageX, e.touches[0].pageY);
@@ -199,6 +244,7 @@ document.addEventListener('touchstart', (e) => {
     createLeaf(touch.pageX, touch.pageY);
 }, {passive: true});
 
+// Hover эффекты
 const interactables = document.querySelectorAll('a, button, .btn, .faq-question, #sound-control, input, label, .map-container');
 interactables.forEach(el => {
     el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
@@ -208,10 +254,8 @@ interactables.forEach(el => {
 function createLeaf(x, y) {
     const leaf = document.createElement('i');
     leaf.classList.add('fas', 'fa-leaf', 'cursor-leaf');
-    
-    const leafColors = ['#A8C0B5', '#5A7A68', '#E8D9A8', '#F0E4C2'];
-    leaf.style.color = leafColors[Math.floor(Math.random() * leafColors.length)];
-    
+    const colors = ['#A8C0B5', '#5A7A68', '#E8D9A8', '#F0E4C2'];
+    leaf.style.color = colors[Math.floor(Math.random() * colors.length)];
     leaf.style.left = x + 'px';
     leaf.style.top = y + 'px';
     leaf.style.setProperty('--tx', (Math.random() * 100 - 50) + 'px');
