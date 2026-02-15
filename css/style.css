@@ -80,6 +80,8 @@ h2 {
   pointer-events: none;
   z-index: 20000; 
   font-size: 1rem;
+  color: var(--sage-light);
+  text-shadow: 0 0 6px rgba(168,192,181,0.7);
   animation: leaf-fall 1.5s forwards linear;
 }
 
