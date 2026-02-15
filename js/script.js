@@ -257,4 +257,11 @@ function createLeaf(x, y) {
     leaf.style.setProperty('--r', (Math.random() * 360) + 'deg');
     document.body.appendChild(leaf);
     setTimeout(() => leaf.remove(), 1500);
+  // ОБНОВЛЕННАЯ ПАЛИТРА (соответствует style.css)
+    const colors = [
+        '#2B3F35', // var(--forest-deep)
+        '#5A7A68', // var(--moss-green)
+        '#B8975E', // var(--wood-warm)
+        '#F0E4C2'  // var(--candle-glow)
+    ];
 }
