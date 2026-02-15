@@ -106,20 +106,13 @@ document.addEventListener('DOMContentLoaded', () => {
 function initEntryFireflies() {
     const container = document.getElementById('entry-fireflies');
     if (!container) return;
-    
-    for (let i = 0; i < 30; i++) {  // чуть больше для эффекта
+    for (let i = 0; i < 25; i++) {
         const f = document.createElement('div');
         f.className = 'entry-firefly';
         f.style.left = Math.random() * 100 + '%';
-        f.style.top  = Math.random() * 100 + '%';
-        
-        // Случайное смещение для анимации
-        f.style.setProperty('--dx', (Math.random() * 120 - 60) + 'px');
-        f.style.setProperty('--dy', (Math.random() * 120 - 60) + 'px');
-        
-        f.style.animationDelay = Math.random() * 8 + 's';
-        f.style.opacity = 0.6 + Math.random() * 0.3;  // 0.6–0.9
-        
+        f.style.top = Math.random() * 100 + '%';
+        f.style.animationDelay = Math.random() * 5 + 's';
+        f.style.opacity = 0.3 + Math.random() * 0.5;
         container.appendChild(f);
     }
 }
@@ -128,7 +121,6 @@ function initEntryFireflies() {
 function initMainScripts() {
     // 1. Светлячки (основные)
     const container = document.getElementById('fireflies-container');
-    const glowColors = ['#F0E4C2', '#E8D9A8', '#FAF6EB', '#B8975E33'];
     for (let i = 0; i < 40; i++) {
         const firefly = document.createElement('div');
         firefly.classList.add('firefly');
@@ -143,24 +135,19 @@ function initMainScripts() {
         firefly.style.setProperty('--y4', (Math.random() * 200 - 100) + 'px');
         firefly.style.animationDuration = (Math.random() * 10 + 5) + 's';
         firefly.style.animationDelay = (Math.random() * 5) + 's';
-        firefly.style.background = glowColors[Math.floor(Math.random() * glowColors.length)];
         container.appendChild(firefly);
-
-        // Мерцание
-        setInterval(() => {
-            firefly.style.opacity = 0.5 + Math.random() * 0.4;
-        }, 1200 + Math.random() * 2000);
     }
 
-    // 2. Таймер
+    // 2. Таймер с падающими листьями
     const weddingDate = new Date('2026-08-02T15:00:00');
     let prevValues = { d: null, h: null, m: null, s: null };
 
     function updateCountdown() {
         const now = new Date();
         const diff = weddingDate - now;
+        
         if (diff <= 0) return;
-
+        
         const values = {
             d: Math.floor(diff / (1000 * 60 * 60 * 24)),
             h: Math.floor((diff / (1000 * 60 * 60)) % 24),
@@ -229,7 +216,7 @@ document.addEventListener('mousemove', (e) => {
         const rect = treeBtn.getBoundingClientRect();
         const isHovering = (e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom);
         entryCursor.style.transform = isHovering ? 'scale(1.5)' : 'scale(1)';
-        entryCursor.style.color = isHovering ? '#ffd700' : var(--wood-warm);
+        entryCursor.style.color = isHovering ? '#ffd700' : '#C9A25B';
     }
 
     if (Date.now() - lastLeafTime > 80) {
@@ -261,7 +248,7 @@ interactables.forEach(el => {
 function createLeaf(x, y) {
     const leaf = document.createElement('i');
     leaf.classList.add('fas', 'fa-leaf', 'cursor-leaf');
-    const colors = ['#A8C0B5', '#5A7A68', '#E8D9A8', '#F0E4C2'];
+    const colors = ['#2A4B3C', '#8FAB93', '#C9A25B', '#e6c889'];
     leaf.style.color = colors[Math.floor(Math.random() * colors.length)];
     leaf.style.left = x + 'px';
     leaf.style.top = y + 'px';
