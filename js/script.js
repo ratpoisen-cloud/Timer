@@ -19,78 +19,7 @@ window.toggleMusic = function() {
   }
   isPlaying = !isPlaying;
 }
-//Адаптация таймера пол экраны
-function adjustTimerTextSize() {
-    const circles = document.querySelectorAll('.countdown div');
-    
-    circles.forEach(circle => {
-        const numberSpan = circle.querySelector('span');
-        const labelSmall = circle.querySelector('small');
-        
-        if (!numberSpan) return;
-        
-        // Получаем реальную ширину круга (она теперь ограничена max-width)
-        const circleWidth = circle.offsetWidth;
-        
-        // Доступная ширина для текста (с учетом padding)
-        const availableWidth = circleWidth * 0.75; // 75% от ширины круга
-        
-        // Временный элемент для измерения
-        const temp = document.createElement('span');
-        temp.style.visibility = 'hidden';
-        temp.style.position = 'absolute';
-        temp.style.whiteSpace = 'nowrap';
-        temp.style.fontFamily = window.getComputedStyle(numberSpan).fontFamily;
-        temp.style.fontWeight = window.getComputedStyle(numberSpan).fontWeight;
-        temp.textContent = numberSpan.textContent;
-        document.body.appendChild(temp);
-        
-        // Подбираем оптимальный размер (максимум 40px чтобы не было слишком большим)
-        let fontSize = 14;
-        temp.style.fontSize = fontSize + 'px';
-        
-        while (temp.offsetWidth < availableWidth && fontSize < 40) {
-            fontSize++;
-            temp.style.fontSize = fontSize + 'px';
-        }
-        
-        while (temp.offsetWidth > availableWidth && fontSize > 10) {
-            fontSize--;
-            temp.style.fontSize = fontSize + 'px';
-        }
-        
-        // Устанавливаем размер
-        numberSpan.style.fontSize = fontSize + 'px';
-        
-        // Удаляем временный элемент
-        document.body.removeChild(temp);
-        
-        // Корректируем подпись (немного меньше пропорционально)
-        if (labelSmall) {
-            const labelSize = Math.max(9, Math.min(16, fontSize * 0.4));
-            labelSmall.style.fontSize = labelSize + 'px';
-            labelSmall.style.marginTop = Math.max(2, fontSize * 0.1) + 'px';
-        }
-    });
-}
 
-// Запускаем при загрузке
-document.addEventListener('DOMContentLoaded', adjustTimerTextSize);
-
-// Запускаем при изменении размера окна
-let resizeTimeout;
-window.addEventListener('resize', () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(adjustTimerTextSize, 100);
-});
-
-// Если контент меняется динамически (обновление таймера)
-const observer = new MutationObserver(adjustTimerTextSize);
-observer.observe(document.querySelector('.countdown'), { 
-    childList: true, 
-    subtree: true,
-    characterData: true 
-});
 // Аккордеон FAQ (глобальное)
 window.toggleFaq = function(element) {
   const isActive = element.classList.contains('active');
