@@ -796,16 +796,14 @@ header {
     display: block; 
 }
 
-/* Таймер - исправленная версия */
+/* Таймер */
 .countdown {
     display: grid; 
     grid-template-columns: repeat(4, 1fr); 
-    gap: 15px;
+    gap: clamp(5px, 2vw, 15px);
     margin: 40px auto; 
     max-width: 600px; 
     width: 100%;
-    /* Добавляем центрирование самой сетки */
-    justify-content: center;
 }
 
 .countdown div {
@@ -816,83 +814,100 @@ header {
     align-items: center;
     aspect-ratio: 1 / 1; 
     width: 100%; 
-    /* Возвращаем ограничение, но делаем его адаптивным */
-    max-width: min(120px, 25vw); /* Не больше 120px и не больше 25% от ширины экрана */
-    margin: 0 auto; /* Центрируем каждый круг */
+    
+    /* Внутренние отступы */
+    padding: 5%;
+    box-sizing: border-box;
+    
     border: 2px solid rgba(201, 162, 91, 0.3); 
     border-radius: 50%;
     background-image: radial-gradient(circle, #fefae0, rgba(247, 244, 232, 0.4));
     box-shadow: 0 0 15px rgba(201, 162, 91, 0.15), inset 0 0 10px rgba(201, 162, 91, 0.1);
-    /* Отступы внутри круга */
-    padding: 8%; /* Чуть больше отступов */
-    box-sizing: border-box;
 }
 
 .countdown span {
     color: var(--wood-warm); 
     line-height: 1;
     font-family: 'MyHeaderFont', serif;
+    font-size: clamp(1rem, 8vw, 2rem);
+    word-break: break-word;
+    text-align: center;
     text-shadow: 0 0 10px rgba(201, 162, 91, 0.6); 
     position: relative; 
     z-index: 2;
-    white-space: nowrap;
-    text-align: center;
-    /* Базовый размер на всякий случай */
-    font-size: 1.5rem;
 }
 
 .countdown small {
+    font-size: clamp(0.5rem, 3vw, 0.75rem);
     color: var(--forest-deep); 
     text-transform: uppercase;
     letter-spacing: 1px; 
     font-weight: 600; 
     font-family: 'MyBodyFont', sans-serif;
-    margin-top: 5px; 
+    margin-top: 2px;
     opacity: 0.8;
     white-space: nowrap;
-    font-size: 0.7rem;
 }
 
-/* Для маленьких экранов - корректировка сетки */
-@media (max-width: 500px) {
+/* Адаптация для экранов шириной менее 400px */
+@media (max-width: 399px) {
     .countdown {
-        gap: 10px;
+        gap: 3px; /* Минимальный зазор между кругами */
     }
     
     .countdown div {
-        max-width: min(100px, 22vw); /* Поменьше на маленьких экранах */
-        padding: 6%;
-    }
-}
-
-/* Для очень маленьких экранов */
-@media (max-width: 400px) {
-    .countdown {
-        gap: 5px; /* Уменьшаем зазор */
+        padding: 2%; /* Уменьшаем внутренние отступы */
+        border-width: 1.5px; /* Делаем рамку тоньше */
     }
     
-    .countdown div {
-        max-width: min(85px, 20vw); /* Еще меньше */
-        padding: 4%; /* Меньше отступов, чтобы текст не сжимался слишком сильно */
-        border-width: 1.5px; /* Тоньше рамка */
+    .countdown span {
+        font-size: clamp(0.9rem, 7vw, 1.2rem); /* Уменьшаем цифры */
     }
     
     .countdown small {
-        font-size: 0.6rem;
-        margin-top: 3px;
-        letter-spacing: 0.5px;
+        font-size: 0.45rem; /* Фиксированный маленький размер для подписей */
+        letter-spacing: 0.3px; /* Уменьшаем межбуквенное расстояние */
+        margin-top: 1px; /* Минимальный отступ */
     }
 }
 
-/* Для экранов 350px и меньше */
-@media (max-width: 350px) {
+/* Для экранов менее 320px (очень маленькие телефоны) */
+@media (max-width: 320px) {
     .countdown {
-        gap: 3px;
+        gap: 2px;
     }
     
     .countdown div {
-        max-width: min(75px, 18vw);
-        padding: 3%;
+        padding: 1%;
+        border-width: 1px;
+    }
+    
+    .countdown span {
+        font-size: 0.8rem; /* Еще меньше цифры */
+    }
+    
+    .countdown small {
+        font-size: 0.4rem; /* Совсем маленький текст */
+        letter-spacing: 0.2px;
+    }
+}
+
+/* Для экранов менее 280px (самые маленькие устройства) */
+@media (max-width: 280px) {
+    .countdown {
+        gap: 1px;
+    }
+    
+    .countdown div {
+        border-width: 1px;
+    }
+    
+    .countdown span {
+        font-size: 0.7rem;
+    }
+    
+    .countdown small {
+        font-size: 0.35rem;
     }
 }
 
