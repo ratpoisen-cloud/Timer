@@ -800,7 +800,7 @@ header {
 .countdown {
     display: grid; 
     grid-template-columns: repeat(4, 1fr); 
-    gap: 15px;
+    gap: clamp(5px, 2vw, 15px); /* Адаптивный отступ между кругами */
     margin: 40px auto; 
     max-width: 600px; 
     width: 100%;
@@ -814,8 +814,13 @@ header {
     align-items: center;
     aspect-ratio: 1 / 1; 
     width: 100%; 
-    max-width: 100px; 
-    margin: 0 auto;
+    /* Убрали max-width: 100px - теперь круг занимает всю доступную ширину колонки */
+    /* max-width: 100px; - УДАЛЕНО */
+    
+    /* Добавляем внутренние отступы (padding), чтобы контент не касался границ круга */
+    padding: 5%; /* Отступы относительно ширины круга */
+    box-sizing: border-box; /* Важно! Включаем padding в размеры элемента */
+    
     border: 2px solid rgba(201, 162, 91, 0.3); 
     border-radius: 50%;
     background-image: radial-gradient(circle, #fefae0, rgba(247, 244, 232, 0.4));
@@ -826,21 +831,41 @@ header {
     color: var(--wood-warm); 
     line-height: 1;
     font-family: 'MyHeaderFont', serif;
-    font-size: clamp(1.67rem, 5vw, 2rem); 
+    /* Делаем шрифт более адаптивным */
+    font-size: clamp(1rem, 8vw, 2rem); 
+    /* Добавляем перенос слов на всякий случай */
+    word-break: break-word;
+    text-align: center;
     text-shadow: 0 0 10px rgba(201, 162, 91, 0.6); 
     position: relative; 
     z-index: 2;
 }
 
 .countdown small {
-    font-size: 0.67rem; 
+    font-size: clamp(0.5rem, 3vw, 0.75rem); /* Адаптивный размер для подписи */
     color: var(--forest-deep); 
     text-transform: uppercase;
     letter-spacing: 1px; 
     font-weight: 600; 
     font-family: 'MyBodyFont', sans-serif;
-    margin-top: 5px; 
+    margin-top: 2px; /* Уменьшаем отступ на маленьких экранах */
     opacity: 0.8;
+    white-space: nowrap; /* Предотвращаем перенос текста (дни/часы/минуты) */
+}
+
+/* Дополнительная корректировка для очень маленьких экранов */
+@media (max-width: 480px) {
+    .countdown {
+        gap: 5px; /* Минимальный зазор */
+    }
+    
+    .countdown div {
+        padding: 3%; /* Чуть меньше отступов, когда совсем мало места */
+    }
+    
+    .countdown small {
+        letter-spacing: 0.5px; /* Уменьшаем межбуквенное расстояние */
+    }
 }
 
 /* Падающие листья */
