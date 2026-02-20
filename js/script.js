@@ -175,25 +175,28 @@ function initMainScripts() {
     }
     
     // Функция создания листика для таймера
-function spawnTimerLeaf(container) {
-    if (!container) return;
+    function spawnTimerLeaf(container) {
+        const leaf = document.createElement('i');
+        leaf.classList.add('fas', 'fa-leaf', 'timer-leaf-anim');
+        const randomX = (Math.random() * 60 - 30) + 'px';
+        leaf.style.setProperty('--fall-x', randomX);
+        container.appendChild(leaf);
+        setTimeout(() => leaf.remove(), 1200);
+    }
     
-    // Убеждаемся, что контейнер имеет position: relative
-    container.style.position = 'relative';
-    
-    const leaf = document.createElement('i');
-    leaf.classList.add('fas', 'fa-leaf', 'timer-leaf-anim');
-    
-    // Увеличиваем диапазон разброса для естественности
-    const randomX = (Math.random() * 100 - 50) + 'px';
-    leaf.style.setProperty('--fall-x', randomX);
-    
-    container.appendChild(leaf);
-    
-    setTimeout(() => {
-        if (leaf && leaf.parentNode) leaf.remove();
-    }, 1200);
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // 3. Анимация появления (Fade In)
+    function checkFadeIn() {
+        document.querySelectorAll('.fade-in').forEach(el => {
+            if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('visible');
+        });
+    }
+    window.addEventListener('scroll', checkFadeIn);
+    checkFadeIn();
 }
+
 // ===== КУРСОР И ЛИСТЬЯ (МОБИЛЬНАЯ ОПТИМИЗАЦИЯ) =====
 
 const cursor = document.getElementById('custom-cursor');
