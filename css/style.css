@@ -800,7 +800,7 @@ header {
 .countdown {
     display: grid; 
     grid-template-columns: repeat(4, 1fr); 
-    gap: clamp(5px, 2vw, 15px); /* Адаптивный отступ между кругами */
+    gap: clamp(5px, 2vw, 15px);
     margin: 40px auto; 
     max-width: 600px; 
     width: 100%;
@@ -814,12 +814,10 @@ header {
     align-items: center;
     aspect-ratio: 1 / 1; 
     width: 100%; 
-    /* Убрали max-width: 100px - теперь круг занимает всю доступную ширину колонки */
-    /* max-width: 100px; - УДАЛЕНО */
     
-    /* Добавляем внутренние отступы (padding), чтобы контент не касался границ круга */
-    padding: 5%; /* Отступы относительно ширины круга */
-    box-sizing: border-box; /* Важно! Включаем padding в размеры элемента */
+    /* Внутренние отступы */
+    padding: 5%;
+    box-sizing: border-box;
     
     border: 2px solid rgba(201, 162, 91, 0.3); 
     border-radius: 50%;
@@ -831,9 +829,7 @@ header {
     color: var(--wood-warm); 
     line-height: 1;
     font-family: 'MyHeaderFont', serif;
-    /* Делаем шрифт более адаптивным */
-    font-size: clamp(1rem, 8vw, 2rem); 
-    /* Добавляем перенос слов на всякий случай */
+    font-size: clamp(1rem, 8vw, 2rem);
     word-break: break-word;
     text-align: center;
     text-shadow: 0 0 10px rgba(201, 162, 91, 0.6); 
@@ -842,29 +838,76 @@ header {
 }
 
 .countdown small {
-    font-size: clamp(0.5rem, 3vw, 0.75rem); /* Адаптивный размер для подписи */
+    font-size: clamp(0.5rem, 3vw, 0.75rem);
     color: var(--forest-deep); 
     text-transform: uppercase;
     letter-spacing: 1px; 
     font-weight: 600; 
     font-family: 'MyBodyFont', sans-serif;
-    margin-top: 2px; /* Уменьшаем отступ на маленьких экранах */
+    margin-top: 2px;
     opacity: 0.8;
-    white-space: nowrap; /* Предотвращаем перенос текста (дни/часы/минуты) */
+    white-space: nowrap;
 }
 
-/* Дополнительная корректировка для очень маленьких экранов */
-@media (max-width: 480px) {
+/* Адаптация для экранов шириной менее 400px */
+@media (max-width: 399px) {
     .countdown {
-        gap: 5px; /* Минимальный зазор */
+        gap: 3px; /* Минимальный зазор между кругами */
     }
     
     .countdown div {
-        padding: 3%; /* Чуть меньше отступов, когда совсем мало места */
+        padding: 2%; /* Уменьшаем внутренние отступы */
+        border-width: 1.5px; /* Делаем рамку тоньше */
+    }
+    
+    .countdown span {
+        font-size: clamp(0.9rem, 7vw, 1.2rem); /* Уменьшаем цифры */
     }
     
     .countdown small {
-        letter-spacing: 0.5px; /* Уменьшаем межбуквенное расстояние */
+        font-size: 0.45rem; /* Фиксированный маленький размер для подписей */
+        letter-spacing: 0.3px; /* Уменьшаем межбуквенное расстояние */
+        margin-top: 1px; /* Минимальный отступ */
+    }
+}
+
+/* Для экранов менее 320px (очень маленькие телефоны) */
+@media (max-width: 320px) {
+    .countdown {
+        gap: 2px;
+    }
+    
+    .countdown div {
+        padding: 1%;
+        border-width: 1px;
+    }
+    
+    .countdown span {
+        font-size: 0.8rem; /* Еще меньше цифры */
+    }
+    
+    .countdown small {
+        font-size: 0.4rem; /* Совсем маленький текст */
+        letter-spacing: 0.2px;
+    }
+}
+
+/* Для экранов менее 280px (самые маленькие устройства) */
+@media (max-width: 280px) {
+    .countdown {
+        gap: 1px;
+    }
+    
+    .countdown div {
+        border-width: 1px;
+    }
+    
+    .countdown span {
+        font-size: 0.7rem;
+    }
+    
+    .countdown small {
+        font-size: 0.35rem;
     }
 }
 
