@@ -19,7 +19,65 @@ window.toggleMusic = function() {
   }
   isPlaying = !isPlaying;
 }
+//Адаптация таймера пол экраны
+function adjustTimerTextSize() {
+    const circles = document.querySelectorAll('.countdown div');
+    
+    circles.forEach(circle => {
+        const numberSpan = circle.querySelector('span');
+        const labelSmall = circle.querySelector('small');
+        
+        if (!numberSpan) return;
+        
+        // Получаем доступную ширину круга (с учетом padding)
+        const circleWidth = circle.offsetWidth;
+        const availableWidth = circleWidth * 0.8; // 80% от ширины
+        
+        // Создаем временный элемент для измерения
+        const temp = document.createElement('span');
+        temp.style.visibility = 'hidden';
+        temp.style.position = 'absolute';
+        temp.style.whiteSpace = 'nowrap';
+        temp.style.fontFamily = window.getComputedStyle(numberSpan).fontFamily;
+        temp.style.fontWeight = window.getComputedStyle(numberSpan).fontWeight;
+        temp.textContent = numberSpan.textContent;
+        document.body.appendChild(temp);
+        
+        // Подбираем размер
+        let fontSize = 16;
+        temp.style.fontSize = fontSize + 'px';
+        
+        while (temp.offsetWidth < availableWidth && fontSize < 50) {
+            fontSize++;
+            temp.style.fontSize = fontSize + 'px';
+        }
+        
+        while (temp.offsetWidth > availableWidth && fontSize > 10) {
+            fontSize--;
+            temp.style.fontSize = fontSize + 'px';
+        }
+        
+        // Применяем размер
+        numberSpan.style.fontSize = fontSize + 'px';
+        
+        // Удаляем временный элемент
+        document.body.removeChild(temp);
+        
+        // Корректируем подпись
+        if (labelSmall) {
+            labelSmall.style.fontSize = Math.max(10, fontSize * 0.35) + 'px';
+        }
+    });
+}
 
+// Запускаем при загрузке и изменении размера
+document.addEventListener('DOMContentLoaded', adjustTimerTextSize);
+
+let resizeTimeout;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(adjustTimerTextSize, 100);
+});
 // Аккордеон FAQ (глобальное)
 window.toggleFaq = function(element) {
   const isActive = element.classList.contains('active');
