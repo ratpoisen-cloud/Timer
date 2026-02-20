@@ -174,7 +174,7 @@ function initMainScripts() {
         updatePart('seconds', 's');
     }
     
-    // Функция создания листика для таймера - ИСПРАВЛЕННАЯ
+    // Функция создания листика для таймера
 function spawnTimerLeaf(container) {
     if (!container) return;
     
@@ -184,21 +184,16 @@ function spawnTimerLeaf(container) {
     const leaf = document.createElement('i');
     leaf.classList.add('fas', 'fa-leaf', 'timer-leaf-anim');
     
-    const randomX = (Math.random() * 80 - 40).toFixed(0) + 'px';
+    // Увеличиваем диапазон разброса для естественности
+    const randomX = (Math.random() * 100 - 50) + 'px';
     leaf.style.setProperty('--fall-x', randomX);
-    
-    const randomDelay = (Math.random() * 0.2).toFixed(2) + 's';
-    leaf.style.animationDelay = randomDelay;
     
     container.appendChild(leaf);
     
     setTimeout(() => {
-        if (leaf && leaf.parentNode) {
-            leaf.remove();
-        }
-    }, 1400);
+        if (leaf && leaf.parentNode) leaf.remove();
+    }, 1200);
 }
-
 // ===== КУРСОР И ЛИСТЬЯ (МОБИЛЬНАЯ ОПТИМИЗАЦИЯ) =====
 
 const cursor = document.getElementById('custom-cursor');
