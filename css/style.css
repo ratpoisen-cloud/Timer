@@ -796,7 +796,7 @@ header {
     display: block; 
 }
 
-/* Таймер - исправленный для работы со скриптом */
+/* Таймер - исправленная версия */
 .countdown {
     display: grid; 
     grid-template-columns: repeat(4, 1fr); 
@@ -804,6 +804,8 @@ header {
     margin: 40px auto; 
     max-width: 600px; 
     width: 100%;
+    /* Добавляем центрирование самой сетки */
+    justify-content: center;
 }
 
 .countdown div {
@@ -814,13 +816,15 @@ header {
     align-items: center;
     aspect-ratio: 1 / 1; 
     width: 100%; 
-    margin: 0 auto;
+    /* Возвращаем ограничение, но делаем его адаптивным */
+    max-width: min(120px, 25vw); /* Не больше 120px и не больше 25% от ширины экрана */
+    margin: 0 auto; /* Центрируем каждый круг */
     border: 2px solid rgba(201, 162, 91, 0.3); 
     border-radius: 50%;
     background-image: radial-gradient(circle, #fefae0, rgba(247, 244, 232, 0.4));
     box-shadow: 0 0 15px rgba(201, 162, 91, 0.15), inset 0 0 10px rgba(201, 162, 91, 0.1);
-    /* Добавляем отступы внутри круга */
-    padding: 5%;
+    /* Отступы внутри круга */
+    padding: 8%; /* Чуть больше отступов */
     box-sizing: border-box;
 }
 
@@ -831,9 +835,10 @@ header {
     text-shadow: 0 0 10px rgba(201, 162, 91, 0.6); 
     position: relative; 
     z-index: 2;
-    /* Скрипт будет управлять размером */
     white-space: nowrap;
     text-align: center;
+    /* Базовый размер на всякий случай */
+    font-size: 1.5rem;
 }
 
 .countdown small {
@@ -845,8 +850,50 @@ header {
     margin-top: 5px; 
     opacity: 0.8;
     white-space: nowrap;
-    /* Базовый размер, скрипт его скорректирует */
     font-size: 0.7rem;
+}
+
+/* Для маленьких экранов - корректировка сетки */
+@media (max-width: 500px) {
+    .countdown {
+        gap: 10px;
+    }
+    
+    .countdown div {
+        max-width: min(100px, 22vw); /* Поменьше на маленьких экранах */
+        padding: 6%;
+    }
+}
+
+/* Для очень маленьких экранов */
+@media (max-width: 400px) {
+    .countdown {
+        gap: 5px; /* Уменьшаем зазор */
+    }
+    
+    .countdown div {
+        max-width: min(85px, 20vw); /* Еще меньше */
+        padding: 4%; /* Меньше отступов, чтобы текст не сжимался слишком сильно */
+        border-width: 1.5px; /* Тоньше рамка */
+    }
+    
+    .countdown small {
+        font-size: 0.6rem;
+        margin-top: 3px;
+        letter-spacing: 0.5px;
+    }
+}
+
+/* Для экранов 350px и меньше */
+@media (max-width: 350px) {
+    .countdown {
+        gap: 3px;
+    }
+    
+    .countdown div {
+        max-width: min(75px, 18vw);
+        padding: 3%;
+    }
 }
 
 /* Падающие листья */
