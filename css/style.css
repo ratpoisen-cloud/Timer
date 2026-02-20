@@ -1254,7 +1254,8 @@ section {
 
 .faq-answer p, 
 .faq-answer .checklist,
-.faq-answer .taxi-buttons { 
+.faq-answer .taxi-buttons,
+.faq-answer .housing-buttons { 
     padding: 20px 25px; 
     margin: 0;
 }
@@ -1298,6 +1299,18 @@ section {
     margin: 0;
 }
 
+/* Контейнер для кнопок жилья */
+.housing-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 15px 0 5px;
+}
+
+.housing-buttons .faq-btn {
+    margin: 0;
+}
+
 /* Ссылки в FAQ */
 .faq-link {
     display: inline-flex;
@@ -1313,7 +1326,7 @@ section {
     padding-bottom: 2px;
 }
 
-/* Текстовые ссылки */
+/* Текстовые ссылки (больше не используются для жилья, но оставим для совместимости) */
 .text-link {
     color: var(--text-dark);
     text-decoration: underline;
@@ -1361,7 +1374,6 @@ section {
 .warning-text strong {
     font-weight: 600;
 }
-
 /* КАРТА */
 .map-container {
     border: 4px solid var(--wood-warm);
