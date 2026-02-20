@@ -197,71 +197,110 @@ function initMainScripts() {
     checkFadeIn();
 }
 
-// ===== ОБЩИЕ ЭФФЕКТЫ (КУРСОР И ЛИСТЬЯ) =====
+// ===== КУРСОР И ЛИСТЬЯ (МОБИЛЬНАЯ ОПТИМИЗАЦИЯ) =====
+
 const cursor = document.getElementById('custom-cursor');
 const entryCursor = document.getElementById('entry-cursor');
-let lastLeafTime = 0;
 
-// Движение мыши (ПК)
-document.addEventListener('mousemove', (e) => {
+const isMobile = window.matchMedia("(pointer: coarse)").matches;
+
+let lastLeafTime = 0;
+const LEAF_INTERVAL_DESKTOP = 80;
+const LEAF_INTERVAL_MOBILE = 140;
+
+// ===== СОЗДАНИЕ ЛИСТА =====
+function createLeaf(x, y) {
+  const leaf = document.createElement('i');
+  leaf.classList.add('fas', 'fa-leaf', 'cursor-leaf');
+
+  const colors = ['#283618', '#606c38', '#C9A25B', '#8cac74'];
+  leaf.style.color = colors[Math.floor(Math.random() * colors.length)];
+
+  leaf.style.left = x + 'px';
+  leaf.style.top = y + 'px';
+
+  leaf.style.setProperty('--tx', (Math.random() * 100 - 50) + 'px');
+  leaf.style.setProperty('--ty', (Math.random() * 100 + 50) + 'px');
+  leaf.style.setProperty('--r', (Math.random() * 360) + 'deg');
+
+  document.body.appendChild(leaf);
+
+  // гарантированное удаление
+  setTimeout(() => {
+    if (leaf && leaf.parentNode) leaf.remove();
+  }, 1200);
+}
+
+// ===== ДЕСКТОП =====
+if (!isMobile) {
+  document.addEventListener('mousemove', (e) => {
     const x = e.clientX + 'px';
     const y = e.clientY + 'px';
-    
-    if (cursor) { cursor.style.left = x; cursor.style.top = y; }
-    if (entryCursor) { entryCursor.style.left = x; entryCursor.style.top = y; }
-    
-    // Эффект увеличения курсора на дереве
-    const treeBtn = document.getElementById('entry-tree-btn');
-    if (treeBtn && entryCursor) {
+
+    if (cursor) {
+      cursor.style.left = x;
+      cursor.style.top = y;
+    }
+
+    if (entryCursor) {
+      entryCursor.style.left = x;
+      entryCursor.style.top = y;
+
+      const treeBtn = document.getElementById('entry-tree-btn');
+      if (treeBtn) {
         const rect = treeBtn.getBoundingClientRect();
-        const isHovering = (e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom);
+        const isHovering =
+          e.clientX >= rect.left &&
+          e.clientX <= rect.right &&
+          e.clientY >= rect.top &&
+          e.clientY <= rect.bottom;
+
         entryCursor.style.transform = isHovering ? 'scale(1.5)' : 'scale(1)';
-        entryCursor.style.color = isHovering ? '#ffd700' : '#C9A25B';
+        entryCursor.style.color = isHovering ? '#C9A25B' : '#e6c889';
+      }
     }
 
-    if (Date.now() - lastLeafTime > 80) {
-        createLeaf(e.pageX, e.pageY);
-        lastLeafTime = Date.now();
+    if (Date.now() - lastLeafTime > LEAF_INTERVAL_DESKTOP) {
+      createLeaf(e.pageX, e.pageY);
+      lastLeafTime = Date.now();
     }
-});
-
-// Касание (Мобильные)
-document.addEventListener('touchmove', (e) => {
-    if (Date.now() - lastLeafTime > 80) {
-        createLeaf(e.touches[0].pageX, e.touches[0].pageY);
-        lastLeafTime = Date.now();
-    }
-}, {passive: true});
-
-document.addEventListener('touchstart', (e) => {
-    const touch = e.touches[0];
-    createLeaf(touch.pageX, touch.pageY);
-}, {passive: true});
-
-// Hover эффекты
-const interactables = document.querySelectorAll('a, button, .btn, .faq-question, #sound-control, input, label, .map-container');
-interactables.forEach(el => {
-    el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
-    el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
-});
-
-function createLeaf(x, y) {
-    const leaf = document.createElement('i');
-    leaf.classList.add('fas', 'fa-leaf', 'cursor-leaf');
-    const colors = ['#2A4B3C', '#8FAB93', '#C9A25B', '#e6c889'];
-    leaf.style.color = colors[Math.floor(Math.random() * colors.length)];
-    leaf.style.left = x + 'px';
-    leaf.style.top = y + 'px';
-    leaf.style.setProperty('--tx', (Math.random() * 100 - 50) + 'px');
-    leaf.style.setProperty('--ty', (Math.random() * 100 + 50) + 'px');
-    leaf.style.setProperty('--r', (Math.random() * 360) + 'deg');
-    document.body.appendChild(leaf);
-    setTimeout(() => leaf.remove(), 1500);
-  // ОБНОВЛЕННАЯ ПАЛИТРА (соответствует style.css)
-    const colors = [
-        '#2B3F35', // var(--forest-deep)
-        '#5A7A68', // var(--moss-green)
-        '#B8975E', // var(--wood-warm)
-        '#F0E4C2'  // var(--candle-glow)
-    ];
+  });
 }
+
+// ===== МОБИЛЬНЫЕ =====
+if (isMobile) {
+
+  function spawnLeafFromViewport() {
+    const x = Math.random() * window.innerWidth;
+    const y = Math.random() * window.innerHeight;
+    createLeaf(x, y);
+  }
+
+  document.addEventListener('touchmove', (e) => {
+    if (Date.now() - lastLeafTime > LEAF_INTERVAL_MOBILE) {
+      const touch = e.touches[0];
+      if (touch) {
+        createLeaf(touch.pageX, touch.pageY);
+      }
+      lastLeafTime = Date.now();
+    }
+  }, { passive: true });
+
+  // ⭐ листья при скролле страницы
+  window.addEventListener('scroll', () => {
+    if (Date.now() - lastLeafTime > LEAF_INTERVAL_MOBILE) {
+      spawnLeafFromViewport();
+      lastLeafTime = Date.now();
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchstart', (e) => {
+    const touch = e.touches[0];
+    if (touch) createLeaf(touch.pageX, touch.pageY);
+  }, { passive: true });
+
+  document.addEventListener('touchend', () => {
+    lastLeafTime = 0;
+  });
+}
+
