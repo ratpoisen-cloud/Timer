@@ -138,55 +138,26 @@ function initMainScripts() {
         container.appendChild(firefly);
     }
 
-    // 2. Таймер с падающими листьями
-    const weddingDate = new Date('2026-08-02T15:00:00');
-    let prevValues = { d: null, h: null, m: null, s: null };
-
-    function updateCountdown() {
-        const now = new Date();
-        const diff = weddingDate - now;
-        
-        if (diff <= 0) return;
-        
-        const values = {
-            d: Math.floor(diff / (1000 * 60 * 60 * 24)),
-            h: Math.floor((diff / (1000 * 60 * 60)) % 24),
-            m: Math.floor((diff / (1000 * 60)) % 60),
-            s: Math.floor((diff / 1000) % 60)
-        };
-
-        const updatePart = (id, key) => {
-            const el = document.getElementById(id);
-            if (!el) return;
-            const formattedVal = values[key] < 10 ? '0' + values[key] : values[key];
-            if (prevValues[key] !== values[key]) {
-                el.innerText = formattedVal;
-                if (prevValues[key] !== null) {
-                    spawnTimerLeaf(el.parentElement);
-                }
-                prevValues[key] = values[key];
-            }
-        };
-
-        updatePart('days', 'd');
-        updatePart('hours', 'h');
-        updatePart('minutes', 'm');
-        updatePart('seconds', 's');
-    }
-    
     // Функция создания листика для таймера
-    function spawnTimerLeaf(container) {
-        const leaf = document.createElement('i');
-        leaf.classList.add('fas', 'fa-leaf', 'timer-leaf-anim');
-        const randomX = (Math.random() * 60 - 30) + 'px';
-        leaf.style.setProperty('--fall-x', randomX);
-        container.appendChild(leaf);
-        setTimeout(() => leaf.remove(), 1200);
-    }
+function spawnTimerLeaf(container) {
+    // Создаем элемент с иконкой листка
+    const leaf = document.createElement('i');
+    leaf.classList.add('fas', 'fa-leaf', 'timer-leaf-anim');
     
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-
+    // Случайное смещение по горизонтали (от -40 до 40 пикселей)
+    const randomX = (Math.random() * 80 - 40) + 'px';
+    leaf.style.setProperty('--fall-x', randomX);
+    
+    // Добавляем листок в круг
+    container.appendChild(leaf);
+    
+    // Удаляем после анимации
+    setTimeout(() => {
+        if (leaf.parentNode) {
+            leaf.remove();
+        }
+    }, 1200);
+}
     // 3. Анимация появления (Fade In)
     function checkFadeIn() {
         document.querySelectorAll('.fade-in').forEach(el => {
