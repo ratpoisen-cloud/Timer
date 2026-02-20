@@ -138,36 +138,128 @@ function initMainScripts() {
         container.appendChild(firefly);
     }
 
-    // Функция создания листика для таймера
-function spawnTimerLeaf(container) {
-    // Создаем элемент с иконкой листка
+   // 2. Таймер с падающими листьями
+const weddingDate = new Date('2026-08-02T15:00:00');
+let prevValues = { 
+    days: null, 
+    hours: null, 
+    minutes: null, 
+    seconds: null 
+};
+
+// Находим все круги один раз при загрузке
+const timerCircles = document.querySelectorAll('.countdown div');
+
+function updateCountdown() {
+    const now = new Date();
+    const diff = weddingDate - now;
+    
+    if (diff <= 0) {
+        clearInterval(timerInterval);
+        return;
+    }
+    
+    const values = {
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((diff / (1000 * 60)) % 60),
+        seconds: Math.floor((diff / 1000) % 60)
+    };
+
+    // Обновляем дни
+    const daysEl = document.getElementById('days');
+    if (daysEl) {
+        const formattedDays = values.days < 10 ? '0' + values.days : values.days;
+        if (prevValues.days !== values.days) {
+            daysEl.innerText = formattedDays;
+            if (prevValues.days !== null && timerCircles[0]) {
+                spawnTimerLeaf(timerCircles[0]);
+            }
+            prevValues.days = values.days;
+        }
+    }
+    
+    // Обновляем часы
+    const hoursEl = document.getElementById('hours');
+    if (hoursEl) {
+        const formattedHours = values.hours < 10 ? '0' + values.hours : values.hours;
+        if (prevValues.hours !== values.hours) {
+            hoursEl.innerText = formattedHours;
+            if (prevValues.hours !== null && timerCircles[1]) {
+                spawnTimerLeaf(timerCircles[1]);
+            }
+            prevValues.hours = values.hours;
+        }
+    }
+    
+    // Обновляем минуты
+    const minutesEl = document.getElementById('minutes');
+    if (minutesEl) {
+        const formattedMinutes = values.minutes < 10 ? '0' + values.minutes : values.minutes;
+        if (prevValues.minutes !== values.minutes) {
+            minutesEl.innerText = formattedMinutes;
+            if (prevValues.minutes !== null && timerCircles[2]) {
+                spawnTimerLeaf(timerCircles[2]);
+            }
+            prevValues.minutes = values.minutes;
+        }
+    }
+    
+    // Обновляем секунды
+    const secondsEl = document.getElementById('seconds');
+    if (secondsEl) {
+        const formattedSeconds = values.seconds < 10 ? '0' + values.seconds : values.seconds;
+        if (prevValues.seconds !== values.seconds) {
+            secondsEl.innerText = formattedSeconds;
+            if (prevValues.seconds !== null && timerCircles[3]) {
+                spawnTimerLeaf(timerCircles[3]);
+            }
+            prevValues.seconds = values.seconds;
+        }
+    }
+    
+    // Для отладки
+    console.log('Таймер обновлен:', values);
+}
+
+// Функция создания листика для таймера
+function spawnTimerLeaf(circle) {
+    if (!circle) return;
+    
+    // Проверяем и устанавливаем position: relative
+    if (window.getComputedStyle(circle).position === 'static') {
+        circle.style.position = 'relative';
+    }
+    
     const leaf = document.createElement('i');
     leaf.classList.add('fas', 'fa-leaf', 'timer-leaf-anim');
     
-    // Случайное смещение по горизонтали (от -40 до 40 пикселей)
-    const randomX = (Math.random() * 80 - 40) + 'px';
+    // Случайное горизонтальное смещение
+    const randomX = (Math.random() * 80 - 40).toFixed(0) + 'px';
     leaf.style.setProperty('--fall-x', randomX);
     
-    // Добавляем листок в круг
-    container.appendChild(leaf);
+    // Случайная задержка
+    const randomDelay = (Math.random() * 0.2).toFixed(2) + 's';
+    leaf.style.animationDelay = randomDelay;
+    
+    circle.appendChild(leaf);
     
     // Удаляем после анимации
     setTimeout(() => {
         if (leaf.parentNode) {
             leaf.remove();
         }
-    }, 1200);
-}
-    // 3. Анимация появления (Fade In)
-    function checkFadeIn() {
-        document.querySelectorAll('.fade-in').forEach(el => {
-            if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('visible');
-        });
-    }
-    window.addEventListener('scroll', checkFadeIn);
-    checkFadeIn();
+    }, 1400);
 }
 
+// Запускаем таймер
+updateCountdown();
+const timerInterval = setInterval(updateCountdown, 1000);
+
+// Очищаем интервал при выгрузке
+window.addEventListener('beforeunload', () => {
+    clearInterval(timerInterval);
+});
 // ===== КУРСОР И ЛИСТЬЯ (МОБИЛЬНАЯ ОПТИМИЗАЦИЯ) =====
 
 const cursor = document.getElementById('custom-cursor');
