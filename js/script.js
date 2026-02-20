@@ -174,27 +174,29 @@ function initMainScripts() {
         updatePart('seconds', 's');
     }
     
-    // Функция создания листика для таймера
-    function spawnTimerLeaf(container) {
-        const leaf = document.createElement('i');
-        leaf.classList.add('fas', 'fa-leaf', 'timer-leaf-anim');
-        const randomX = (Math.random() * 60 - 30) + 'px';
-        leaf.style.setProperty('--fall-x', randomX);
-        container.appendChild(leaf);
-        setTimeout(() => leaf.remove(), 1200);
-    }
+    // Функция создания листика для таймера - ИСПРАВЛЕННАЯ
+function spawnTimerLeaf(container) {
+    if (!container) return;
     
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-
-    // 3. Анимация появления (Fade In)
-    function checkFadeIn() {
-        document.querySelectorAll('.fade-in').forEach(el => {
-            if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('visible');
-        });
-    }
-    window.addEventListener('scroll', checkFadeIn);
-    checkFadeIn();
+    // Убеждаемся, что контейнер имеет position: relative
+    container.style.position = 'relative';
+    
+    const leaf = document.createElement('i');
+    leaf.classList.add('fas', 'fa-leaf', 'timer-leaf-anim');
+    
+    const randomX = (Math.random() * 80 - 40).toFixed(0) + 'px';
+    leaf.style.setProperty('--fall-x', randomX);
+    
+    const randomDelay = (Math.random() * 0.2).toFixed(2) + 's';
+    leaf.style.animationDelay = randomDelay;
+    
+    container.appendChild(leaf);
+    
+    setTimeout(() => {
+        if (leaf && leaf.parentNode) {
+            leaf.remove();
+        }
+    }, 1400);
 }
 
 // ===== КУРСОР И ЛИСТЬЯ (МОБИЛЬНАЯ ОПТИМИЗАЦИЯ) =====
