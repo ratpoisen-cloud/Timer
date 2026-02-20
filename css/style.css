@@ -796,26 +796,30 @@ header {
     display: block; 
 }
 
-/* Таймер - компактная версия */
+/* Таймер */
 .countdown {
     display: grid; 
     grid-template-columns: repeat(4, 1fr); 
-    gap: clamp(5px, 1.5vw, 15px);
+    gap: clamp(5px, 2vw, 15px);
     margin: 40px auto; 
     max-width: 600px; 
     width: 100%;
 }
 
 .countdown div {
+    position: relative; 
     display: flex; 
     flex-direction: column; 
     justify-content: center; 
     align-items: center;
     aspect-ratio: 1 / 1; 
     width: 100%; 
-    padding: clamp(2%, 3%, 5%);
+    
+    /* Внутренние отступы */
+    padding: 5%;
     box-sizing: border-box;
-    border: clamp(1px, 0.3vw, 2px) solid rgba(201, 162, 91, 0.3); 
+    
+    border: 2px solid rgba(201, 162, 91, 0.3); 
     border-radius: 50%;
     background-image: radial-gradient(circle, #fefae0, rgba(247, 244, 232, 0.4));
     box-shadow: 0 0 15px rgba(201, 162, 91, 0.15), inset 0 0 10px rgba(201, 162, 91, 0.1);
@@ -823,23 +827,105 @@ header {
 
 .countdown span {
     color: var(--wood-warm); 
+    line-height: 1;
     font-family: 'MyHeaderFont', serif;
-    font-size: clamp(1rem, 7cqi, 2rem); /* 7% от ширины контейнера */
+    font-size: clamp(1rem, 8vw, 2rem);
+    word-break: break-word;
     text-align: center;
     text-shadow: 0 0 10px rgba(201, 162, 91, 0.6); 
-    line-height: 1;
+    position: relative; 
+    z-index: 2;
 }
 
 .countdown small {
-    font-size: clamp(0.4rem, 2.5cqi, 0.75rem); /* 2.5% от ширины контейнера */
+    font-size: clamp(0.5rem, 3vw, 0.75rem);
     color: var(--forest-deep); 
     text-transform: uppercase;
-    letter-spacing: clamp(0.5px, 0.3vw, 1px); 
+    letter-spacing: 1px; 
     font-weight: 600; 
     font-family: 'MyBodyFont', sans-serif;
-    margin-top: clamp(2px, 0.5vw, 5px);
+    margin-top: 2px;
     opacity: 0.8;
     white-space: nowrap;
+}
+
+/* Исправление для проблемного диапазона 400-425px */
+@media (min-width: 400px) and (max-width: 425px) {
+    .countdown {
+        gap: 8px; /* Увеличиваем зазор чтобы было больше воздуха */
+    }
+    
+    .countdown div {
+        padding: 3%; /* Уменьшаем отступы внутри круга */
+    }
+    
+    .countdown span {
+        font-size: 1.3rem; /* Фиксированный размер для этого диапазона */
+    }
+    
+    .countdown small {
+        font-size: 0.55rem; /* Немного увеличиваем подписи */
+        letter-spacing: 0.8px;
+        margin-top: 3px;
+    }
+}
+
+/* Адаптация для экранов менее 400px */
+@media (max-width: 399px) {
+    .countdown {
+        gap: 5px;
+    }
+    
+    .countdown div {
+        padding: 2%;
+        border-width: 1.5px;
+    }
+    
+    .countdown span {
+        font-size: clamp(1rem, 6vw, 1.2rem);
+    }
+    
+    .countdown small {
+        font-size: 0.5rem;
+        letter-spacing: 0.5px;
+        margin-top: 2px;
+    }
+}
+
+/* Для экранов 426-450px тоже добавим плавный переход */
+@media (min-width: 426px) and (max-width: 450px) {
+    .countdown div {
+        padding: 4%;
+    }
+    
+    .countdown span {
+        font-size: 1.4rem;
+    }
+    
+    .countdown small {
+        font-size: 0.6rem;
+    }
+}
+
+/* Для экранов менее 320px */
+@media (max-width: 320px) {
+    .countdown {
+        gap: 3px;
+    }
+    
+    .countdown div {
+        padding: 1%;
+        border-width: 1px;
+    }
+    
+    .countdown span {
+        font-size: 0.9rem;
+    }
+    
+    .countdown small {
+        font-size: 0.4rem;
+        letter-spacing: 0.3px;
+    }
 }
 
 /* Падающие листья */
