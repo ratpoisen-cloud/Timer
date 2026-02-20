@@ -1,405 +1,305 @@
-/* --- ПОДКЛЮЧЕНИЕ СВОИХ ШРИФТОВ --- */
-@font-face {
-    font-family: 'MyHeaderFont';
-    src: url('../assets/fonts/header-font.woff2') format('woff2'),
-         url('../assets/fonts/header-font.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+// ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ =====
+const music = document.getElementById('bg-music');
+const soundControl = document.getElementById('sound-control');
+const soundIcon = document.getElementById('sound-icon');
+let isPlaying = false;
+
+// ===== ФУНКЦИИ УПРАВЛЕНИЯ =====
+
+// Переключение музыки (глобальное)
+window.toggleMusic = function() {
+  if (isPlaying) {
+    music.pause();
+    soundIcon.classList.remove('fa-volume-up');
+    soundIcon.classList.add('fa-volume-mute');
+  } else {
+    music.play();
+    soundIcon.classList.remove('fa-volume-mute');
+    soundIcon.classList.add('fa-volume-up');
+  }
+  isPlaying = !isPlaying;
 }
 
-@font-face {
-    font-family: 'MyBodyFont';
-    src: url('../assets/fonts/body-font.woff2') format('woff2'),
-         url('../assets/fonts/body-font.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+// Аккордеон FAQ (глобальное)
+window.toggleFaq = function(element) {
+  const isActive = element.classList.contains('active');
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.classList.remove('active');
+  });
+  if (!isActive) {
+    element.classList.add('active');
+  }
 }
 
-@font-face {
-    font-family: 'MyTextFont';
-    src: url('../assets/fonts/text-font.woff2') format('woff2'),
-         url('../assets/fonts/text-font.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
+// ===== ЛОГИКА ВХОДА И ИНИЦИАЛИЗАЦИИ =====
+document.addEventListener('DOMContentLoaded', () => {
+    const entryPage = document.getElementById('entry-page');
+    const mainPage = document.getElementById('main-page');
+    const entryOverlay = document.getElementById('entry-overlay-transition');
+    const waxSeal = document.getElementById('entry-wax-seal');
 
-/* ========== ПЕРЕМЕННЫЕ ========== */
-:root {
-    /* Основная палитра */
-    --forest-deep: #283618;
-    --forest-sage: #606c38;
-    --wood-warm: #C9A25B;
-    --gold-glow: #e6c889;
-    --cream-paper: #fefae0;
-    --text-dark: #0E1308;
-    --lightGreen: #678351;
-    
-    /* Эффекты */
-    --shadow-soft: 0 10px 30px rgba(42, 75, 60, 0.15);
-    --magic-glow: 0 0 15px rgba(201, 162, 91, 0.3), 0 5px 20px rgba(0,0,0,0.1);
-    --transition: all 0.5s ease;
-}
+    // Клик теперь вешаем на ДЕРЕВО (кнопку)
+    const treeBtn = document.getElementById('entry-tree-btn');
 
-/* ========== СБРОС И БАЗОВЫЕ СТИЛИ ========== */
-* { 
-    box-sizing: border-box; 
-    margin: 0; 
-    padding: 0; 
-}
+    if (treeBtn) {
+        treeBtn.addEventListener('click', enterMainSite);
+    }
 
-body {
-    font-family: 'MyBodyFont', sans-serif;
-    background-color: var(--cream-paper);
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.07'/%3E%3C/svg%3E");
-    color: var(--text-dark);
-    line-height: 1.7;
-    overflow-x: hidden;
-    -webkit-tap-highlight-color: transparent;
-}
+    // Доступность (Enter/Space)
+    document.addEventListener('keydown', (event) => {
+        if ((event.code === 'Space' || event.code === 'Enter') && entryPage.style.display !== 'none') {
+            enterMainSite();
+        }
+    });
 
-/* Кастомный курсор (только ПК) */
-body, a, button, .btn, .map-container, .faq-question, #sound-control, input, label {
-    cursor: none !important;
-}
+    function enterMainSite() {
+        // 1. Попытка запуска музыки
+        try {
+            music.volume = 0.5;
+            const playPromise = music.play();
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    isPlaying = true;
+                    soundControl.style.opacity = '1';
+                }).catch(error => {
+                    console.log("Автозапуск блокирован, ждем клика");
+                    soundControl.style.opacity = '1';
+                });
+            }
+        } catch (e) { console.error(e); }
 
-#custom-cursor, #entry-cursor {
-    position: fixed;
-    top: 0; 
-    left: 0; 
-    width: 30px; 
-    height: 30px;
-    pointer-events: none; 
-    z-index: 100000;
-    color: var(--wood-warm); 
-    font-size: 24px;
-    transform: translate(-50%, -50%) rotate(-20deg);
-    transition: transform 0.15s ease, color 0.3s ease;
-    filter: drop-shadow(0 0 5px rgba(201, 162, 91, 0.6));
-    display: flex; 
-    align-items: center; 
-    justify-content: center;
-}
+        // 2. Анимация исчезновения входа
+        entryOverlay.style.opacity = '1';
+        entryOverlay.style.pointerEvents = 'all';
+        
+        // Анимация дерева при клике (увеличение и исчезновение)
+        if (treeBtn) {
+            treeBtn.style.transform = 'translate(-50%, -50%) scale(3)';
+            treeBtn.style.opacity = '0';
+        }
 
-body.hovering #custom-cursor, 
-body.hovering #entry-cursor {
-    transform: translate(-50%, -50%) scale(1.4) rotate(0deg);
-    color: var(--forest-deep); 
-}
+        // 3. Смена экранов
+        setTimeout(() => {
+            entryPage.style.display = 'none';
+            mainPage.style.display = 'block';
+            
+            // Запуск логики главной страницы
+            initMainScripts();
+            
+            // Если музыка заиграла, показываем иконку
+            setTimeout(() => {
+                if (isPlaying) {
+                    soundIcon.className = 'fas fa-volume-up';
+                } else {
+                    soundIcon.className = 'fas fa-volume-mute';
+                }
+                soundControl.style.opacity = '1';
+            }, 1000);
+        }, 800);
+    }
 
-/* ========== ТИПОГРАФИКА ========== */
-h1, h2, h3, .couple-names, .entry-title, .weather-header span, 
-.faq-question, .btn, .countdown span, .faq-btn {
-    font-family: 'MyHeaderFont', serif;
-    font-weight: 500;
-}
+    // Запуск светлячков на входе
+    initEntryFireflies();
+});
 
-h2 {
-    font-size: 3.5rem; 
-    margin-top: 40px; 
-    margin-bottom: 40px;
-    text-align: center; 
-    color: var(--forest-deep);
-    line-height: 1.1;
-    text-shadow: 0 0 10px rgba(42, 75, 60, 0.1);
-}
-
-.light-title {
-    color: #f7f4e8;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-}
-
-/* ========== СТРАНИЦА ВХОДА (ENTRY PAGE) ========== */
-#entry-page {
-    position: fixed; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%;
-    background: #283618; 
-    color: #e8f5e9;
-    overflow: hidden; 
-    z-index: 10000; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center;
-    transition: opacity 1s ease;
-}
-
-/* Фон и текстура */
-.entry-bg-pastel {
-    position: absolute; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%;
-    background-color: #fefae0;
-    z-index: 1; 
-}
-
-.entry-bg-texture {
-    position: absolute; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E");
-    z-index: 2; 
-    opacity: 0.3;
-    pointer-events: none;
-}
-
-/* Вензеля - строго по углам */
-.corner-decor {
-    position: absolute; 
-    width: 350px; 
-    height: 350px; 
-    background-image: url('../assets/img/corner.png'); 
-    background-size: contain; 
-    background-repeat: no-repeat;
-    background-position: contain;
-    pointer-events: none; 
-    z-index: 3;
-    /* Специально для черных PNG - получаем #606C38 */
-    filter: invert(45%) sepia(50%) saturate(350%) hue-rotate(52deg) brightness(85%) contrast(95%);
-    opacity: 0.9; 
-}
-
-/* Левый верхний угол */
-.corner-decor.top-left { 
-    top: 0; 
-    left: 0; 
-    transform: rotate(0deg); 
-}
-
-/* Правый верхний угол */
-.corner-decor.top-right { 
-    top: 0; 
-    right: 0; 
-    transform: rotate(90deg); 
-}
-
-/* Левый нижний угол */
-.corner-decor.bottom-left { 
-    bottom: 0; 
-    left: 0; 
-    transform: rotate(-90deg); 
-}
-
-/* Правый нижний угол */
-.corner-decor.bottom-right { 
-    bottom: 0; 
-    right: 0; 
-    transform: rotate(180deg); 
-}
-
-/* Адаптация для мобильных - только размер, позиции остаются по углам */
-@media (max-width: 768px) {
-    .corner-decor {
-        width: 200px !important;
-        height: 200px !important;
+// Светлячки на входе
+function initEntryFireflies() {
+    const container = document.getElementById('entry-fireflies');
+    if (!container) return;
+    for (let i = 0; i < 25; i++) {
+        const f = document.createElement('div');
+        f.className = 'entry-firefly';
+        f.style.left = Math.random() * 100 + '%';
+        f.style.top = Math.random() * 100 + '%';
+        f.style.animationDelay = Math.random() * 5 + 's';
+        f.style.opacity = 0.3 + Math.random() * 0.5;
+        container.appendChild(f);
     }
 }
 
-@media (max-width: 480px) {
-    .corner-decor {
-        width: 150px !important;
-        height: 150px !important;
+// ===== СКРИПТЫ ГЛАВНОЙ СТРАНИЦЫ =====
+function initMainScripts() {
+    // 1. Светлячки (основные)
+    const container = document.getElementById('fireflies-container');
+    for (let i = 0; i < 40; i++) {
+        const firefly = document.createElement('div');
+        firefly.classList.add('firefly');
+        firefly.style.left = Math.random() * 100 + '%';
+        firefly.style.top = Math.random() * 100 + '%';
+        const size = Math.random() * 3 + 3;
+        firefly.style.width = size + 'px';
+        firefly.style.height = size + 'px';
+        firefly.style.setProperty('--x2', (Math.random() * 200 - 100) + 'px');
+        firefly.style.setProperty('--y2', (Math.random() * 200 - 100) + 'px');
+        firefly.style.setProperty('--x4', (Math.random() * 200 - 100) + 'px');
+        firefly.style.setProperty('--y4', (Math.random() * 200 - 100) + 'px');
+        firefly.style.animationDuration = (Math.random() * 10 + 5) + 's';
+        firefly.style.animationDelay = (Math.random() * 5) + 's';
+        container.appendChild(firefly);
     }
-}
 
-@media (max-width: 375px) {
-    .corner-decor {
-        width: 120px !important;
-        height: 120px !important;
-    }
-}
-/* ДЕРЕВО-КНОПКА - исправлено для черных PNG */
-.entry-tree-btn {
-    position: absolute;
-    top: 40%; 
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 55vmin; 
-    height: 55vmin;
-    background-image: url('../assets/img/yggdrasil-lg.png');
-    background-size: contain; 
-    background-repeat: no-repeat; 
-    background-position: center;
-    z-index: 10;
-    cursor: pointer;
-    transition: all 0.8s ease;
-    /* Фильтр для цвета #C9A25B */
-    filter: invert(70%) sepia(50%) saturate(400%) hue-rotate(350deg) brightness(90%) contrast(90%);
-    opacity: 0.95;
-}
-@media (orientation: portrait) {
-    .entry-tree-btn {
-        top: 60%; /* Опускаем ниже */
-    }
-}
-.entry-tree-btn:hover {
-    transform: translate(-50%, -50%) scale(1.05);
-    /* Сохраняем цвет и добавляем свечение */
-    filter: invert(70%) sepia(50%) saturate(400%) hue-rotate(350deg) brightness(100%) contrast(95%) drop-shadow(0 0 30px #C9A25B);
-    
-}
-/* Светлячки на главной странице */
-#fireflies-container { 
-    position: fixed; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%; 
-    pointer-events: none; 
-    z-index: 999; 
-    overflow: hidden; 
-}
+    // 2. Таймер с падающими листьями
+    const weddingDate = new Date('2026-08-02T15:00:00');
+    let prevValues = { d: null, h: null, m: null, s: null };
 
-.firefly {
-    position: absolute; 
-    width: 35px;
-    height: 35px;
-    background-image: url('../assets/img/firefly.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    filter: brightness(0) invert(1) sepia(100%) saturate(800%) hue-rotate(5deg) brightness(150%) contrast(120%);
-    animation: fly 15s infinite ease-in-out;
-    opacity: 0.95;
-    pointer-events: none;
-    z-index: 1000;
-}
+    function updateCountdown() {
+        const now = new Date();
+        const diff = weddingDate - now;
+        
+        if (diff <= 0) return;
+        
+        const values = {
+            d: Math.floor(diff / (1000 * 60 * 60 * 24)),
+            h: Math.floor((diff / (1000 * 60 * 60)) % 24),
+            m: Math.floor((diff / (1000 * 60)) % 60),
+            s: Math.floor((diff / 1000) % 60)
+        };
 
-.firefly::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: radial-gradient(circle, 
-        rgba(255, 215, 0, 0.8) 0%, 
-        rgba(255, 200, 0, 0.4) 40%, 
-        rgba(255, 170, 0, 0.15) 70%, 
-        transparent 100%);
-    z-index: -1;
-    animation: glowPulse 2.5s infinite ease-in-out;
-}
+        const updatePart = (id, key) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const formattedVal = values[key] < 10 ? '0' + values[key] : values[key];
+            if (prevValues[key] !== values[key]) {
+                el.innerText = formattedVal;
+                if (prevValues[key] !== null) {
+                    spawnTimerLeaf(el.parentElement);
+                }
+                prevValues[key] = values[key];
+            }
+        };
 
-/* Анимация полета */
-@keyframes floatFirefly {
-    0% { 
-        transform: translate(0, 0) scale(0.8); 
-        opacity: 0.7; 
-    }
-    25% { 
-        transform: translate(20px, -30px) scale(1); 
-        opacity: 1; 
-    }
-    50% { 
-        transform: translate(-15px, 20px) scale(1.1); 
-        opacity: 1; 
-    }
-    75% { 
-        transform: translate(25px, 15px) scale(0.9); 
-        opacity: 0.9; 
-    }
-    100% { 
-        transform: translate(0, 0) scale(0.8); 
-        opacity: 0.7; 
-    }
-}
-
-@keyframes fly {
-    0% { 
-        opacity: 0.7; 
-        transform: translate(0, 0) scale(0.8);
-    }
-    20% { 
-        opacity: 1; 
-        transform: translate(var(--x2), var(--y2)) scale(1);
-    }
-    50% { 
-        opacity: 1; 
-        transform: translate(var(--x4), var(--y4)) scale(1.2);
-    }
-    80% { 
-        opacity: 0.9; 
-        transform: translate(var(--x2), var(--y2)) scale(0.9);
-    }
-    100% { 
-        opacity: 0.7; 
-        transform: translate(0, 0) scale(0.8);
-    }
-}
-
-/* Разные размеры для разнообразия */
-.entry-firefly:nth-child(odd) {
-    width: 35px;
-    height: 35px;
-}
-
-.entry-firefly:nth-child(3n) {
-    width: 45px;
-    height: 45px;
-    filter: brightness(0) invert(1) sepia(100%) saturate(800%) hue-rotate(5deg) brightness(170%) contrast(120%);
-}
-
-.entry-firefly:nth-child(5n+2) {
-    width: 30px;
-    height: 30px;
-}
-
-/* Король светлячков - самый яркий */
-.entry-firefly:nth-child(7n+4) {
-    width: 55px;
-    height: 55px;
-    filter: brightness(0) invert(1) sepia(100%) saturate(900%) hue-rotate(0deg) brightness(180%) contrast(130%);
-    animation-duration: 16s;
-}
-
-.entry-firefly:nth-child(7n+4)::after {
-    background: radial-gradient(circle, 
-        rgba(255, 230, 0, 1) 0%, 
-        rgba(255, 200, 0, 0.7) 40%, 
-        rgba(255, 150, 0, 0.3) 70%, 
-        transparent 100%);
-    animation-duration: 4s;
-}
-
-/* Адаптация для мобильных */
-@media (max-width: 768px) {
-    .entry-firefly {
-        width: 30px;
-        height: 30px;
+        updatePart('days', 'd');
+        updatePart('hours', 'h');
+        updatePart('minutes', 'm');
+        updatePart('seconds', 's');
     }
     
-    .entry-firefly:nth-child(3n) {
-        width: 35px;
-        height: 35px;
+    // Функция создания листика для таймера
+    function spawnTimerLeaf(container) {
+        const leaf = document.createElement('i');
+        leaf.classList.add('fas', 'fa-leaf', 'timer-leaf-anim');
+        const randomX = (Math.random() * 60 - 30) + 'px';
+        leaf.style.setProperty('--fall-x', randomX);
+        container.appendChild(leaf);
+        setTimeout(() => leaf.remove(), 1200);
     }
     
-    .entry-firefly:nth-child(7n+4) {
-        width: 40px;
-        height: 40px;
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // 3. Анимация появления (Fade In)
+    function checkFadeIn() {
+        document.querySelectorAll('.fade-in').forEach(el => {
+            if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('visible');
+        });
     }
-    
-    .firefly {
-        width: 25px;
-        height: 25px;
-    }
+    window.addEventListener('scroll', checkFadeIn);
+    checkFadeIn();
 }
 
-@media (max-width: 480px) {
-    .entry-firefly {
-        width: 25px;
-        height: 25px;
+// ===== КУРСОР И ЛИСТЬЯ (МОБИЛЬНАЯ ОПТИМИЗАЦИЯ) =====
+
+const cursor = document.getElementById('custom-cursor');
+const entryCursor = document.getElementById('entry-cursor');
+
+const isMobile = window.matchMedia("(pointer: coarse)").matches;
+
+let lastLeafTime = 0;
+const LEAF_INTERVAL_DESKTOP = 80;
+const LEAF_INTERVAL_MOBILE = 140;
+
+// ===== СОЗДАНИЕ ЛИСТА =====
+function createLeaf(x, y) {
+  const leaf = document.createElement('i');
+  leaf.classList.add('fas', 'fa-leaf', 'cursor-leaf');
+
+  const colors = ['#283618', '#606c38', '#C9A25B', '#8cac74'];
+  leaf.style.color = colors[Math.floor(Math.random() * colors.length)];
+
+  leaf.style.left = x + 'px';
+  leaf.style.top = y + 'px';
+
+  leaf.style.setProperty('--tx', (Math.random() * 100 - 50) + 'px');
+  leaf.style.setProperty('--ty', (Math.random() * 100 + 50) + 'px');
+  leaf.style.setProperty('--r', (Math.random() * 360) + 'deg');
+
+  document.body.appendChild(leaf);
+
+  // гарантированное удаление
+  setTimeout(() => {
+    if (leaf && leaf.parentNode) leaf.remove();
+  }, 1200);
+}
+
+// ===== ДЕСКТОП =====
+if (!isMobile) {
+  document.addEventListener('mousemove', (e) => {
+    const x = e.clientX + 'px';
+    const y = e.clientY + 'px';
+
+    if (cursor) {
+      cursor.style.left = x;
+      cursor.style.top = y;
     }
-    
-    .entry-firefly:nth-child(3n) {
-        width: 30px
+
+    if (entryCursor) {
+      entryCursor.style.left = x;
+      entryCursor.style.top = y;
+
+      const treeBtn = document.getElementById('entry-tree-btn');
+      if (treeBtn) {
+        const rect = treeBtn.getBoundingClientRect();
+        const isHovering =
+          e.clientX >= rect.left &&
+          e.clientX <= rect.right &&
+          e.clientY >= rect.top &&
+          e.clientY <= rect.bottom;
+
+        entryCursor.style.transform = isHovering ? 'scale(1.5)' : 'scale(1)';
+        entryCursor.style.color = isHovering ? '#C9A25B' : '#e6c889';
+      }
+    }
+
+    if (Date.now() - lastLeafTime > LEAF_INTERVAL_DESKTOP) {
+      createLeaf(e.pageX, e.pageY);
+      lastLeafTime = Date.now();
+    }
+  });
+}
+
+// ===== МОБИЛЬНЫЕ =====
+if (isMobile) {
+
+  function spawnLeafFromViewport() {
+    const x = Math.random() * window.innerWidth;
+    const y = Math.random() * window.innerHeight;
+    createLeaf(x, y);
+  }
+
+  document.addEventListener('touchmove', (e) => {
+    if (Date.now() - lastLeafTime > LEAF_INTERVAL_MOBILE) {
+      const touch = e.touches[0];
+      if (touch) {
+        createLeaf(touch.pageX, touch.pageY);
+      }
+      lastLeafTime = Date.now();
+    }
+  }, { passive: true });
+
+  // ⭐ листья при скролле страницы
+  window.addEventListener('scroll', () => {
+    if (Date.now() - lastLeafTime > LEAF_INTERVAL_MOBILE) {
+      spawnLeafFromViewport();
+      lastLeafTime = Date.now();
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchstart', (e) => {
+    const touch = e.touches[0];
+    if (touch) createLeaf(touch.pageX, touch.pageY);
+  }, { passive: true });
+
+  document.addEventListener('touchend', () => {
+    lastLeafTime = 0;
+  });
+}
