@@ -1528,6 +1528,82 @@ section {
 @keyframes spin {
     100% { transform: rotate(360deg); }
 }
+/* ===== ЧТО ДАРИТЬ ===== */
+
+.gifts-section {
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.gifts-wrap {
+  max-width: 720px;
+  margin: 40px auto 0;
+  display: grid;
+  gap: 20px;
+}
+
+.gift-card {
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(6px);
+  border-radius: 18px;
+  padding: 42px 32px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+
+  transform: translateY(40px);
+  opacity: 0;
+  transition: all 0.9s ease;
+}
+
+.gift-card.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.gift-card.subtle {
+  padding: 26px 24px;
+  background: rgba(255,255,255,0.55);
+}
+
+.gift-icon {
+  font-size: 26px;
+  margin-bottom: 14px;
+  opacity: 0.7;
+  animation: giftFloat 4s ease-in-out infinite;
+}
+
+.gift-text {
+  font-size: 18px;
+  line-height: 1.7;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.gift-text.small {
+  font-size: 16px;
+  opacity: 0.85;
+}
+
+/* Плавное появление */
+.reveal {
+  will-change: transform, opacity;
+}
+
+@keyframes giftFloat {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* Адаптация */
+@media (max-width: 768px) {
+  .gifts-section {
+    padding: 60px 20px;
+  }
+
+  .gift-text {
+    font-size: 16px;
+  }
+}
+
 /* RSVP */
 .rsvp-section { 
     background-color: #8c9a7b; /* Мягкий пастельно-зеленый (светлее forest-deep) */
