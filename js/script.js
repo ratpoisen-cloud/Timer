@@ -116,21 +116,151 @@ function initEntryFireflies() {
         container.appendChild(f);
     }
 }
-// ===== ПЛАВНОЕ ПОЯВЛЕНИЕ БЛОКА ПОДАРКОВ =====
-const revealElements = document.querySelectorAll('.reveal');
+/* ========== ЧТО ДАРИТЬ (МИНИМАЛИСТИЧНЫЙ) ========== */
+.gift-minimal {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    margin: 40px 0 30px;
+    box-sizing: border-box;
+}
 
-const revealObserver = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
+.gift-minimal-card {
+    max-width: 500px;
+    width: 100%;
+    background: #fefae0;
+    border: 2px solid var(--wood-warm);
+    border-radius: 30px;
+    padding: 30px 25px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(201, 162, 91, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+}
+
+.gift-minimal-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(201, 162, 91, 0.25);
+}
+
+.gift-minimal-icon {
+    font-size: 2.5rem;
+    color: var(--wood-warm);
+    margin-bottom: 15px;
+    animation: minimalPulse 2s infinite ease-in-out;
+}
+
+@keyframes minimalPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.gift-minimal-title {
+    font-size: 1.8rem;
+    color: var(--forest-deep);
+    font-family: 'MyHeaderFont', serif;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.gift-minimal-divider {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--wood-warm), transparent);
+    margin: 0 auto 20px;
+}
+
+.gift-minimal-text {
+    font-size: 1rem;
+    color: var(--text-dark);
+    font-family: 'MyBodyFont', sans-serif;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.gift-minimal-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--forest-sage);
+    font-size: 0.95rem;
+    font-family: 'MyBodyFont', sans-serif;
+    margin-bottom: 20px;
+    background: rgba(96, 108, 56, 0.05);
+    padding: 10px 15px;
+    border-radius: 40px;
+}
+
+.gift-minimal-box i {
+    color: var(--wood-warm);
+    font-size: 0.9rem;
+}
+
+.gift-minimal-money {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 12px 15px;
+    background: rgba(201, 162, 91, 0.08);
+    border-radius: 50px;
+    border: 1px dashed var(--wood-warm);
+}
+
+.gift-minimal-money-text {
+    font-size: 0.95rem;
+    color: var(--forest-deep);
+    font-family: 'MyBodyFont', sans-serif;
+    line-height: 1.4;
+    flex: 1;
+    text-align: left;
+}
+
+.gift-minimal-money-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--wood-warm);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fefae0;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.gift-minimal-card:hover .gift-minimal-money-icon {
+    transform: rotate(10deg) scale(1.1);
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 480px) {
+    .gift-minimal {
+        padding: 0 15px;
     }
-  });
-}, {
-  threshold: 0.2
-});
-
-revealElements.forEach(el => revealObserver.observe(el));
-
+    
+    .gift-minimal-card {
+        padding: 25px 20px;
+    }
+    
+    .gift-minimal-title {
+        font-size: 1.6rem;
+    }
+    
+    .gift-minimal-money {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .gift-minimal-money-text {
+        text-align: center;
+    }
+}
 // ===== СКРИПТЫ ГЛАВНОЙ СТРАНИЦЫ =====
 function initMainScripts() {
     // 1. Светлячки (основные)
