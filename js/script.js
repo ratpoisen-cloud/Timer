@@ -303,3 +303,11 @@ if (isMobile) {
     lastLeafTime = 0;
   });
 }
+// Лёгкий параллакс для секции подарков
+window.addEventListener('scroll', () => {
+  document.querySelectorAll('.parallax-bg').forEach(bg => {
+    const speed = parseFloat(bg.dataset.speed) || 0.15;
+    const yPos = -(window.scrollY * speed);
+    bg.style.transform = `translateY(${yPos}px)`;
+  });
+});
