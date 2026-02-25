@@ -1956,7 +1956,8 @@ footer {
   .gift-whisper {
     font-size: 1rem;
   }
-}#sound-control { 
+}
+#sound-control { 
     position: fixed; 
     bottom: 30px; 
     right: 30px; 
