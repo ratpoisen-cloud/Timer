@@ -1735,213 +1735,31 @@ footer {
         font-size: 0.75rem;
     }
 }
-/* ========== НЕЖНАЯ СЕКЦИЯ ПОДАРКОВ ========== */
-.gift-section {
-  position: relative;
-  width: 100vw;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 80px 20px;
-  box-sizing: border-box;
-  overflow: hidden;
-  background-image: url('../assets/img/forest-light-bg.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
+<!-- ЧТО ПОДАРИТЬ – нежный лесной вариант на всю ширину -->
+<section class="gift-section fade-in" id="gift">
+  <div class="gift-card forest-glow">
+    <div class="gift-icon-pulse">
+      <i class="fas fa-gift"></i>
+    </div>
 
-/* Затемнение фона */
-.gift-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.2);
-  z-index: 1;
-  pointer-events: none;
-}
+    <h2 class="gift-title-soft">Что подарить?</h2>
+    
+    <p class="gift-poem">
+      Ваши улыбки и присутствие — лучший подарок<br>
+      в нашем летнем лесу под крымским небом
+    </p>
 
-.gift-card.forest-glow {
-  position: relative;
-  z-index: 2;
-  max-width: 800px;
-  width: 100%;
-  margin: 0 auto;
-  background: rgba(247, 244, 232, 0.85);
-  backdrop-filter: blur(8px);
-  border-radius: 32px;
-  padding: 50px 40px 60px;
-  box-shadow: 0 15px 40px rgba(42, 75, 60, 0.08),
-              inset 0 0 30px rgba(201, 162, 91, 0.1);
-  text-align: center; /* ЦЕНТРИРОВАНИЕ ВСЕГО ТЕКСТА */
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  box-sizing: border-box;
-  border: none;
-}
+    <div class="gift-hint-line">
+      <i class="fas fa-leaf"></i>
+      <span>Цветы оставьте в садах</span>
+      <i class="fas fa-leaf"></i>
+    </div>
 
-.gift-card.forest-glow:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 25px 50px rgba(201, 162, 91, 0.2),
-              inset 0 0 40px rgba(201, 162, 91, 0.15);
-}
-
-/* Пульсирующая иконка подарка */
-.gift-icon-pulse {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 25px; /* auto по бокам для центрирования */
-  background: linear-gradient(145deg, var(--wood-warm), #e6c889);
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.3rem;
-  box-shadow: 0 10px 25px rgba(201, 162, 91, 0.4);
-  animation: giftPulse 2.5s infinite ease-in-out;
-}
-
-@keyframes giftPulse {
-  0%, 100% { 
-    transform: scale(1); 
-    box-shadow: 0 10px 25px rgba(201, 162, 91, 0.4);
-  }
-  50% { 
-    transform: scale(1.08); 
-    box-shadow: 0 15px 35px rgba(201, 162, 91, 0.6);
-  }
-}
-
-.gift-title-soft {
-  font-size: clamp(2rem, 5vw, 2.5rem);
-  color: var(--forest-deep);
-  margin-bottom: 20px;
-  line-height: 1.2;
-  font-weight: 500;
-  font-family: 'MyHeaderFont', serif;
-  text-shadow: 0 2px 5px rgba(255, 255, 255, 0.5);
-  text-align: center; /* Явное центрирование */
-}
-
-.gift-poem {
-  font-size: clamp(1.1rem, 3vw, 1.25rem);
-  line-height: 1.7;
-  color: var(--text-dark);
-  margin-bottom: 30px;
-  font-style: italic;
-  opacity: 0.95;
-  max-width: 600px;
-  margin-left: auto; /* Центрирование блока */
-  margin-right: auto; /* Центрирование блока */
-  text-align: center; /* Центрирование текста */
-  white-space: normal; /* Разрешаем перенос строк */
-}
-
-.gift-hint-line {
-  display: flex;
-  align-items: center;
-  justify-content: center; /* Центрирование flex-контейнера */
-  gap: 15px;
-  font-size: 1.2rem;
-  color: var(--forest-sage);
-  margin: 0 auto 30px; /* auto по бокам для центрирования */
-  flex-wrap: wrap;
-  font-weight: 500;
-  text-align: center;
-}
-
-.gift-hint-line i {
-  font-size: 1.5rem;
-  color: var(--wood-warm);
-  animation: swayLeaf 6s infinite ease-in-out;
-}
-
-.gift-hint-line i:first-child {
-  animation-delay: 0s;
-}
-
-.gift-hint-line i:last-child {
-  animation-delay: 1s;
-}
-
-@keyframes swayLeaf {
-  0%, 100% { transform: rotate(-8deg) scale(1); }
-  50% { transform: rotate(8deg) scale(1.05); }
-}
-
-.gift-whisper {
-  font-size: 1.1rem;
-  color: var(--forest-deep);
-  font-style: italic;
-  opacity: 0.9;
-  max-width: 500px;
-  margin: 0 auto; /* Центрирование блока */
-  line-height: 1.6;
-  padding: 20px 0 5px;
-  border-top: 1px solid rgba(201, 162, 91, 0.2);
-  text-align: center; /* Центрирование текста */
-  display: block; /* Меняем с inline-block на block */
-}
-
-/* Адаптация для мобильных */
-@media (max-width: 768px) {
-  .gift-section {
-    padding: 60px 15px;
-  }
-  
-  .gift-card.forest-glow {
-    padding: 40px 25px 50px;
-    border-radius: 28px;
-  }
-  
-  .gift-icon-pulse {
-    width: 70px;
-    height: 70px;
-    font-size: 2rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .gift-section {
-    padding: 50px 15px;
-  }
-  
-  .gift-card.forest-glow {
-    padding: 30px 20px 40px;
-  }
-  
-  .gift-icon-pulse {
-    width: 60px;
-    height: 60px;
-    font-size: 1.8rem;
-    margin-bottom: 20px;
-  }
-  
-  .gift-poem {
-    font-size: 1rem;
-  }
-  
-  .gift-hint-line {
-    gap: 10px;
-    font-size: 1.1rem;
-  }
-  
-  .gift-hint-line i {
-    font-size: 1.3rem;
-  }
-  
-  .gift-whisper {
-    font-size: 1rem;
-  }
-}
+    <p class="gift-whisper">
+      Нам важнее ваша компания у костра
+    </p>
+  </div>
+</section>
 #sound-control { 
     position: fixed; 
     bottom: 30px; 
