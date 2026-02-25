@@ -1797,7 +1797,6 @@ footer {
   line-height: 1.7;
   color: var(--text-dark);
   margin-bottom: 25px;
-  font-style: italic;
   opacity: 0.95;
   max-width: 600px;
   margin-left: auto;
@@ -1826,7 +1825,6 @@ footer {
 .gift-whisper {
   font-size: 1rem;
   color: var(--forest-deep);
-  font-style: italic;
   opacity: 0.8;
   max-width: 500px;
   margin: 0 auto;
