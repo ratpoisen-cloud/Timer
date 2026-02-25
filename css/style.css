@@ -1735,104 +1735,51 @@ footer {
         font-size: 0.75rem;
     }
 }
-/* ========== НЕЖНАЯ СЕКЦИЯ ПОДАРКОВ ========== */
+/* ========== ЧТО ПОДАРИТЬ – МИНИМАЛИСТИЧНЫЙ БЛОК ========== */
 .gift-section {
-  position: relative;
-  width: 100vw;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 100px 20px;
+  padding: 40px 20px 50px;
+  margin: 0 auto;
   box-sizing: border-box;
-  overflow: hidden;
-  background-image: url('../assets/img/forest-light-bg.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
 }
 
-/* Светлый градиент поверх фона в цветах сайта */
-.gift-section::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, 
-    rgba(254, 250, 224, 0.3) 0%,    /* --cream-paper */
-    rgba(201, 162, 91, 0.15) 50%,    /* --wood-warm */
-    rgba(96, 108, 56, 0.2) 100%);    /* --forest-sage */
-  z-index: 1;
-  pointer-events: none;
-}
-
-/* Дополнительное легкое затемнение для читаемости */
-.gift-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(247, 244, 232, 0.1);
-  z-index: 1;
-  pointer-events: none;
-}
-
-.gift-card.forest-glow {
-  position: relative;
-  z-index: 2;
+.gift-card {
   max-width: 800px;
   width: 100%;
   margin: 0 auto;
-  background: rgba(247, 244, 232, 0.85);
-  backdrop-filter: blur(8px);
-  border-radius: 32px;
-  padding: 50px 40px 60px;
-  box-shadow: 0 15px 40px rgba(42, 75, 60, 0.15),
-              inset 0 0 30px rgba(201, 162, 91, 0.15);
+  background: transparent; /* Прозрачный фон */
+  padding: 0 20px;
   text-align: center;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
   box-sizing: border-box;
-  border: none;
 }
 
-.gift-card.forest-glow:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 25px 50px rgba(201, 162, 91, 0.25),
-              inset 0 0 40px rgba(201, 162, 91, 0.2);
-}
-
-/* Пульсирующая иконка подарка */
+/* Зеленая иконка подарка */
 .gift-icon-pulse {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 25px;
-  background: linear-gradient(145deg, var(--wood-warm), #e6c889);
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 20px;
+  background: var(--forest-sage); /* Зеленый цвет #606c38 */
   color: white;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.3rem;
-  box-shadow: 0 10px 25px rgba(201, 162, 91, 0.4);
+  font-size: 2rem;
+  box-shadow: 0 5px 15px rgba(96, 108, 56, 0.3);
   animation: giftPulse 2.5s infinite ease-in-out;
 }
 
 @keyframes giftPulse {
   0%, 100% { 
     transform: scale(1); 
-    box-shadow: 0 10px 25px rgba(201, 162, 91, 0.4);
+    box-shadow: 0 5px 15px rgba(96, 108, 56, 0.3);
   }
   50% { 
     transform: scale(1.08); 
-    box-shadow: 0 15px 35px rgba(201, 162, 91, 0.6);
+    box-shadow: 0 10px 25px rgba(96, 108, 56, 0.5);
   }
 }
 
@@ -1843,15 +1790,13 @@ footer {
   line-height: 1.2;
   font-weight: 500;
   font-family: 'MyHeaderFont', serif;
-  text-shadow: 0 2px 5px rgba(255, 255, 255, 0.5);
-  text-align: center;
 }
 
 .gift-poem {
   font-size: clamp(1.1rem, 3vw, 1.25rem);
   line-height: 1.7;
   color: var(--text-dark);
-  margin-bottom: 30px;
+  margin-bottom: 25px;
   font-style: italic;
   opacity: 0.95;
   max-width: 600px;
@@ -1864,80 +1809,54 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
-  font-size: 1.2rem;
+  gap: 12px;
+  font-size: 1.1rem;
   color: var(--forest-sage);
-  margin: 0 auto 30px;
+  margin: 0 auto 20px;
   flex-wrap: wrap;
   font-weight: 500;
   text-align: center;
 }
 
 .gift-hint-line i {
-  font-size: 1.5rem;
-  color: var(--wood-warm);
-  animation: swayLeaf 6s infinite ease-in-out;
-}
-
-.gift-hint-line i:first-child {
-  animation-delay: 0s;
-}
-
-.gift-hint-line i:last-child {
-  animation-delay: 1s;
-}
-
-@keyframes swayLeaf {
-  0%, 100% { transform: rotate(-8deg) scale(1); }
-  50% { transform: rotate(8deg) scale(1.05); }
+  font-size: 1.3rem;
+  color: var(--forest-sage);
 }
 
 .gift-whisper {
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--forest-deep);
   font-style: italic;
-  opacity: 0.9;
+  opacity: 0.8;
   max-width: 500px;
   margin: 0 auto;
   line-height: 1.6;
-  padding: 20px 0 5px;
-  border-top: 1px solid rgba(201, 162, 91, 0.2);
   text-align: center;
-  display: block;
 }
 
 /* Адаптация для мобильных */
 @media (max-width: 768px) {
   .gift-section {
-    padding: 80px 15px;
-  }
-  
-  .gift-card.forest-glow {
-    padding: 40px 25px 50px;
-    border-radius: 28px;
-  }
-  
-  .gift-icon-pulse {
-    width: 70px;
-    height: 70px;
-    font-size: 2rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .gift-section {
-    padding: 60px 15px;
-  }
-  
-  .gift-card.forest-glow {
-    padding: 30px 20px 40px;
+    padding: 30px 15px 40px;
   }
   
   .gift-icon-pulse {
     width: 60px;
     height: 60px;
     font-size: 1.8rem;
-    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .gift-section {
+    padding: 25px 15px 35px;
+  }
+  
+  .gift-icon-pulse {
+    width: 55px;
+    height: 55px;
+    font-size: 1.6rem;
+    margin-bottom: 15px;
   }
   
   .gift-poem {
@@ -1945,16 +1864,16 @@ footer {
   }
   
   .gift-hint-line {
-    gap: 10px;
-    font-size: 1.1rem;
+    gap: 8px;
+    font-size: 1rem;
   }
   
   .gift-hint-line i {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
   
   .gift-whisper {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 }
 #sound-control { 
