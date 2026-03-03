@@ -313,3 +313,20 @@ if (document.querySelector('.gift-section')) {
     });
   });
 }
+// Функция для открытия/закрытия цветовой палитры
+window.toggleColorPalette = function() {
+    const palette = document.getElementById('colorPalette');
+    palette.classList.toggle('show');
+}
+
+// Закрытие палитры при клике вне ее
+document.addEventListener('click', function(event) {
+    const palette = document.getElementById('colorPalette');
+    const dressCodeIcon = document.querySelector('.dress-code-card i');
+    
+    if (palette && dressCodeIcon) {
+        if (!dressCodeIcon.contains(event.target) && !palette.contains(event.target)) {
+            palette.classList.remove('show');
+        }
+    }
+});
