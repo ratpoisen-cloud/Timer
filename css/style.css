@@ -1971,6 +1971,123 @@ footer {
     max-width: 300px;
   }
 }
+/* ========== ЦВЕТОВАЯ ПАЛИТРА ДЛЯ ДРЕСС-КОДА ========== */
+.dress-code-card {
+    position: relative;
+    cursor: pointer;
+}
+
+.color-palette {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 240px;
+    background: rgba(254, 250, 224, 0.95);
+    backdrop-filter: blur(10px);
+    border: 2px solid var(--wood-warm);
+    border-radius: 20px;
+    padding: 20px 15px;
+    margin-top: 15px;
+    box-shadow: var(--magic-glow);
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.color-palette.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+    transform: translateX(-50%) translateY(0);
+}
+
+.palette-title {
+    font-family: 'MyHeaderFont', serif;
+    font-size: 1.2rem;
+    color: var(--forest-deep);
+    margin-bottom: 15px;
+    text-align: center;
+    border-bottom: 1px solid var(--wood-warm);
+    padding-bottom: 8px;
+}
+
+.palette-colors {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.color-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 8px;
+    border-radius: 30px;
+    transition: background 0.2s ease;
+}
+
+.color-item:hover {
+    background: rgba(201, 162, 91, 0.1);
+}
+
+.color-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.color-name {
+    font-family: 'MyBodyFont', sans-serif;
+    font-size: 0.95rem;
+    color: var(--forest-deep);
+    flex: 1;
+    text-align: left;
+}
+
+.color-hex {
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: var(--wood-warm);
+    opacity: 0.8;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .color-palette {
+        width: 200px;
+        padding: 15px 12px;
+    }
+    
+    .color-circle {
+        width: 25px;
+        height: 25px;
+    }
+    
+    .color-name {
+        font-size: 0.85rem;
+    }
+    
+    .color-hex {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .color-palette {
+        width: 180px;
+        padding: 12px 10px;
+    }
+    
+    .color-circle {
+        width: 22px;
+        height: 22px;
+    }
+}
 #sound-control { 
     position: fixed; 
     bottom: 30px; 
