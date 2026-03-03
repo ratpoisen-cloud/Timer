@@ -1795,8 +1795,9 @@ footer {
     }
 }
 
+/* УМЕНЬШЕННЫЙ И АДАПТИВНЫЙ ЗАГОЛОВОК */
 .gift-title-soft {
-    font-size: clamp(2rem, 5vw, 2.5rem);
+    font-size: clamp(1.6rem, 4vw, 2rem); /* Уменьшил с 2rem-2.5rem до 1.6rem-2rem */
     color: var(--forest-deep);
     margin-bottom: 20px;
     line-height: 1.2;
@@ -1805,7 +1806,7 @@ footer {
 }
 
 .gift-poem {
-    font-size: clamp(1.1rem, 3.5vw, 1.25rem);
+    font-size: clamp(1rem, 3.2vw, 1.2rem); /* Немного уменьшил */
     line-height: 1.7;
     color: var(--text-dark);
     margin-bottom: 25px;
@@ -1819,33 +1820,33 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
-    font-size: 1.2rem;
+    gap: 12px; /* Уменьшил gap */
+    font-size: 1.1rem; /* Уменьшил */
     color: var(--forest-sage);
-    margin: 0 auto 30px;
+    margin: 0 auto 25px; /* Уменьшил нижний отступ */
     flex-wrap: wrap;
     font-weight: 500;
     text-align: center;
 }
 
 .gift-hint-line i {
-    font-size: 1.5rem;
+    font-size: 1.3rem; /* Уменьшил */
     color: var(--forest-sage);
 }
 
 .gift-button-wrapper {
-    margin-top: 35px;
+    margin-top: 30px; /* Уменьшил */
     text-align: center;
 }
 
 .gift-soft-btn {
     display: inline-block;
-    padding: 16px 38px;
+    padding: 14px 32px; /* Уменьшил */
     background: #E6D5B8;
     color: #5C4E3D;
     border: 1px solid var(--wood-warm);
     border-radius: 50px;
-    font-size: 1.15rem;
+    font-size: 1.05rem; /* Уменьшил */
     font-family: 'MyBodyFont', sans-serif;
     font-weight: 500;
     letter-spacing: 0.5px;
@@ -1879,6 +1880,10 @@ footer {
         height: 70px;
         font-size: 2rem;
     }
+    
+    .gift-title-soft {
+        font-size: 1.8rem; /* Фиксированный размер для планшетов */
+    }
 }
 
 @media (max-width: 480px) {
@@ -1898,24 +1903,31 @@ footer {
         margin-bottom: 20px;
     }
     
+    .gift-title-soft {
+        font-size: 1.6rem; /* Еще меньше для телефонов */
+        margin-bottom: 15px;
+    }
+    
     .gift-poem {
         font-size: 1rem;
+        margin-bottom: 20px;
     }
     
     .gift-hint-line {
-        gap: 10px;
-        font-size: 1.1rem;
+        gap: 8px;
+        font-size: 1rem;
+        margin-bottom: 20px;
     }
     
     .gift-hint-line i {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
     }
     
     .gift-soft-btn {
-        padding: 14px 28px;
+        padding: 12px 24px;
         font-size: 1rem;
         width: 100%;
-        max-width: 280px;
+        max-width: 260px;
     }
 }
 /* Мягкая теплая кнопка */
