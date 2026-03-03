@@ -1797,7 +1797,7 @@ footer {
 
 /* УМЕНЬШЕННЫЙ И АДАПТИВНЫЙ ЗАГОЛОВОК */
 .gift-title-soft {
-    font-size: clamp(1.6rem, 4vw, 2rem); /* Уменьшил с 2rem-2.5rem до 1.6rem-2rem */
+    font-size: clamp(1.4rem, 4vw, 2rem); /* Уменьшил с 2rem-2.5rem до 1.6rem-2rem */
     color: var(--forest-deep);
     margin-bottom: 20px;
     line-height: 1.2;
@@ -1882,7 +1882,7 @@ footer {
     }
     
     .gift-title-soft {
-        font-size: 1.8rem; /* Фиксированный размер для планшетов */
+        font-size: 1.6rem; /* Фиксированный размер для планшетов */
     }
 }
 
@@ -1899,7 +1899,7 @@ footer {
     .gift-icon-pulse {
         width: 60px;
         height: 60px;
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         margin-bottom: 20px;
     }
     
