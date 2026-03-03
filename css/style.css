@@ -1735,144 +1735,188 @@ footer {
         font-size: 0.75rem;
     }
 }
-/* ========== ЧТО ПОДАРИТЬ – МИНИМАЛИСТИЧНЫЙ БЛОК ========== */
+/* ========== ЧТО ПОДАРИТЬ – В СТИЛЕ ПРИГЛАШЕНИЯ ========== */
 .gift-section {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px 20px 50px;
-  margin: 0 auto;
-  box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px 50px;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
 
-.gift-card {
-  max-width: 800px;
-  width: 100%;
-  margin: 0 auto;
-  background: transparent; /* Прозрачный фон */
-  padding: 0 20px;
-  text-align: center;
-  box-sizing: border-box;
+.gift-container {
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.gift-paper { 
+    text-align: center; 
+    width: 100%;
+    margin: 0 auto; 
+    font-size: clamp(1rem, 4vw, 1.25rem);
+    padding: clamp(40px, 6vw, 70px) clamp(25px, 5vw, 50px);
+    background-color: #fefae0;
+    border: 2px solid var(--wood-warm); 
+    border-radius: 24px; 
+    box-shadow: var(--magic-glow); 
+    box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 /* Зеленая иконка подарка */
 .gift-icon-pulse {
-  width: 70px;
-  height: 70px;
-  margin: 0 auto 20px;
-  background: var(--forest-sage); /* Зеленый цвет #606c38 */
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  box-shadow: 0 5px 15px rgba(96, 108, 56, 0.3);
-  animation: giftPulse 2.5s infinite ease-in-out;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 25px;
+    background: var(--forest-sage);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.3rem;
+    box-shadow: 0 5px 15px rgba(96, 108, 56, 0.3);
+    animation: giftPulse 2.5s infinite ease-in-out;
 }
 
 @keyframes giftPulse {
-  0%, 100% { 
-    transform: scale(1); 
-    box-shadow: 0 5px 15px rgba(96, 108, 56, 0.3);
-  }
-  50% { 
-    transform: scale(1.08); 
-    box-shadow: 0 10px 25px rgba(96, 108, 56, 0.5);
-  }
+    0%, 100% { 
+        transform: scale(1); 
+        box-shadow: 0 5px 15px rgba(96, 108, 56, 0.3);
+    }
+    50% { 
+        transform: scale(1.08); 
+        box-shadow: 0 10px 25px rgba(96, 108, 56, 0.5);
+    }
 }
 
 .gift-title-soft {
-  font-size: clamp(2rem, 5vw, 2.5rem);
-  color: var(--forest-deep);
-  margin-bottom: 20px;
-  line-height: 1.2;
-  font-weight: 500;
-  font-family: 'MyHeaderFont', serif;
+    font-size: clamp(2rem, 5vw, 2.5rem);
+    color: var(--forest-deep);
+    margin-bottom: 20px;
+    line-height: 1.2;
+    font-weight: 500;
+    font-family: 'MyHeaderFont', serif;
 }
 
 .gift-poem {
-  font-size: clamp(1.1rem, 3vw, 1.25rem);
-  line-height: 1.7;
-  color: var(--text-dark);
-  margin-bottom: 25px;
-  opacity: 0.95;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
+    font-size: clamp(1.1rem, 3.5vw, 1.25rem);
+    line-height: 1.7;
+    color: var(--text-dark);
+    margin-bottom: 25px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 
 .gift-hint-line {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  font-size: 1.1rem;
-  color: var(--forest-sage);
-  margin: 0 auto 20px;
-  flex-wrap: wrap;
-  font-weight: 500;
-  text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    font-size: 1.2rem;
+    color: var(--forest-sage);
+    margin: 0 auto 30px;
+    flex-wrap: wrap;
+    font-weight: 500;
+    text-align: center;
 }
 
 .gift-hint-line i {
-  font-size: 1.3rem;
-  color: var(--forest-sage);
+    font-size: 1.5rem;
+    color: var(--forest-sage);
 }
 
-.gift-whisper {
-  font-size: 1rem;
-  color: var(--forest-deep);
-  opacity: 0.8;
-  max-width: 500px;
-  margin: 0 auto;
-  line-height: 1.6;
-  text-align: center;
+.gift-button-wrapper {
+    margin-top: 35px;
+    text-align: center;
+}
+
+.gift-soft-btn {
+    display: inline-block;
+    padding: 16px 38px;
+    background: #E6D5B8;
+    color: #5C4E3D;
+    border: 1px solid var(--wood-warm);
+    border-radius: 50px;
+    font-size: 1.15rem;
+    font-family: 'MyBodyFont', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(201, 162, 91, 0.2);
+}
+
+.gift-soft-btn:hover {
+    background: #D4B483;
+    color: #3A322A;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(201, 162, 91, 0.3);
+    border-color: #D4B483;
 }
 
 /* Адаптация для мобильных */
 @media (max-width: 768px) {
-  .gift-section {
-    padding: 30px 15px 40px;
-  }
-  
-  .gift-icon-pulse {
-    width: 60px;
-    height: 60px;
-    font-size: 1.8rem;
-  }
+    .gift-section {
+        padding: 30px 15px 40px;
+    }
+    
+    .gift-paper {
+        padding: 35px 25px;
+        border-radius: 20px;
+    }
+    
+    .gift-icon-pulse {
+        width: 70px;
+        height: 70px;
+        font-size: 2rem;
+    }
 }
 
 @media (max-width: 480px) {
-  .gift-section {
-    padding: 25px 15px 35px;
-  }
-  
-  .gift-icon-pulse {
-    width: 55px;
-    height: 55px;
-    font-size: 1.6rem;
-    margin-bottom: 15px;
-  }
-  
-  .gift-poem {
-    font-size: 1rem;
-  }
-  
-  .gift-hint-line {
-    gap: 8px;
-    font-size: 1rem;
-  }
-  
-  .gift-hint-line i {
-    font-size: 1.2rem;
-  }
-  
-  .gift-whisper {
-    font-size: 0.95rem;
-  }
+    .gift-section {
+        padding: 25px 10px 35px;
+    }
+    
+    .gift-paper {
+        padding: 30px 20px;
+        border-radius: 16px;
+    }
+    
+    .gift-icon-pulse {
+        width: 60px;
+        height: 60px;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+    
+    .gift-poem {
+        font-size: 1rem;
+    }
+    
+    .gift-hint-line {
+        gap: 10px;
+        font-size: 1.1rem;
+    }
+    
+    .gift-hint-line i {
+        font-size: 1.3rem;
+    }
+    
+    .gift-soft-btn {
+        padding: 14px 28px;
+        font-size: 1rem;
+        width: 100%;
+        max-width: 280px;
+    }
 }
 /* Мягкая теплая кнопка */
 .gift-button-wrapper {
