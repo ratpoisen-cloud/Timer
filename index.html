@@ -104,9 +104,11 @@
                   <h3 style="color: #f7f4e8;">Локация</h3>
                   <p style="color: #f7f4e8;"><strong>Отель "Зазеркалье"</strong><br>г. Ялта, Приморский парк, 9</p>
              <div class="card dress-code-card">
-    <i class="fas fa-glass-cheers" style="color: #f7f4e8; cursor: pointer;" onclick="toggleColorPalette()"></i>
-    <h3 style="color: #f7f4e8;">Дресс-код</h3>
-    <p style="color: #f7f4e8;">Природные тона: зеленый, золото, беж.</p>
+    <div class="dress-code-header" onclick="toggleColorPalette()">
+        <i class="fas fa-glass-cheers" style="color: #f7f4e8;"></i>
+        <h3 style="color: #f7f4e8;">Дресс-код</h3>
+    </div>
+    <p style="color: #f7f4e8; margin-bottom: 10px;">Природные тона: зеленый, золото, беж.</p>
     
     <!-- Скрытая цветовая палитра -->
     <div class="color-palette" id="colorPalette">
@@ -140,7 +142,6 @@
         </div>
     </div>
 </div>
-      </div>
     </section>
     <!-- Приглашение и начало квеста (перенесено перед FAQ) -->
 <section>
