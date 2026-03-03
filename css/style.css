@@ -1971,6 +1971,219 @@ footer {
     max-width: 300px;
   }
 }
+/* ========== ДРЕСС-КОД С ЦВЕТОВОЙ ПАЛИТРОЙ ========== */
+.dresscode-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px 50px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.dresscode-container {
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.dresscode-paper {
+    text-align: center;
+    width: 100%;
+    padding: clamp(40px, 6vw, 60px) clamp(25px, 5vw, 50px);
+    background-color: #fefae0;
+    border: 2px solid var(--wood-warm);
+    border-radius: 32px;
+    box-shadow: var(--magic-glow);
+    box-sizing: border-box;
+}
+
+.dresscode-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.dresscode-icon {
+    font-size: 3.5rem;
+    color: var(--wood-warm);
+    filter: drop-shadow(0 0 10px rgba(201, 162, 91, 0.4));
+    animation: softPulse 3s infinite ease-in-out;
+}
+
+@keyframes softPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.dresscode-title {
+    font-size: clamp(2rem, 5vw, 2.5rem);
+    color: var(--forest-deep);
+    font-family: 'MyHeaderFont', serif;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.dresscode-description {
+    font-size: clamp(1.1rem, 3.5vw, 1.3rem);
+    color: var(--forest-sage);
+    margin-bottom: 35px;
+    font-style: italic;
+    line-height: 1.6;
+}
+
+.dresscode-palette {
+    background: rgba(201, 162, 91, 0.08);
+    border-radius: 28px;
+    padding: 30px 25px;
+    margin-bottom: 30px;
+    border: 1px dashed var(--wood-warm);
+}
+
+.palette-title {
+    font-family: 'MyHeaderFont', serif;
+    font-size: 1.3rem;
+    color: var(--forest-deep);
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+}
+
+.palette-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 20px;
+    justify-content: center;
+}
+
+.palette-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 10px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.palette-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(201, 162, 91, 0.2);
+}
+
+.palette-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 3px solid var(--wood-warm);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.palette-item:hover .palette-circle {
+    transform: scale(1.1);
+}
+
+.palette-label {
+    font-family: 'MyBodyFont', sans-serif;
+    font-size: 0.95rem;
+    color: var(--forest-deep);
+    font-weight: 500;
+}
+
+.dresscode-note {
+    font-size: 1.1rem;
+    color: var(--forest-sage);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    font-style: italic;
+}
+
+.dresscode-note i {
+    font-size: 1.3rem;
+    color: var(--wood-warm);
+    animation: swayLeaf 4s infinite ease-in-out;
+}
+
+.dresscode-note i:first-child {
+    animation-delay: 0s;
+}
+
+.dresscode-note i:last-child {
+    animation-delay: 0.5s;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .dresscode-section {
+        padding: 30px 15px 40px;
+    }
+    
+    .dresscode-paper {
+        padding: 35px 25px;
+        border-radius: 28px;
+    }
+    
+    .palette-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .palette-item {
+        padding: 12px 8px;
+    }
+    
+    .palette-circle {
+        width: 45px;
+        height: 45px;
+    }
+}
+
+@media (max-width: 480px) {
+    .dresscode-section {
+        padding: 25px 10px 35px;
+    }
+    
+    .dresscode-paper {
+        padding: 30px 20px;
+        border-radius: 24px;
+    }
+    
+    .dresscode-icon {
+        font-size: 3rem;
+    }
+    
+    .palette-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .palette-item {
+        padding: 10px 5px;
+    }
+    
+    .palette-circle {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .palette-label {
+        font-size: 0.85rem;
+    }
+    
+    .dresscode-note {
+        font-size: 1rem;
+        gap: 10px;
+    }
+}
 #sound-control { 
     position: fixed; 
     bottom: 30px; 
