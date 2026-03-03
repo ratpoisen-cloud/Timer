@@ -1975,22 +1975,42 @@ footer {
 .dress-code-card {
     position: relative;
     cursor: pointer;
+    min-height: 180px; /* Фиксированная минимальная высота */
+    display: flex;
+    flex-direction: column;
+}
+
+.dress-code-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.dress-code-header i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease;
+}
+
+.dress-code-header:hover i {
+    transform: scale(1.1);
 }
 
 .color-palette {
     position: absolute;
     top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 240px;
-    background: rgba(254, 250, 224, 0.95);
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: rgba(254, 250, 224, 0.98);
     backdrop-filter: blur(10px);
     border: 2px solid var(--wood-warm);
-    border-radius: 20px;
+    border-radius: 16px;
     padding: 20px 15px;
     margin-top: 15px;
     box-shadow: var(--magic-glow);
-    z-index: 100;
+    z-index: 1000;
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
@@ -2001,7 +2021,6 @@ footer {
     opacity: 1;
     visibility: visible;
     pointer-events: all;
-    transform: translateX(-50%) translateY(0);
 }
 
 .palette-title {
@@ -2017,33 +2036,34 @@ footer {
 .palette-colors {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
 }
 
 .color-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 5px 8px;
+    gap: 12px;
+    padding: 6px 10px;
     border-radius: 30px;
     transition: background 0.2s ease;
 }
 
 .color-item:hover {
-    background: rgba(201, 162, 91, 0.1);
+    background: rgba(201, 162, 91, 0.15);
 }
 
 .color-circle {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     border: 2px solid rgba(255, 255, 255, 0.5);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
 }
 
 .color-name {
     font-family: 'MyBodyFont', sans-serif;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: var(--forest-deep);
     flex: 1;
     text-align: left;
@@ -2051,21 +2071,25 @@ footer {
 
 .color-hex {
     font-family: monospace;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--wood-warm);
     opacity: 0.8;
+    flex-shrink: 0;
 }
 
 /* Адаптация для мобильных */
 @media (max-width: 768px) {
+    .dress-code-card {
+        min-height: 160px;
+    }
+    
     .color-palette {
-        width: 200px;
         padding: 15px 12px;
     }
     
     .color-circle {
-        width: 25px;
-        height: 25px;
+        width: 24px;
+        height: 24px;
     }
     
     .color-name {
@@ -2073,14 +2097,22 @@ footer {
     }
     
     .color-hex {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
     }
 }
 
 @media (max-width: 480px) {
+    .dress-code-card {
+        min-height: 150px;
+    }
+    
     .color-palette {
-        width: 180px;
         padding: 12px 10px;
+    }
+    
+    .color-item {
+        gap: 8px;
+        padding: 4px 8px;
     }
     
     .color-circle {
