@@ -1874,73 +1874,29 @@ footer {
     font-size: 0.95rem;
   }
 }
-/* Кнопка для перевода денег */
-.gift-button-wrapper {
-  margin-top: 30px;
-  text-align: center;
-}
-
-.gift-donate-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 14px 28px;
-  background: var(--forest-sage); /* Зеленый цвет как у иконки */
-  color: white;
-  border: none;
-  border-radius: 50px;
+/* Альтернативный более светлый вариант */
+.gift-soft-btn {
+  display: inline-block;
+  padding: 14px 32px;
+  background: #F5E6D3; /* Очень светлый кремово-песочный */
+  color: #7C6A5A; /* Мягкий серо-коричневый */
+  border: 1px solid rgba(201, 162, 91, 0.25);
+  border-radius: 40px;
   font-size: 1.1rem;
   font-family: 'MyBodyFont', sans-serif;
   font-weight: 500;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(96, 108, 56, 0.3);
+  box-shadow: 0 4px 10px rgba(201, 162, 91, 0.1);
 }
 
-.gift-donate-btn i {
-  font-size: 1.2rem;
-  color: white;
-  transition: transform 0.3s ease;
-}
-
-.gift-donate-btn i:last-child {
-  animation: swayLeaf 3s infinite ease-in-out;
-}
-
-.gift-donate-btn:hover {
-  background: #4a5b3a; /* Чуть темнее при наведении */
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(96, 108, 56, 0.5);
-}
-
-.gift-donate-btn:hover i:first-child {
-  transform: scale(1.1);
-}
-
-.gift-donate-btn:hover i:last-child {
-  animation: swayLeafHover 1s infinite ease-in-out;
-}
-
-@keyframes swayLeafHover {
-  0%, 100% { transform: rotate(-10deg); }
-  50% { transform: rotate(10deg); }
-}
-
-/* Адаптация для мобильных */
-@media (max-width: 480px) {
-  .gift-donate-btn {
-    padding: 12px 20px;
-    font-size: 1rem;
-    gap: 8px;
-    width: 100%;
-    max-width: 320px;
-  }
-  
-  .gift-donate-btn i {
-    font-size: 1rem;
-  }
+.gift-soft-btn:hover {
+  background: #EADAC8; /* Чуть насыщеннее при наведении */
+  color: #5C4E3D;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(201, 162, 91, 0.2);
+  border-color: rgba(201, 162, 91, 0.4);
 }
 #sound-control { 
     position: fixed; 
