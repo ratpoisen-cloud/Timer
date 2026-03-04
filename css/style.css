@@ -2184,7 +2184,7 @@ footer {
         gap: 10px;
     }
 }
-/* ========== RSVP CHOICE BUTTONS ========== */
+/* ========== RSVP ВЫБОР ОТВЕТА ========== */
 .rsvp-choice-buttons {
     display: flex;
     justify-content: center;
@@ -2239,7 +2239,6 @@ footer {
     box-shadow: 0 8px 20px rgba(212, 180, 131, 0.5);
 }
 
-/* ========== CONTACT OPTIONS ========== */
 .contact-options {
     margin-top: 30px;
     padding: 25px;
@@ -2307,7 +2306,6 @@ footer {
     }
 }
 
-/* Адаптация для мобильных */
 @media (max-width: 768px) {
     .rsvp-choice-btn {
         padding: 14px 28px;
