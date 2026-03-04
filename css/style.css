@@ -2184,164 +2184,39 @@ footer {
         gap: 10px;
     }
 }
-/* ========== RSVP ВЫБОР ОТВЕТА ========== */
-.rsvp-choice-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-}
-
-.rsvp-choice-btn {
+/* ========== ДОПОЛНИТЕЛЬНЫЕ КНОПКИ ДЛЯ ТЕЛЕФОНА ========== */
+.copy-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    padding: 18px 38px;
-    border-radius: 50px;
-    font-size: 1.1rem;
-    font-family: 'MyHeaderFont', serif;
-    font-weight: 500;
-    letter-spacing: 1px;
+    gap: 8px;
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 40px;
+    font-size: 0.95rem;
+    font-family: 'MyBodyFont', sans-serif;
     cursor: pointer;
     transition: all 0.3s ease;
-    border: 2px solid;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    background: transparent;
-    width: auto;
-    min-width: 200px;
+    backdrop-filter: blur(5px);
 }
 
-.yes-btn {
-    background: #d4b483;
-    color: #4a5b3a;
-    border-color: #d4b483;
+.copy-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
 }
 
-.yes-btn:hover {
-    background: #e5c8a3;
-    color: #3a4a2a;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(212, 180, 131, 0.5);
-}
-
-.no-btn {
-    background: transparent;
-    color: #d4b483;
-    border-color: #d4b483;
-}
-
-.no-btn:hover {
-    background: #d4b483;
-    color: #4a5b3a;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(212, 180, 131, 0.5);
-}
-
-.contact-options {
-    margin-top: 30px;
-    padding: 25px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 30px;
-    border: 2px dashed #d4b483;
-    animation: fadeIn 0.5s ease;
-}
-
-.contact-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.contact-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 15px 30px;
-    border-radius: 50px;
+.copy-btn i {
     font-size: 1rem;
-    font-family: 'MyBodyFont', sans-serif;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    border: 2px solid;
-    min-width: 200px;
-}
-
-.telegram-btn {
-    background: #0088cc;
-    color: white;
-    border-color: #0088cc;
-}
-
-.telegram-btn:hover {
-    background: #006699;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 136, 204, 0.4);
-}
-
-.email-btn {
-    background: #c44536;
-    color: white;
-    border-color: #c44536;
-}
-
-.email-btn:hover {
-    background: #a33428;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(196, 69, 54, 0.4);
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@media (max-width: 768px) {
-    .rsvp-choice-btn {
-        padding: 14px 28px;
-        font-size: 1rem;
-        min-width: 160px;
-    }
-    
-    .contact-btn {
-        padding: 12px 24px;
-        font-size: 0.95rem;
-        min-width: 160px;
-    }
 }
 
 @media (max-width: 480px) {
-    .rsvp-choice-buttons {
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-    }
-    
-    .rsvp-choice-btn {
+    .copy-btn {
         width: 100%;
         max-width: 260px;
-        padding: 12px 20px;
-    }
-    
-    .contact-buttons {
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-    }
-    
-    .contact-btn {
-        width: 100%;
-        max-width: 260px;
+        padding: 10px 16px;
+        font-size: 0.9rem;
     }
 }
 #sound-control { 
