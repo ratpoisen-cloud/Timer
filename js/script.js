@@ -313,3 +313,53 @@ if (document.querySelector('.gift-section')) {
     });
   });
 }
+// ===== RSVP ВЫБОР ОТВЕТА =====
+let selectedResponse = '';
+
+window.showContactOptions = function(response) {
+    selectedResponse = response;
+    
+    // Создаем шаблоны сообщений
+    let telegramMessage = '';
+    let emailSubject = '';
+    let emailBody = '';
+    
+    if (response === 'yes') {
+        telegramMessage = 'Дорогие! Буду как штык 2 августа 2026.';
+        emailSubject = 'Буду как штык';
+        emailBody = 'Дорогие! Буду как штык 2 августа 2026.';
+    } else {
+        telegramMessage = 'Дорогие! К сожалению, не смогу быть. Обнимаю!';
+        emailSubject = 'Не обессудь';
+        emailBody = 'Дорогие! Я чорт, не смогу быть. Обнимаю!';
+    }
+    
+    // Кодируем для URL
+    const encodedTelegramMessage = encodeURIComponent(telegramMessage);
+    const encodedEmailSubject = encodeURIComponent(emailSubject);
+    const encodedEmailBody = encodeURIComponent(emailBody);
+    
+    // Обновляем ссылки
+    const telegramLink = document.getElementById('telegramLink');
+    const emailLink = document.getElementById('emailLink');
+    
+    // Telegram ссылка (открывает диалог с @RTPSN)
+    telegramLink.href = `https://t.me/RTPSN?text=${encodedTelegramMessage}`;
+    
+    // Email ссылка
+    emailLink.href = `mailto:ratpoisen@yandex.ru?subject=${encodedEmailSubject}&body=${encodedEmailBody}`;
+    
+    // Показываем блок с выбором контакта
+    const contactOptions = document.getElementById('contactOptions');
+    contactOptions.style.display = 'block';
+    
+    // Прокручиваем к блоку выбора контакта
+    setTimeout(() => {
+        contactOptions.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+}
+
+// Закрытие блока с контактами (опционально)
+window.hideContactOptions = function() {
+    document.getElementById('contactOptions').style.display = 'none';
+}
