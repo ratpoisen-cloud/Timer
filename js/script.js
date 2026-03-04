@@ -331,7 +331,7 @@ window.showContactOptions = function(response) {
     } else {
         telegramMessage = 'Дорогие! К сожалению, не смогу быть. Обнимаю!';
         emailSubject = 'Не обессудь';
-        emailBody = 'Дорогие! Я чорт, не смогу быть. Обнимаю!';
+        emailBody = 'Дорогие! Не смогу быть. Обнимаю!';
     }
     
     // Кодируем для URL
@@ -343,23 +343,22 @@ window.showContactOptions = function(response) {
     const telegramLink = document.getElementById('telegramLink');
     const emailLink = document.getElementById('emailLink');
     
-    // Telegram ссылка (открывает диалог с @RTPSN)
-    telegramLink.href = `https://t.me/RTPSN?text=${encodedTelegramMessage}`;
+    if (telegramLink) {
+        telegramLink.href = `https://t.me/RTPSN?text=${encodedTelegramMessage}`;
+    }
     
-    // Email ссылка
-    emailLink.href = `mailto:ratpoisen@yandex.ru?subject=${encodedEmailSubject}&body=${encodedEmailBody}`;
+    if (emailLink) {
+        emailLink.href = `mailto:ratpoisen@yandex.ru?subject=${encodedEmailSubject}&body=${encodedEmailBody}`;
+    }
     
     // Показываем блок с выбором контакта
     const contactOptions = document.getElementById('contactOptions');
-    contactOptions.style.display = 'block';
-    
-    // Прокручиваем к блоку выбора контакта
-    setTimeout(() => {
-        contactOptions.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 100);
-}
-
-// Закрытие блока с контактами (опционально)
-window.hideContactOptions = function() {
-    document.getElementById('contactOptions').style.display = 'none';
+    if (contactOptions) {
+        contactOptions.style.display = 'block';
+        
+        // Прокручиваем к блоку
+        setTimeout(() => {
+            contactOptions.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+    }
 }
