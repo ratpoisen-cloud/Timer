@@ -363,6 +363,10 @@
   <h2>Участие</h2>
   <p style="font-size: 1.3rem; margin-bottom: 30px;">Сообщи о своем решении до 1 мая 2026.</p>
   
+  <section class="rsvp-section fade-in">
+  <h2>Участие</h2>
+  <p style="font-size: 1.3rem; margin-bottom: 30px;">Сообщи о своем решении до 1 мая 2026.</p>
+  
   <!-- Кнопки выбора ответа -->
   <div style="margin-bottom: 30px;">
     <p style="font-size: 1.1rem; margin-bottom: 20px; color: #fefae0;">Выберите ваш ответ:</p>
@@ -383,29 +387,24 @@
     <div class="contact-buttons">
       <!-- Telegram -->
       <a href="#" id="telegramLink" target="_blank" class="contact-btn telegram-btn">
-        <i class="fab fa-telegram-plane"></i> Telegram
+        <i class="fab fa-telegram-plane"></i> TELEGRAM
       </a>
       
       <!-- Email (mailto ссылка) -->
       <a href="#" id="emailLink" class="contact-btn email-btn">
-        <i class="fas fa-envelope"></i> Открыть в почте
+        <i class="fas fa-envelope"></i> ОТКРЫТЬ В ПОЧТЕ
       </a>
     </div>
     
-    <!-- Дополнительные варианты для телефона -->
-    <div style="margin-top: 20px;">
-      <p style="font-size: 0.95rem; margin-bottom: 10px; color: #fefae0;">Или скопируйте:</p>
-      <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-        <button onclick="copyEmailToClipboard()" class="copy-btn">
-          <i class="fas fa-copy"></i> Копировать email
-        </button>
-        <button id="copyEmailBtn" onclick="copyEmailTemplate()" class="copy-btn" data-email="" data-subject="" data-body="">
-          <i class="fas fa-copy"></i> Копировать шаблон
-        </button>
-      </div>
+    <!-- Кнопка копирования email -->
+    <div style="margin-top: 25px;">
+      <p style="font-size: 0.95rem; margin-bottom: 12px; color: #fefae0;">Или скопируйте email:</p>
+      <button onclick="copyEmailToClipboard()" class="copy-email-btn">
+        <i class="fas fa-copy"></i> КОПИРОВАТЬ EMAIL
+      </button>
     </div>
     
-    <p style="font-size: 0.9rem; margin-top: 15px; opacity: 0.8;">
+    <p style="font-size: 0.9rem; margin-top: 20px; opacity: 0.9; color: #fefae0;">
       <i class="fas fa-info-circle"></i> Если почта не открывается, скопируйте email и отправьте письмо вручную
     </p>
   </div>
