@@ -342,13 +342,22 @@ window.showContactOptions = function(response) {
     // Обновляем ссылки
     const telegramLink = document.getElementById('telegramLink');
     const emailLink = document.getElementById('emailLink');
+    const copyEmailBtn = document.getElementById('copyEmailBtn');
     
     if (telegramLink) {
         telegramLink.href = `https://t.me/RTPSN?text=${encodedTelegramMessage}`;
     }
     
     if (emailLink) {
+        // mailto ссылка
         emailLink.href = `mailto:ratpoisen@yandex.ru?subject=${encodedEmailSubject}&body=${encodedEmailBody}`;
+    }
+    
+    // Сохраняем email для копирования
+    if (copyEmailBtn) {
+        copyEmailBtn.setAttribute('data-email', 'ratpoisen@yandex.ru');
+        copyEmailBtn.setAttribute('data-subject', emailSubject);
+        copyEmailBtn.setAttribute('data-body', emailBody);
     }
     
     // Показываем блок с выбором контакта
@@ -361,4 +370,39 @@ window.showContactOptions = function(response) {
             contactOptions.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }, 100);
     }
+}
+
+// Функция копирования email в буфер обмена
+window.copyEmailToClipboard = function() {
+    const email = 'ratpoisen@yandex.ru';
+    
+    // Создаем временный элемент
+    const tempInput = document.createElement('input');
+    tempInput.value = email;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+    
+    // Показываем уведомление
+    alert('Email скопирован: ' + email);
+}
+
+// Функция копирования шаблона письма
+window.copyEmailTemplate = function() {
+    const btn = event.currentTarget;
+    const email = btn.getAttribute('data-email');
+    const subject = btn.getAttribute('data-subject');
+    const body = btn.getAttribute('data-body');
+    
+    const template = `Кому: ${email}\nТема: ${subject}\n\n${body}`;
+    
+    const tempInput = document.createElement('textarea');
+    tempInput.value = template;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+    
+    alert('Шаблон письма скопирован! Вставьте его в вашу почту.');
 }
