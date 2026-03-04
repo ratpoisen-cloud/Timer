@@ -359,18 +359,39 @@
     </div>
   </div>
 </section>
-    <section class="rsvp-section fade-in">
-      <h2>Участие</h2>
-      <p style="font-size: 1.3rem; margin-bottom: 30px;">Сообщи о своем решении до 1 мая 2026.</p>
-      <div class="rsvp-buttons">
-        <a href="mailto:rat@poisen.ru?subject=Буду как штык&body=Дорогие! Буду как штык 2 августа 2026." class="btn">
-          <i class="fas fa-check-circle"></i> Уже еду!
-        </a>
-        <a href="mailto:rat@poisen.ru?subject=Не обессудь&body=Дорогие! Я чорт, не смогу быть. Обнимаю!" class="btn btn-secondary">
-          <i class="far fa-sad-tear"></i> Не смогу
-        </a>
-      </div>
-    </section>
+   <section class="rsvp-section fade-in">
+  <h2>Участие</h2>
+  <p style="font-size: 1.3rem; margin-bottom: 30px;">Сообщи о своем решении до 1 мая 2026.</p>
+  
+  <!-- Контейнер с кнопками выбора ответа -->
+  <div style="margin-bottom: 30px;">
+    <p style="font-size: 1.1rem; margin-bottom: 20px; color: #fefae0;">Выберите ваш ответ:</p>
+    <div class="rsvp-choice-buttons">
+      <button onclick="showContactOptions('yes')" class="rsvp-choice-btn yes-btn">
+        <i class="fas fa-check-circle"></i> Уже еду!
+      </button>
+      <button onclick="showContactOptions('no')" class="rsvp-choice-btn no-btn">
+        <i class="far fa-sad-tear"></i> Не смогу
+      </button>
+    </div>
+  </div>
+  
+  <!-- Блок с выбором способа отправки (скрыт по умолчанию) -->
+  <div id="contactOptions" class="contact-options" style="display: none;">
+    <p style="font-size: 1.1rem; margin-bottom: 20px; color: #fefae0;">Куда отправить ответ?</p>
+    <div class="contact-buttons">
+      <a href="#" id="telegramLink" target="_blank" class="contact-btn telegram-btn">
+        <i class="fab fa-telegram-plane"></i> Telegram @RTPSN
+      </a>
+      <a href="#" id="emailLink" class="contact-btn email-btn">
+        <i class="fas fa-envelope"></i> ratpoisen@yandex.ru
+      </a>
+    </div>
+    <p style="font-size: 0.9rem; margin-top: 15px; opacity: 0.8;">
+      <i class="fas fa-info-circle"></i> Шаблон ответа будет сформирован автоматически
+    </p>
+  </div>
+</section>
 
     <footer>
       <img src="assets/img/yggdrasil-lg.png" class="footer-logo" alt="Древо Жизни">
