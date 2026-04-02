@@ -1,415 +1,337 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Свадьба: Павел Сергеевич и Маруся Дмитриевна</title>
-  
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Свадьба: Павел Сергеевич & Маруся Дмитриевна — 2 августа 2026">
-  <meta property="og:description" content="Приглашаем на нашу свадьбу">
-  <meta property="og:image" content="assets/img/logo.jpg">
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Settings, X, CalendarDays } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23C9A25B' d='M211.7 155.1c-14.8-6.1-31.5-1.9-41.9 10.6-5.2 6.2-7.5 13.9-6.9 21.6.3 3.9.7 7.7 2.1 11.4 6.7 17.5 27.6 25.1 44.8 17.1 16.9-7.9 24.3-29.2 16.2-46.1-4.1-8.5-10.4-14.6-14.3-14.6zm-59.5 73.1c-15.6-3.7-31.6 3.6-39.2 17.8-3.8 7.1-4.2 15.3-1.6 22.5 1.3 3.6 3.7 6.8 6.9 9.3 15.3 11.9 38.3 8.3 49.3-8.1 10.8-16.1 6.3-38.3-9.5-41.5-2.9-.6-5.9 0-5.9 0zm-53.1 79.7c-15.8-.3-30.2 9.5-34.9 24.2-2.3 7.6-1.1 15.8 2.8 22.4 2 3.3 5.1 6 8.7 7.8 17.3 8.7 38.9.5 46.3-17.6 7.3-17.8-1.5-38.6-19.1-36.8-1.2 0-2.4 0-3.8 0zM475.9 33.6c-5.2-12.7-20.2-18.4-32.9-12.2l-96.6 47.4C309.5 87.2 284 113.8 273.7 149L211.3 376l-47.1 23.3c-7.9 3.9-11.1 13.6-7.2 21.5s13.6 11.1 21.5 7.2l56-27.7c10.2-5.1 17.4-14.5 19.3-25.7l15.1-90.6 62.6-31c14.2-7 20-24.2 13-38.4s-24.2-20-38.4-13l-45.7 22.6 36.3-132.5c5.1-17.6 17.9-30.9 34.2-38.9L463.7 66.5c12.7-6.2 17.4-20.2 12.2-32.9z'/%3E%3C/svg%3E">
+const STORAGE_KEY = "engagement-counter-start-date";
+const DEFAULT_DATE = "2025-01-01T00:00";
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+function pad(value: number) {
+  return String(value).padStart(2, "0");
+}
 
-  <audio id="bg-music" loop>
-    <source src="assets/audio/music.mp3" type="audio/mpeg">
-  </audio>
+function getTimeParts(fromDate: Date) {
+  const now = new Date();
+  const diff = Math.max(0, now.getTime() - fromDate.getTime());
 
-  <div id="entry-page">
-    
-    <div class="entry-bg-pastel"></div>
-    <div class="entry-bg-texture"></div>
-    
-    <div class="corner-decor top-left"></div>
-    <div class="corner-decor top-right"></div>
-    <div class="corner-decor bottom-left"></div>
-    <div class="corner-decor bottom-right"></div>
-    
-    <div class="entry-tree-btn" id="entry-tree-btn"></div>
-    
-    <div class="entry-fireflies" id="entry-fireflies"></div>
+  const totalSeconds = Math.floor(diff / 1000);
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
 
-    <div class="entry-text-container">
-      <h1 class="entry-title entry-fade-in entry-delay-1">Приглашение</h1>
-      <p class="entry-subtitle entry-fade-in entry-delay-2">
-        Коснитесь Древа, чтобы войти
-      </p>
-    </div>
+  return { days, hours, minutes, seconds };
+}
 
-    <div id="entry-cursor"><i class="fas fa-leaf"></i></div>
-    <div class="entry-transition-overlay" id="entry-overlay-transition"></div>
-  </div>
+function formatInputValue(date: Date) {
+  const year = date.getFullYear();
+  const month = pad(date.getMonth() + 1);
+  const day = pad(date.getDate());
+  const hours = pad(date.getHours());
+  const minutes = pad(date.getMinutes());
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
 
+type RingParticle = {
+  id: number;
+  x: number;
+  y: number;
+  size: number;
+  rotation: number;
+  duration: number;
+  drift: number;
+  delay: number;
+  spin: number;
+  drop: number;
+};
 
-  <div id="main-page" style="display: none;">
-    
-    <div id="custom-cursor"><i class="fas fa-leaf"></i></div>
-    <div id="fireflies-container"></div>
+function Ring({ size = 28 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 64 64"
+      className="pointer-events-none select-none drop-shadow-sm"
+      aria-hidden="true"
+    >
+      <defs>
+        <linearGradient id="ringGold" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#f4d77a" />
+          <stop offset="45%" stopColor="#d4af37" />
+          <stop offset="100%" stopColor="#b88b16" />
+        </linearGradient>
+        <linearGradient id="diamondFill" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#ffffff" />
+          <stop offset="100%" stopColor="#dce9ff" />
+        </linearGradient>
+      </defs>
 
-    <div id="sound-control" onclick="toggleMusic()">
-      <i class="fas fa-volume-up" id="sound-icon"></i>
-    </div>
+      <circle
+        cx="32"
+        cy="38"
+        r="16"
+        fill="none"
+        stroke="url(#ringGold)"
+        strokeWidth="7"
+        strokeLinecap="round"
+      />
+      <circle cx="32" cy="38" r="11" fill="rgba(255,255,255,0.68)" />
+      <path
+        d="M32 10 L38 18 L32 26 L26 18 Z"
+        fill="url(#diamondFill)"
+        stroke="rgba(176, 197, 234, 0.95)"
+        strokeWidth="1.4"
+      />
+      <path
+        d="M29.3 18 L34.7 18"
+        stroke="rgba(212,175,55,0.9)"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
 
-    <header>
-      <div class="hero">
-        <p class="subtitle">Приглашение на свадбу</p>
-        <h1>Павел Сергеевич<br>&<br>Маруся Дмитриевна</h1>
-        <div class="date">
-          <i class="far fa-calendar-alt" style="color: var(--wood-warm);"></i>
-          <span>2 августа 2026</span>
-        </div>
-        <div id="countdown" class="countdown">
-          <div><span id="days">0</span><small>Дней</small></div>
-          <div><span id="hours">0</span><small>Часов</small></div>
-          <div><span id="minutes">0</span><small>Минут</small></div>
-          <div><span id="seconds">0</span><small>Секунд</small></div>
-        </div>
-        <p style="margin-top: 30px; font-weight: 600; font-size: 0.8rem;">
-          <i class="fas fa-map-marker-alt" style="color: var(--wood-warm); margin-right: 8px; filter: drop-shadow(0 0 5px var(--gold-glow));"></i>
-          Крым, Ялта.
-        </p>
+export default function WeddingCounterPage() {
+  const [startDate, setStartDate] = useState<Date>(() => new Date(DEFAULT_DATE));
+  const [draftDate, setDraftDate] = useState<string>(DEFAULT_DATE);
+  const [isOpen, setIsOpen] = useState(false);
+  const [tick, setTick] = useState(0);
+  const [rings, setRings] = useState<RingParticle[]>([]);
+  const lastSpawnRef = useRef(0);
+  const idRef = useRef(0);
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const parsed = new Date(saved);
+      if (!Number.isNaN(parsed.getTime())) {
+        setStartDate(parsed);
+        setDraftDate(formatInputValue(parsed));
+        return;
+      }
+    }
+
+    const fallback = new Date(DEFAULT_DATE);
+    setStartDate(fallback);
+    setDraftDate(formatInputValue(fallback));
+  }, []);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setTick((v) => v + 1), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const spawnRing = (x: number, y: number) => {
+      const now = Date.now();
+      if (now - lastSpawnRef.current < 140) return;
+      lastSpawnRef.current = now;
+
+      const particle: RingParticle = {
+        id: idRef.current++,
+        x,
+        y,
+        size: 16 + Math.random() * 12,
+        rotation: -35 + Math.random() * 70,
+        duration: 0.9 + Math.random() * 0.55,
+        drift: -22 + Math.random() * 44,
+        delay: Math.random() * 0.04,
+        spin: -120 + Math.random() * 240,
+        drop: 120 + Math.random() * 180,
+      };
+
+      setRings((prev) => [...prev.slice(-8), particle]);
+      window.setTimeout(() => {
+        setRings((prev) => prev.filter((item) => item.id !== particle.id));
+      }, (particle.duration + particle.delay) * 1000 + 300);
+    };
+
+    const handlePointer = (event: PointerEvent) => {
+      spawnRing(event.clientX, event.clientY);
+    };
+
+    const handleTouch = (event: TouchEvent) => {
+      const touch = event.touches[0];
+      if (touch) spawnRing(touch.clientX, touch.clientY);
+    };
+
+    const handleScroll = () => {
+      const x = window.innerWidth * (0.25 + Math.random() * 0.5);
+      const y = Math.min(window.innerHeight - 40, 70 + Math.random() * 120);
+      spawnRing(x, y);
+    };
+
+    window.addEventListener("pointermove", handlePointer, { passive: true });
+    window.addEventListener("touchmove", handleTouch, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("pointermove", handlePointer);
+      window.removeEventListener("touchmove", handleTouch);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const parts = useMemo(() => getTimeParts(startDate), [startDate, tick]);
+
+  const saveDate = () => {
+    const parsed = new Date(draftDate);
+    if (Number.isNaN(parsed.getTime())) return;
+    setStartDate(parsed);
+    window.localStorage.setItem(STORAGE_KEY, parsed.toISOString());
+    setIsOpen(false);
+  };
+
+  const resetDate = () => {
+    const fallback = new Date(DEFAULT_DATE);
+    setStartDate(fallback);
+    setDraftDate(formatInputValue(fallback));
+    window.localStorage.setItem(STORAGE_KEY, fallback.toISOString());
+  };
+
+  return (
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#ffffff_0%,_#f7f5f2_36%,_#efeae3_100%)] text-slate-800 overflow-hidden relative">
+      <div className="absolute inset-0 pointer-events-none opacity-60">
+        <div className="absolute top-0 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-white blur-3xl" />
+        <div className="absolute bottom-10 right-[-40px] h-56 w-56 rounded-full bg-amber-100/70 blur-3xl" />
+        <div className="absolute top-28 left-[-40px] h-52 w-52 rounded-full bg-stone-100 blur-3xl" />
       </div>
-    </header>
 
-   <!-- Цитата -->
-<section>
-  <div class="leaf-divider"><i class="fas fa-leaf"></i></div>
-  
-  <div class="quote-text fade-in">
-    "Я предпочту разделить с тобой одну смертную жизнь, чем провести в одиночестве все эпохи мира."
-  </div>
-</section>
-    <!-- Детали -->
-    <section class="parallax-section bg-forest">
-      <div class="overlay-dark"></div>
-      
-      <div class="parallax-inner">
-        <h2 style="color: #f7f4e8; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">Детали события</h2>
-        <div class="details-container fade-in" style="background: rgba(255, 255, 255, 0.1); border-color: rgba(255,255,255,0.3); backdrop-filter: blur(5px);">
-            <div class="details">
-              <div class="card">
-                  <i class="fas fa-clock" style="color: #f7f4e8;"></i>
-                  <h3 style="color: #f7f4e8;">Тайминг</h3>
-                  <p style="color: #f7f4e8;">2 августа 2026<br>Венчание: 15:00<br>Торжество: 17:00</p>
-              </div>
-              <div class="card">
-                  <i class="fas fa-tree" style="color: #f7f4e8;"></i>
-                  <h3 style="color: #f7f4e8;">Локация</h3>
-                  <p style="color: #f7f4e8;"><strong>Отель "Зазеркалье"</strong><br>г. Ялта, Приморский парк, 9</p>
-              </div>
-              <div class="card">
-                  <i class="fas fa-glass-cheers" style="color: #f7f4e8;"></i>
-                  <h3 style="color: #f7f4e8;">Дресс-код</h3>
-                  <p style="color: #f7f4e8;">Природные тона: зеленый, сливочный, оливковый, беж.</p>
-              </div>
+      <button
+        onClick={() => setIsOpen(true)}
+        className="fixed top-4 right-4 z-30 rounded-full border border-white/70 bg-white/80 backdrop-blur px-3 py-3 shadow-lg shadow-stone-200/60 transition hover:scale-105 active:scale-95"
+        aria-label="Настроить дату"
+      >
+        <Settings className="h-5 w-5 text-slate-700" />
+      </button>
+
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-5 py-16 sm:px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55 }}
+          className="w-full max-w-4xl"
+        >
+          <div className="rounded-[30px] border border-white/70 bg-white/72 p-5 shadow-[0_24px_70px_rgba(15,23,42,0.08)] backdrop-blur-xl sm:p-8 md:p-10">
+            <div className="mb-6 flex items-center justify-center gap-2 text-[11px] font-medium uppercase tracking-[0.28em] text-slate-500 sm:text-xs">
+              <CalendarDays className="h-4 w-4" />
+              С момента выбранной даты
             </div>
-        </div>
-      </div>
-    </section>
-    <!-- Детали -->
-<section>
-  <h2>Детали</h2>
-  <div class="invitation-section">
-    <div class="invitation-container">
-      <div class="invitation-paper fade-in">
-        <p>
-<p>Пожалуйста планируйте поездку и сообщите нам о своем решении. Дополнительные детали появятся позже.</p>
-<p>Если вы впервые собираетесь в Крым или давно здесь не были то специально для вас мы собрали вам полезную информацию для комфортного путешествия.</p>
 
-<p class="invitation-highlight">Всё, что нужно знать перед поездкой → <strong> смотрите в разделе ниже </strong></p>
-      </div>
-    </div>
-  </div>
-</section>
-    <!-- FAQ -->
-   <section>
-      <div class="faq-container fade-in">
-        <h2 style="font-size: 2.5rem; margin-bottom: 25px;">Важная информация</h2>
-        
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-question">
-            <span><i class="fas fa-train" style="width: 30px;"></i> Ж/Д Билеты</span>
-            <i class="fas fa-chevron-down arrow"></i>
-          </div>
-          <div class="faq-answer">
-            <p>
-              В Крым ходят комфортабельные поезда «Таврия». Продажи открываются за 45-90 суток.
-              <br><br>
-              <a href="https://grandtrain.ru/" target="_blank" class="faq-btn">
-                <i class="fas fa-ticket-alt"></i> Купить билет (grandtrain.ru)
-              </a>
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
+              {[
+                { label: "Дней", value: parts.days },
+                { label: "Часов", value: pad(parts.hours) },
+                { label: "Минут", value: pad(parts.minutes) },
+                { label: "Секунд", value: pad(parts.seconds) },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  className="rounded-[24px] border border-stone-200/80 bg-stone-50/90 px-3 py-5 text-center shadow-sm sm:px-4 sm:py-6"
+                >
+                  <div className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
+                    {item.value}
+                  </div>
+                  <div className="mt-2 text-xs uppercase tracking-[0.25em] text-slate-500 sm:text-sm">
+                    {item.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <h1 className="mt-7 text-center text-2xl font-semibold tracking-tight text-slate-900 sm:mt-8 sm:text-3xl md:text-4xl">
+              Без предложения руки и сердца
+            </h1>
+
+            <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-6 text-slate-500 sm:text-base">
+              Сайт считает, сколько дней, часов, минут и секунд прошло с выбранной даты.
             </p>
           </div>
-        </div>
-
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-question">
-            <span><i class="fas fa-car" style="width: 30px;"></i> На машине (Мост)</span>
-            <i class="fas fa-chevron-down arrow"></i>
-          </div>
-          <div class="faq-answer">
-            <p>
-              Проезд через Крымский мост. Закладывайте время на досмотр (~30-60 мин).
-              <br><br>
-              Оперативная ситуация и очереди:
-              <br>
-              <a href="https://t.me/most_official" target="_blank" class="faq-link">
-                <i class="fab fa-telegram-plane"></i> Чат мониторинга моста
-              </a>
-            </p>
-          </div>
-        </div>
-
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-question">
-            <span><i class="fas fa-home" style="width: 30px;"></i> Где жить?</span>
-            <i class="fas fa-chevron-down arrow"></i>
-          </div>
-          <div class="faq-answer">
-            <p>
-              Для бронирования жилья используйте проверенные сервисы (или обратитесь к нам):
-              <br><br>
-              <i class="fas fa-check" style="color: var(--wood-warm);"></i> <a href="https://sutochno.ru" target="_blank" class="text-link">Sutochno.ru</a> (квартиры)<br>
-              <i class="fas fa-check" style="color: var(--wood-warm);"></i> <a href="https://ostrovok.ru" target="_blank" class="text-link">Ostrovok.ru</a> (отели)<br>
-              <i class="fas fa-check" style="color: var(--wood-warm);"></i> <a href="https://tvil.ru" target="_blank" class="text-link">Tvil.ru</a>
-            </p> 
-          </div>
-        </div>
-
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-question">
-            <span><i class="fas fa-taxi" style="width: 30px;"></i> Такси в Крыму</span>
-            <i class="fas fa-chevron-down arrow"></i>
-          </div>
-          <div class="faq-answer">
-            <p>
-              <strong style="color: #d9534f;">Важно:</strong> Яндекс.Go, Uber и Citymobil в Крыму <strong>не работают</strong>!
-              <br><br>
-              Рекомендуем скачать местные приложения заранее:
-              <br><br>
-              
-              <a href="https://taxisolnce.ru/" target="_blank" class="faq-btn" style="margin-bottom: 10px;">
-                <i class="fas fa-sun"></i> Такси "Солнышко"
-              </a>
-              <br>
-              <a href="https://скачаймаксим.рф/ru/" target="_blank" class="faq-btn" style="margin-bottom: 10px;">
-                <i class="fas fa-car-side"></i> Такси "Максим"
-              </a>
-              <br>
-              <a href="https://taxivolna.ru/" target="_blank" class="faq-btn" style="margin-bottom: 10px;">
-                <i class="fas fa-water"></i> Такси "Волна"
-              </a>
-              <br>
-              <a href="https://uptaxi.in/" target="_blank" class="faq-btn">
-                <i class="fas fa-route"></i> UpTaxi
-                
-              </a>
-            </p>
-          </div>
-        </div>
-
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-question">
-            <span><i class="fas fa-suitcase-rolling" style="width: 30px;"></i> Чек-лист гостя</span>
-            <i class="fas fa-chevron-down arrow"></i>
-          </div>
-          <div class="faq-answer">
-            <ul class="checklist">
-              <li><i class="fas fa-check"></i> Паспорт (оригинал)</li>
-              <li><i class="fas fa-check"></i> Полис ОМС</li>
-              <li><i class="fas fa-check"></i> Наличные (карты работают, но лучше иметь запас)</li>
-              <li><i class="fas fa-check"></i> Средства защиты от солнца</li>
-              <li><i class="fas fa-check"></i> PowerBank в дорогу</li>
-            </ul>
-          </div>
-        </div>
-
+        </motion.div>
       </div>
 
-     <!-- ЛОКАЦИЯ -->
-      <h2 style="font-size: 2.5rem; margin-bottom: 25px; color: var(--forest-deep);">Локация</h2>
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            <motion.div
+              className="fixed inset-0 z-40 bg-slate-900/24 backdrop-blur-[2px]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsOpen(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, y: 20, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 10, scale: 0.98 }}
+              transition={{ duration: 0.22 }}
+              className="fixed inset-x-4 top-[10%] z-50 mx-auto w-auto max-w-md rounded-[28px] border border-white/70 bg-white/96 p-5 shadow-[0_24px_80px_rgba(15,23,42,0.16)] sm:inset-x-0"
+            >
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <div>
+                  <div className="text-lg font-semibold text-slate-900">Настройка даты</div>
+                  <div className="mt-1 text-sm text-slate-500">Выбери дату, от которой идет отсчет.</div>
+                </div>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="rounded-full p-2 text-slate-500 transition hover:bg-stone-100 hover:text-slate-800"
+                  aria-label="Закрыть"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
 
-      <div class="map-container fade-in" style="margin-top: 0px; position: relative; cursor: pointer;" onclick="window.open('https://yandex.ru/maps/-/CPAObFmg', '_blank')">
-        <img src="assets/img/fantasy-map.jpg" alt="Карта" style="width: 100%; height: auto; display: block;" loading="lazy">
-        <div style="position: absolute; bottom: 20px; left: 0; width: 100%; text-align: center; pointer-events: none;">
-          <span style="background: rgba(42, 75, 60, 0.8); color: var(--wood-warm); padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; border: 1px solid var(--wood-warm);">
-            <i class="fas fa-external-link-alt"></i> Проложить путь 
-          </span>
-        </div>
-      </div>
+              <label className="block">
+                <span className="mb-2 block text-sm font-medium text-slate-700">Дата и время</span>
+                <input
+                  type="datetime-local"
+                  value={draftDate}
+                  onChange={(e) => setDraftDate(e.target.value)}
+                  className="w-full rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-base text-slate-900 outline-none transition focus:border-slate-300 focus:bg-white focus:ring-4 focus:ring-stone-100"
+                />
+              </label>
 
+              <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+                <button
+                  onClick={saveDate}
+                  className="flex-1 rounded-2xl bg-slate-900 px-4 py-3 text-sm font-medium text-white transition hover:-translate-y-0.5 hover:bg-slate-800 active:translate-y-0"
+                >
+                  Сохранить
+                </button>
+                <button
+                  onClick={resetDate}
+                  className="flex-1 rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-stone-50"
+                >
+                  Сбросить
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
-     <!-- ДРЕСС-КОД И ЦВЕТОВАЯ ПАЛИТРА -->
-<section class="dresscode-section fade-in">
-  <div class="dresscode-container">
-    <div class="dresscode-paper">
-      <div class="dresscode-header">
-        <i class="fas fa-glass-cheers dresscode-icon"></i>
-        <h2 class="dresscode-title">Дресс-код</h2>
-      </div>
-      
-      <p class="dresscode-description">
-        Природные тона: зеленый, сливочный, оливковый, беж.
-      </p>
-
-      <div class="dresscode-palette">
-        <div class="palette-title">Цветовая гамма</div>
-        <div class="palette-grid">
-          <div class="palette-item">
-            <span class="palette-circle" style="background: #283618;"></span>
-            <span class="palette-label">Лесная глубь</span>
-          </div>
-          <div class="palette-item">
-            <span class="palette-circle" style="background: #606c38;"></span>
-            <span class="palette-label">Лесной шалфей</span>
-          </div>
-          <div class="palette-item">
-            <span class="palette-circle" style="background: #C9A25B;"></span>
-            <span class="palette-label">Теплое дерево</span>
-          </div>
-          <div class="palette-item">
-            <span class="palette-circle" style="background: #e6c889;"></span>
-            <span class="palette-label">Золотое сияние</span>
-          </div>
-          <div class="palette-item">
-            <span class="palette-circle" style="background: #fefae0;"></span>
-            <span class="palette-label">Кремовый</span>
-          </div>
-          <div class="palette-item">
-            <span class="palette-circle" style="background: #8c9a7b;"></span>
-            <span class="palette-label">Мягкий оливковый</span>
-          </div>
-        </div>
-      </div>
-
-      <p class="dresscode-note">
-        <i class="fas fa-leaf"></i>
-        Вдохновляйтесь природой Крыма
-        <i class="fas fa-leaf"></i>
-      </p>
-    </div>
-  </div>
-</section>
-     
-      <!-- ПОГОДА -->
-<div class="weather-card fade-in">
-  <div class="weather-header">
-    <span>Ялта • 2 Августа</span>
-    <span class="weather-badge">Ожидается</span>
-  </div>
-  
-  <div class="weather-main-row">
-    <i class="fas fa-sun weather-icon-sun"></i>
-    <div class="weather-temp">
-      <div class="temp-value">+29°</div>
-      <div class="temp-desc">Ясно</div>
-    </div>
-  </div>
-  
-  <div class="weather-grid">
-    <div class="weather-col">
-      <i class="fas fa-water weather-icon-water"></i>
-      <div class="weather-val">+24°C</div>
-      <div class="weather-label">Вода</div>
-    </div>
-    <div class="weather-col weather-border">
-      <i class="fas fa-wind weather-icon-wind"></i>
-      <div class="weather-val">3 м/с</div>
-      <div class="weather-label">Ветер</div>
-    </div>
-    <div class="weather-col">
-      <i class="fas fa-umbrella weather-icon-rain"></i>
-      <div class="weather-val">2%</div>
-      <div class="weather-label">Осадки</div>
-    </div>
-  </div>
-</div>
-<!-- ЧТО ПОДАРИТЬ – В СТИЛЕ ПРИГЛАШЕНИЯ -->
-<section class="gift-section fade-in" id="gift">
-  <div class="gift-container">
-    <div class="gift-paper">
-      <div class="gift-icon-pulse">
-        <i class="fas fa-gift"></i>
-      </div>
-
-      <h2 class="gift-title-soft">Что подарить?</h2>
-      
-      <p class="gift-poem">
-        Ваше присутствие, улыбки и поддержка — лучший подарок
-      </p>
-
-      <div class="gift-hint-line">
-        <i class="fas fa-leaf"></i>
-        <span>Не дарите цветы. Пусть они останутся в садах</span>
-        <i class="fas fa-leaf"></i>
-      </div>
-
-      <div class="gift-button-wrapper">
-        <a href="https://www.tbank.ru/cf/8FPJWyZLs4G" target="_blank" rel="noopener noreferrer" class="gift-soft-btn">
-          Отправить свою поддержку
-        </a>
+      <div className="pointer-events-none fixed inset-0 z-20 overflow-hidden">
+        <AnimatePresence>
+          {rings.map((ring) => (
+            <motion.div
+              key={ring.id}
+              initial={{ opacity: 0, y: -4, x: 0, scale: 0.92, rotate: ring.rotation }}
+              animate={{
+                opacity: [0, 1, 1, 0],
+                y: [0, ring.drop * 0.2, ring.drop * 0.55, ring.drop],
+                x: [0, ring.drift * 0.35, ring.drift * 0.7, ring.drift],
+                scale: [0.92, 1, 0.98, 0.94],
+                rotate: [ring.rotation, ring.rotation + ring.spin * 0.35, ring.rotation + ring.spin * 0.75, ring.rotation + ring.spin],
+              }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: ring.duration, delay: ring.delay, ease: [0.2, 0.75, 0.35, 1] }}
+              style={{ position: "absolute", left: ring.x, top: ring.y }}
+            >
+              <Ring size={ring.size} />
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
     </div>
-  </div>
-</section>
-  <section class="rsvp-section fade-in">
-  <h2>Участие</h2>
-  <p style="font-size: 1.3rem; margin-bottom: 30px;">Сообщи о своем решении до 1 мая 2026.</p>
-  
-  <section class="rsvp-section fade-in">
-  <h2>Участие</h2>
-  <p style="font-size: 1.3rem; margin-bottom: 30px;">Сообщи о своем решении до 1 мая 2026.</p>
-  
-  <!-- Кнопки выбора ответа -->
-  <div style="margin-bottom: 30px;">
-    <p style="font-size: 1.1rem; margin-bottom: 20px; color: #fefae0;">Выберите ваш ответ:</p>
-    <div class="rsvp-choice-buttons">
-      <button onclick="showContactOptions('yes')" class="rsvp-choice-btn yes-btn">
-        <i class="fas fa-check-circle"></i> Уже еду!
-      </button>
-      <button onclick="showContactOptions('no')" class="rsvp-choice-btn no-btn">
-        <i class="far fa-sad-tear"></i> Не смогу
-      </button>
-    </div>
-  </div>
-  
-  <!-- Блок с выбором способа отправки (изначально скрыт) -->
-  <div id="contactOptions" class="contact-options" style="display: none;">
-    <p style="font-size: 1.1rem; margin-bottom: 20px; color: #fefae0;">Куда отправить ответ?</p>
-    
-    <div class="contact-buttons">
-      <!-- Telegram -->
-      <a href="#" id="telegramLink" target="_blank" class="contact-btn telegram-btn">
-        <i class="fab fa-telegram-plane"></i> TELEGRAM
-      </a>
-      
-      <!-- Email (mailto ссылка) -->
-      <a href="#" id="emailLink" class="contact-btn email-btn">
-        <i class="fas fa-envelope"></i> ОТКРЫТЬ В ПОЧТЕ
-      </a>
-    </div>
-    
-    <!-- Кнопка копирования email -->
-    <div style="margin-top: 25px;">
-      <p style="font-size: 0.95rem; margin-bottom: 12px; color: #fefae0;">Или скопируйте email:</p>
-      <button onclick="copyEmailToClipboard()" class="copy-email-btn">
-        <i class="fas fa-copy"></i> КОПИРОВАТЬ EMAIL
-      </button>
-    </div>
-    
-    <p style="font-size: 0.9rem; margin-top: 20px; opacity: 0.9; color: #fefae0;">
-      <i class="fas fa-info-circle"></i> Если почта не открывается, скопируйте email и отправьте письмо вручную
-    </p>
-  </div>
-</section>
-
-  <script src="js/script.js"></script>
-</body>
-</html>
+  );
+}
