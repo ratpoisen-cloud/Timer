@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const STORAGE_KEY = "engagement-counter-start-date";
 const DEFAULT_DATE = "2025-01-01T00:00";
+const SLIDES = [1, 2, 3, 4, 5].map((num) => `/assets/${num}.jpg`);
 
 function pad(value: number) {
   return String(value).padStart(2, "0");
@@ -40,8 +41,9 @@ type RingParticle = {
   duration: number;
   drift: number;
   delay: number;
+  sway: number;
   spin: number;
-  drop: number;
+  wobble: number;
 };
 
 function Ring({ size = 28 }: { size?: number }) {
@@ -92,6 +94,8 @@ function Ring({ size = 28 }: { size?: number }) {
 }
 
 export default function WeddingCounterPage() {
+  const [viewportHeight, setViewportHeight] = useState("100vh");
+  const [slideIndex, setSlideIndex] = useState(0);
   const [startDate, setStartDate] = useState<Date>(() => new Date(DEFAULT_DATE));
   const [draftDate, setDraftDate] = useState<string>(DEFAULT_DATE);
   const [isOpen, setIsOpen] = useState(false);
@@ -99,6 +103,25 @@ export default function WeddingCounterPage() {
   const [rings, setRings] = useState<RingParticle[]>([]);
   const lastSpawnRef = useRef(0);
   const idRef = useRef(0);
+
+  useEffect(() => {
+    const updateHeight = () => {
+      setViewportHeight(`${window.innerHeight}px`);
+    };
+
+    updateHeight();
+    window.addEventListener("resize", updateHeight);
+
+    return () => window.removeEventListener("resize", updateHeight);
+  }, []);
+
+  useEffect(() => {
+    const sliderTimer = window.setInterval(() => {
+      setSlideIndex((prev) => (prev + 1) % SLIDES.length);
+    }, 3500);
+
+    return () => window.clearInterval(sliderTimer);
+  }, []);
 
   useEffect(() => {
     const saved = window.localStorage.getItem(STORAGE_KEY);
@@ -124,23 +147,24 @@ export default function WeddingCounterPage() {
   useEffect(() => {
     const spawnRing = (x: number, y: number) => {
       const now = Date.now();
-      if (now - lastSpawnRef.current < 140) return;
+      if (now - lastSpawnRef.current < 170) return;
       lastSpawnRef.current = now;
 
       const particle: RingParticle = {
         id: idRef.current++,
         x,
         y,
-        size: 16 + Math.random() * 12,
-        rotation: -35 + Math.random() * 70,
-        duration: 0.9 + Math.random() * 0.55,
-        drift: -22 + Math.random() * 44,
-        delay: Math.random() * 0.04,
-        spin: -120 + Math.random() * 240,
-        drop: 120 + Math.random() * 180,
+        size: 16 + Math.random() * 14,
+        rotation: -40 + Math.random() * 80,
+        duration: 1.8 + Math.random() * 1.2,
+        drift: -28 + Math.random() * 56,
+        delay: Math.random() * 0.08,
+        sway: 14 + Math.random() * 26,
+        spin: 120 + Math.random() * 220,
+        wobble: -18 + Math.random() * 36,
       };
 
-      setRings((prev) => [...prev.slice(-8), particle]);
+      setRings((prev) => [...prev.slice(-6), particle]);
       window.setTimeout(() => {
         setRings((prev) => prev.filter((item) => item.id !== particle.id));
       }, (particle.duration + particle.delay) * 1000 + 300);
@@ -190,7 +214,10 @@ export default function WeddingCounterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#ffffff_0%,_#f7f5f2_36%,_#efeae3_100%)] text-slate-800 overflow-hidden relative">
+    <div
+      className="bg-[radial-gradient(circle_at_top,_#ffffff_0%,_#f7f5f2_36%,_#efeae3_100%)] text-slate-800 overflow-hidden relative"
+      style={{ height: viewportHeight }}
+    >
       <div className="absolute inset-0 pointer-events-none opacity-60">
         <div className="absolute top-0 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-white blur-3xl" />
         <div className="absolute bottom-10 right-[-40px] h-56 w-56 rounded-full bg-amber-100/70 blur-3xl" />
@@ -205,48 +232,80 @@ export default function WeddingCounterPage() {
         <Settings className="h-5 w-5 text-slate-700" />
       </button>
 
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-5 py-16 sm:px-6">
+      <div className="relative z-10 mx-auto flex h-full max-w-5xl flex-col justify-between px-4 py-5 sm:px-6 sm:py-6 md:px-8 md:py-8">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55 }}
-          className="w-full max-w-4xl"
+          className="flex h-full flex-col gap-4 md:gap-6"
         >
-          <div className="rounded-[30px] border border-white/70 bg-white/72 p-5 shadow-[0_24px_70px_rgba(15,23,42,0.08)] backdrop-blur-xl sm:p-8 md:p-10">
-            <div className="mb-6 flex items-center justify-center gap-2 text-[11px] font-medium uppercase tracking-[0.28em] text-slate-500 sm:text-xs">
+          <section className="pt-10 sm:pt-12 md:pt-14">
+            <div className="mb-4 flex items-center justify-center gap-2 text-[11px] font-medium uppercase tracking-[0.28em] text-slate-500 sm:text-xs">
               <CalendarDays className="h-4 w-4" />
               С момента выбранной даты
             </div>
 
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
+            <div className="grid grid-cols-2 gap-x-3 gap-y-4 sm:gap-x-4 md:grid-cols-4 md:gap-5">
               {[
                 { label: "Дней", value: parts.days },
                 { label: "Часов", value: pad(parts.hours) },
                 { label: "Минут", value: pad(parts.minutes) },
                 { label: "Секунд", value: pad(parts.seconds) },
               ].map((item) => (
-                <div
-                  key={item.label}
-                  className="rounded-[24px] border border-stone-200/80 bg-stone-50/90 px-3 py-5 text-center shadow-sm sm:px-4 sm:py-6"
-                >
-                  <div className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
+                <div key={item.label} className="px-1 py-1 text-center">
+                  <div className="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl md:text-6xl">
                     {item.value}
                   </div>
-                  <div className="mt-2 text-xs uppercase tracking-[0.25em] text-slate-500 sm:text-sm">
+                  <div className="mt-2 text-[11px] uppercase tracking-[0.25em] text-slate-500 sm:text-sm">
                     {item.label}
                   </div>
                 </div>
               ))}
             </div>
+          </section>
 
-            <h1 className="mt-7 text-center text-2xl font-semibold tracking-tight text-slate-900 sm:mt-8 sm:text-3xl md:text-4xl">
+          <section className="flex min-h-0 flex-1 items-center justify-center">
+            <div className="relative w-full overflow-hidden rounded-[28px] border border-white/70 bg-white/45 shadow-[0_18px_50px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+              <div className="relative aspect-[4/3] w-full sm:aspect-[16/9] md:h-full md:min-h-[260px] md:max-h-[42vh]">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={SLIDES[slideIndex]}
+                    src={SLIDES[slideIndex]}
+                    alt={`Слайд ${slideIndex + 1}`}
+                    className="absolute inset-0 h-full w-full object-cover"
+                    initial={{ opacity: 0.35, scale: 1.04 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0.2, scale: 0.985 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                  />
+                </AnimatePresence>
+                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/18 to-transparent" />
+              </div>
+
+              <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-2 rounded-full bg-white/72 px-3 py-2 backdrop-blur-sm">
+                {SLIDES.map((_, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    aria-label={`Переключить на слайд ${index + 1}`}
+                    onClick={() => setSlideIndex(index)}
+                    className={`h-2.5 rounded-full transition-all ${
+                      index === slideIndex ? "w-6 bg-slate-800" : "w-2.5 bg-slate-400/65"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="pb-1 sm:pb-2 md:pb-3">
+            <h1 className="text-center text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl md:text-4xl">
               Без предложения руки и сердца
             </h1>
-
             <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-6 text-slate-500 sm:text-base">
               Сайт считает, сколько дней, часов, минут и секунд прошло с выбранной даты.
             </p>
-          </div>
+          </section>
         </motion.div>
       </div>
 
@@ -315,16 +374,16 @@ export default function WeddingCounterPage() {
           {rings.map((ring) => (
             <motion.div
               key={ring.id}
-              initial={{ opacity: 0, y: -4, x: 0, scale: 0.92, rotate: ring.rotation }}
+              initial={{ opacity: 0, y: 0, x: 0, scale: 0.7, rotate: ring.rotation }}
               animate={{
                 opacity: [0, 1, 1, 0],
-                y: [0, ring.drop * 0.2, ring.drop * 0.55, ring.drop],
-                x: [0, ring.drift * 0.35, ring.drift * 0.7, ring.drift],
-                scale: [0.92, 1, 0.98, 0.94],
-                rotate: [ring.rotation, ring.rotation + ring.spin * 0.35, ring.rotation + ring.spin * 0.75, ring.rotation + ring.spin],
+                y: window.innerHeight ? window.innerHeight - ring.y + 70 : 500,
+                x: ring.drift,
+                scale: [0.7, 1, 1, 0.92],
+                rotate: ring.rotation + (-70 + Math.random() * 140),
               }}
               exit={{ opacity: 0 }}
-              transition={{ duration: ring.duration, delay: ring.delay, ease: [0.2, 0.75, 0.35, 1] }}
+              transition={{ duration: ring.duration, delay: ring.delay, ease: "easeIn" }}
               style={{ position: "absolute", left: ring.x, top: ring.y }}
             >
               <Ring size={ring.size} />
